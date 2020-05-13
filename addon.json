@@ -1,0 +1,9 @@
+{
+    "title": "[simfphys] Trailers Base FIX",
+    "type": "vehicle",
+    "tags": ["roleplay", "realism"],
+    "ignore":[
+        "__lua/*",
+        ".vscode/*"
+    ]
+}

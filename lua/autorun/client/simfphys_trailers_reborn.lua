@@ -13,7 +13,7 @@ concommand.Add("trailer_reborn_connect", function(ply, _, _,arg)
 	local num = tonumber(arg)
 	if num and num <128 and num >0 then
 		net.Start("trailers_reborn_connect")
-		net.WriteInt(num,8) -- 254 trailers max
+		net.WriteUInt(num,8) -- 254 trailers max
 		net.SendToServer()
 	end
 

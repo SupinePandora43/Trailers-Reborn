@@ -104,7 +104,7 @@ net.Receive("trailers_reborn_connect", function(len, ply)
         for _, trucki in pairs(trailers_reborn.trucks) do
             if trucki.ent == seat:GetParent() then
                 if seat:GetParent():GetDriver() == ply then
-                    print(net.ReadInt(8))
+                    print(net.ReadUInt(8))
                 end
             end
         end
@@ -119,7 +119,7 @@ net.Receive("trailers_reborn_disconnect", function(len, ply)
         for _, trucki in pairs(trailers_reborn.trucks) do
             if trucki.ent == seat:GetParent() then
 				if seat:GetParent():GetDriver() == ply then
-                    print(net.ReadInt(8)) -- 254 trailers max
+                    print(net.ReadUInt(8)) -- 254 trailers max
                 end
             end
         end

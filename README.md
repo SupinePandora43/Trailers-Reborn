@@ -1,1 +1,4 @@
-# Trailers_Reborn
+# Trailers Reborn
+## Features
+* trailers (up to 254 per truck)
+* 

@@ -1,6 +1,6 @@
 - [For Developers](#for-developers)
-	- [Concepts](#concepts)
-		- [`trailers_reborn` . `Init`](#trailers_reborn--init)
+	- [`Trailers`](#trailers)
+		- [`Init`](#init)
 			- [`vehtable`](#vehtable)
 				- [`ent`](#ent)
 				- [`vehtype`](#vehtype)
@@ -8,17 +8,20 @@
 				- [`inputPos`](#inputpos)
 				- [`outputType`](#outputtype)
 				- [`inputType`](#inputtype)
+			- [`github`](#github)
 			- [Connection Types](#connection-types)
 
 # For Developers
 
-## Concepts
+## `Trailers`
 
-### `trailers_reborn` . `Init`
+### `Init`
 
 #### `vehtable`
 
 ##### `ent`
+
+**[`Entity`](https://wiki.facepunch.com/gmod/Entity)**
 
 simfphys vehicle entity ( `ent` inside of `OnSpawn(ent)` function)
 
@@ -32,25 +35,41 @@ Only 3 different types of vehicles (case non-sensetive)
 
 ##### `outputPos`
 
+**[`Vector`](https://wiki.facepunch.com/gmod/Vector)**
+
 Truck's/dolly's connector point
 
-###### still useable with trailers
+###### *still useable with trailers*
 
 ##### `inputPos`
 
+**[`Vector`](https://wiki.facepunch.com/gmod/Vector)**
+
 Dolly's/trailer's connector point
 
-###### not useable with trucks
+###### *not useable with trucks*
 
 ##### `outputType`
+
+**[`string`](https://wiki.facepunch.com/gmod/string)**
 
 [Connection Types](#connection-types)
 
 ##### `inputType`
 
+**[`string`](https://wiki.facepunch.com/gmod/string)**
+
 [Connection Types](#connection-types)
+
+#### `github`
+
+**[`boolean`](https://wiki.facepunch.com/gmod/boolean)**
+
+use Trailers-Base repository to get info about vehicle
 
 #### Connection Types
 
 * `axis`
 * `joint`
+
+`AdvBallSocket` is always used, it just to prevent connecting big trailers to small passenger cars

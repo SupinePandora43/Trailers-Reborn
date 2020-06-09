@@ -3,20 +3,15 @@ if not simfphys then
 					"Install SimFphys first https://steamcommunity.com/workshop/filedetails/?id=771487490")
 end
 
-local function findLast(car, safe) -- shitrecursion
+local function findLast(car, safe) -- good recursion
 	safe = safe or 0
-	if safe > 255 then error("GOODBYE JOJO") end
-	for k, ent in pairs(Trailers.cars) do
-		if car ~= ent then
-			-- if car.connection == ent then
-			-- 	return ent
-			-- else
-			-- 	return ent
-			-- end
+	if safe > 255 then error("LUA PANIC") end
+	for _, ent in pairs(Trailers.cars) do
+		if car.ent ~= ent.ent then
+			if car.connection == ent.ent then return findLast(ent, safe) end
 		end
-		return car
 	end
-	error("wtf")
+	return car
 end
 Trailers = {
 	Init = function(vehtable)
@@ -65,69 +60,31 @@ Trailers = {
 		return false
 	end,
 	Connect = function(car)
-		local trail = findLast(Trailers._getCarInfo(car))
-		PrintTable(trail)
-		local ITrail = Trailers._getCarInfo(trail)
-		local ITrail = trail
+		local ICar = Trailers._getCarInfo(car)
+		local ITrail = findLast(ICar)
 		PrintTable(ITrail)
 		local IConnectable = Trailers._getIConnectable(ITrail)
 		PrintTable(IConnectable)
 		if ITrail.outputPos and IConnectable then
 			constraint.AdvBallsocket( --
-			ITrail.ent, IConnectable.ent,            -- entities
-			0, 0,                                    -- bones
+			ITrail.ent, IConnectable.ent, -- entities
+			0, 0, -- bones
 			ITrail.outputPos, IConnectable.inputPos, -- connection positions in local-space
-			0, 0,                                    -- force limit, torque limit
-			0, 0, 0,                                 -- xmin, ymin, zmin
-			360, 360, 360,                           -- xmax, ymax, zmax
-			0, 0, 0,                                 -- xfric, yfric, zfric
-			0, 0                                     -- only rotation, nocollide
+			0, 0, -- force limit, torque limit
+			0, 0, 0, -- xmin, ymin, zmin
+			360, 360, 360, -- xmax, ymax, zmax
+			0, 0, 0, -- xfric, yfric, zfric
+			0, 0 -- only rotation, nocollide
 			)
 		end
-		-- if last then
-		-- 	local lastCarInfo = nil
-		-- 	for _, value in pairs(Trailers.cars) do
-		-- 		if value.ent == lastCar then
-		-- 			lastCarInfo = value
-		-- 			break
-		-- 		end
-		-- 	end
-		-- 	if lastCarInfo.outputPos then
-		-- 		local outputPosW = lastCar:LocalToWorld(lastCarInfo.outputPos)
-		-- 		for _, value in pairs(Trailers.cars) do
-		-- 			if IsValid(value.ent) and value.ent ~= lastCar then
-		-- 				local inputPos = value.ent:LocalToWorld(value.inputPos)
-		-- 				print("check distance")
-		-- 				print(last ~= value.ent)
-		-- 				print(outputPosW)
-		-- 				print(inputPos)
-		-- 				print(outputPosW:Distance(inputPos))
-		-- 				if true then
-		-- 					-- if last~=value.ent and outputPosW:Distance(inputPos)<=50 then
-		-- 					print("BALL")
-		-- 					constraint.AdvBallsocket(lastCar, value.ent, 0, 0, lastCarInfo.outputPos,
-		--                  							value.inputPos, 0, 0, 0, 360, 0, 360, 0, 360, 0,
-		--                  							0, 1, 0)
-		-- 					-- break
-		-- 				end
-		-- 			else
-		-- 				print("not valid value.ent, value.ent~=lastCar")
-		-- 				PrintTable(value)
-		-- 			end
-		-- 		end
-		-- 	else
-		-- 		print("can't find output pos")
-		-- 	end
-		-- 	-- constraint.AdvBallsocket( lastCar, , number Bone1, number Bone2, Vector LPos1, Vector LPos2, number forcelimit, number torquelimit, number xmin, number ymin, number zmin, number xmax, number ymax, number zmax, number xfric, number yfric, number zfric, number onlyrotation, number nocollide )
-		-- else
-		-- 	error("can't find last")
-		-- end
 	end,
 	Disconnect = function(car) end,
-	cars = {},
 	github = {},
 	extensions = {}
 }
+
+Trailers.cars = Trailers.cars or {}
+
 concommand.Add("trailer_reborn_connect", function(ply, _, _, arg)
 	-- local num = tonumber(arg)
 	-- if num and num < 128 and num > 0 then Trailers.Connect(ply:GetSimfphys(), num) end

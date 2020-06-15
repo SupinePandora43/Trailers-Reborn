@@ -8,7 +8,7 @@ local function findLast(car, safe) -- good recursion
 	if safe > 255 then error("LUA PANIC") end
 	for _, ent in pairs(Trailers.cars) do
 		if car.ent ~= ent.ent then
-			if car.connection == ent.ent then return findLast(ent, safe) end
+			if car.connection.ent == ent.ent then return findLast(ent, safe) end
 		end
 	end
 	return car
@@ -17,6 +17,17 @@ Trailers = {
 	Init = function(vehtable)
 		if CLIENT then return end
 		if vehtable.github then return end
+		vehtable.connection = {}
+		local oldOnDelete = vehtable.ent.OnDelete
+		vehtable.ent.OnDelete = function(ent)
+			print("ONDELETE")
+			for k, v in pairs(Trailers.cars) do
+				if ent == v.ent then
+					table.remove(Trailers.cars, k)
+				end
+			end
+			oldOnDelete()
+		end
 		table.insert(Trailers.cars, vehtable)
 		net.Start("trailers_reborn_debug_spheres")
 		net.WriteEntity(vehtable.ent)
@@ -44,8 +55,6 @@ Trailers = {
 		end
 	end,
 	_isConnectable = function(IEnt1, IEnt2)
-		PrintTable(IEnt1)
-		PrintTable(IEnt2)
 		if IEnt1.ent:LocalToWorld(IEnt1.outputPos):DistToSqr(
 						IEnt2.ent:LocalToWorld(IEnt2.inputPos)) < 100 * 100 then return true end
 		return false
@@ -60,13 +69,14 @@ Trailers = {
 		return false
 	end,
 	Connect = function(car)
+		print("car is ", car)
 		local ICar = Trailers._getCarInfo(car)
+		print("ICar is ", ICar)
 		local ITrail = findLast(ICar)
-		PrintTable(ITrail)
+		print("ITrail is ", ITrail)
 		local IConnectable = Trailers._getIConnectable(ITrail)
-		PrintTable(IConnectable)
 		if ITrail.outputPos and IConnectable then
-			constraint.AdvBallsocket( --
+			local constraintEntity = constraint.AdvBallsocket( --
 			ITrail.ent, IConnectable.ent, -- entities
 			0, 0, -- bones
 			ITrail.outputPos, IConnectable.inputPos, -- connection positions in local-space
@@ -76,6 +86,10 @@ Trailers = {
 			0, 0, 0, -- xfric, yfric, zfric
 			0, 0 -- only rotation, nocollide
 			)
+			if constraintEntity then
+				ITrail.connection.ent = IConnectable
+				ITrail.connection.constraint = constraintEntity
+			end
 		end
 	end,
 	Disconnect = function(car) end,

@@ -2,27 +2,36 @@ if not simfphys then
 	error(
 					"Install SimFphys first https://steamcommunity.com/workshop/filedetails/?id=771487490")
 end
-local function findPreLast(car, original, safe) -- shit code
-	safe = safe or 0
-	if safe > 255 then error("LUA PANIC") end
-	if isentity(car) then car = Trailers._getCarInfo(car) end
-	for _, ent in pairs(Trailers.cars) do
-		if car.ent ~= ent.ent and car.connection then
-			if car.connection.ent == ent.ent then return findPreLast(ent, car, safe) end
-		end
-	end
-	if IsValid(original) then return original end
-	return car
+local function isITrailer(ITrailer)
+	if not istable(ITrailer) then error("IT DOESN'T ITRAILER") end
+	return true
 end
-local function findLast(car, safe) -- good recursion
+local function findPreLast(ICar, IOriginal, safe) -- shit code
+	isITrailer(ICar)
+	if IOriginal then isITrailer(IOriginal) end
 	safe = safe or 0
 	if safe > 255 then error("LUA PANIC") end
+	if isentity(ICar) then ICar = Trailers._getCarInfo(car) end
 	for _, ent in pairs(Trailers.cars) do
-		if car.ent ~= ent.ent then
-			if car.connection.ent == ent.ent then return findLast(ent, safe) end
+		if ICar.ent ~= ent.ent and ICar.connection then
+			if ICar.connection.ent == ent.ent then
+				return findPreLast(ent, IOriginal, safe)
+			end
 		end
 	end
-	return car
+	if IsValid(IOriginal.ent) then return IOriginal end
+	return ICar
+end
+local function findLast(ICar, safe) -- good recursion
+	isITrailer(ICar)
+	safe = safe or 0
+	if safe > 255 then error("LUA PANIC") end
+	for _, IEnt in pairs(Trailers.cars) do
+		if ICar.ent ~= IEnt.ent then
+			if ICar.connection.ent == IEnt.ent then return findLast(IEnt, safe) end
+		end
+	end
+	return ICar
 end
 Trailers = {
 	Init = function(vehtable)
@@ -63,8 +72,15 @@ Trailers = {
 		end
 	end,
 	_isConnectable = function(IEnt1, IEnt2)
-		if IEnt1.ent:LocalToWorld(IEnt1.outputPos):DistToSqr(
-						IEnt2.ent:LocalToWorld(IEnt2.inputPos)) < 100 * 100 then return true end
+		isITrailer(IEnt1)
+		isITrailer(IEnt2)
+		MsgC(Color(100, 0, 0), IEnt1, Color(100, 100, 0), IEnt2)
+		PrintTable(IEnt1)
+		PrintTable(IEnt2)
+		if (IEnt1.outputPos and IEnt2.inputPos) then
+			if IEnt1.ent:LocalToWorld(IEnt1.outputPos):DistToSqr(
+							IEnt2.ent:LocalToWorld(IEnt2.inputPos)) < 100 * 100 then return true end
+		end
 		return false
 	end,
 	_getIConnectable = function(IEnt)
@@ -79,29 +95,35 @@ Trailers = {
 	Connect = function(car)
 		print("car is ", car)
 		local ICar = Trailers._getCarInfo(car)
-		print("ICar is ", ICar)
+		isITrailer(ICar)
 		local ITrail = findLast(ICar)
-		print("ITrail is ", ITrail)
+		isITrailer(ITrail)
 		local IConnectable = Trailers._getIConnectable(ITrail)
-		if ITrail.outputPos and IConnectable then
-			local constraintEntity = constraint.AdvBallsocket( --
-			ITrail.ent, IConnectable.ent, -- entities
-			0, 0, -- bones
-			ITrail.outputPos, IConnectable.inputPos, -- connection positions in local-space
-			0, 0, -- force limit, torque limit
-			0, 0, 0, -- xmin, ymin, zmin
-			360, 360, 360, -- xmax, ymax, zmax
-			0, 0, 0, -- xfric, yfric, zfric
-			0, 0 -- only rotation, nocollide
-			)
-			if constraintEntity then
-				ITrail.connection.ent = IConnectable
-				ITrail.connection.constraint = constraintEntity
+		if IConnectable then
+			isITrailer(IConnectable)
+			if ITrail.outputPos and IConnectable then
+				local constraintEntity = constraint.AdvBallsocket( --
+				ITrail.ent, IConnectable.ent, -- entities
+				0, 0, -- bones
+				ITrail.outputPos, IConnectable.inputPos, -- connection positions in local-space
+				0, 0, -- force limit, torque limit
+				0, 0, 0, -- xmin, ymin, zmin
+				360, 360, 360, -- xmax, ymax, zmax
+				0, 0, 0, -- xfric, yfric, zfric
+				0, 0 -- only rotation, nocollide
+				)
+				if constraintEntity then
+					ITrail.connection.ent = IConnectable.ent
+					ITrail.connection.constraint = constraintEntity
+				end
 			end
+		else
+			MsgC(Color(255,0,0), "cannot find connectable car")
 		end
 	end,
 	Disconnect = function(car)
 		local ICar = findPreLast(car)
+		isITrailer(ICar)
 		if ICar.connection.constraint then
 			ICar.connection.ent = nil
 			SafeRemoveEntity(ICar.connection.constraint)
@@ -109,10 +131,9 @@ Trailers = {
 		end
 	end,
 	github = {},
-	extensions = {}
+	extensions = {},
+	cars={}
 }
-
-Trailers.cars = Trailers.cars or {}
 
 concommand.Add("trailer_reborn_connect", function(ply, _, _, arg)
 	-- local num = tonumber(arg)

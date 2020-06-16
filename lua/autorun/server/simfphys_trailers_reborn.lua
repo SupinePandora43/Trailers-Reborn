@@ -2,7 +2,18 @@ if not simfphys then
 	error(
 					"Install SimFphys first https://steamcommunity.com/workshop/filedetails/?id=771487490")
 end
-
+local function findPreLast(car, original, safe) -- shit code
+	safe = safe or 0
+	if safe > 255 then error("LUA PANIC") end
+	if isentity(car) then car = Trailers._getCarInfo(car) end
+	for _, ent in pairs(Trailers.cars) do
+		if car.ent ~= ent.ent and car.connection then
+			if car.connection.ent == ent.ent then return findPreLast(ent, car, safe) end
+		end
+	end
+	if IsValid(original) then return original end
+	return car
+end
 local function findLast(car, safe) -- good recursion
 	safe = safe or 0
 	if safe > 255 then error("LUA PANIC") end
@@ -20,11 +31,8 @@ Trailers = {
 		vehtable.connection = {}
 		local oldOnDelete = vehtable.ent.OnDelete
 		vehtable.ent.OnDelete = function(ent)
-			print("ONDELETE")
 			for k, v in pairs(Trailers.cars) do
-				if ent == v.ent then
-					table.remove(Trailers.cars, k)
-				end
+				if ent == v.ent then table.remove(Trailers.cars, k) end
 			end
 			oldOnDelete()
 		end
@@ -92,7 +100,14 @@ Trailers = {
 			end
 		end
 	end,
-	Disconnect = function(car) end,
+	Disconnect = function(car)
+		local ICar = findPreLast(car)
+		if ICar.connection.constraint then
+			ICar.connection.ent = nil
+			SafeRemoveEntity(ICar.connection.constraint)
+			ICar.connection.constraint = nil
+		end
+	end,
 	github = {},
 	extensions = {}
 }
@@ -103,6 +118,9 @@ concommand.Add("trailer_reborn_connect", function(ply, _, _, arg)
 	-- local num = tonumber(arg)
 	-- if num and num < 128 and num > 0 then Trailers.Connect(ply:GetSimfphys(), num) end
 	Trailers.Connect(ply:GetSimfphys())
+end)
+concommand.Add("trailer_reborn_disconnect", function(ply, _, _, arg)
+	Trailers.Disconnect(ply:GetSimfphys())
 end)
 util.AddNetworkString("trailers_reborn_debug_spheres")
 util.AddNetworkString("trailers_reborn_ply_vehicle")

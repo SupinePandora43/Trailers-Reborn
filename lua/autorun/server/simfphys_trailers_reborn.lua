@@ -2,24 +2,27 @@ if not simfphys then
 	error(
 					"Install SimFphys first https://steamcommunity.com/workshop/filedetails/?id=771487490")
 end
-local function isITrailer(ITrailer)
+function isITrailer(ITrailer)
 	if not istable(ITrailer) then error("IT DOESN'T ITRAILER") end
 	return true
 end
 local function findPreLast(ICar, IOriginal, safe) -- shit code
+	PrintTable(ICar)
 	isITrailer(ICar)
 	if IOriginal then isITrailer(IOriginal) end
 	safe = safe or 0
 	if safe > 255 then error("LUA PANIC") end
 	if isentity(ICar) then ICar = Trailers._getCarInfo(car) end
-	for _, ent in pairs(Trailers.cars) do
-		if ICar.ent ~= ent.ent and ICar.connection then
-			if ICar.connection.ent == ent.ent then
-				return findPreLast(ent, IOriginal, safe)
+	for _, IEnt in pairs(Trailers.cars) do
+		if ICar.ent ~= IEnt.ent and ICar.connection then
+			if ICar.connection.ent == IEnt.ent then
+				print("recursive")
+				return findPreLast(IEnt, IOriginal, safe)
 			end
 		end
 	end
-	if IsValid(IOriginal.ent) then return IOriginal end
+	if IOriginal then PrintTable(IOriginal) end
+	if IOriginal and IsValid(IOriginal.ent) then return IOriginal end
 	return ICar
 end
 local function findLast(ICar, safe) -- good recursion
@@ -33,17 +36,34 @@ local function findLast(ICar, safe) -- good recursion
 	end
 	return ICar
 end
+local function initTimer()
+	timer.Create("trailers", 1, 0, function()
+		for i = 1, #Trailers.cars do
+			if IsValid(Trailers.cars[i].ent) then
+				for i_extension = 1, #Trailers.extensions do
+					if Trailers.extensions[i_extension].HandleTruck then
+						Trailers.extensions[i_extension].HandleTruck(Trailers.cars[i])
+					end
+				end
+			else
+				table.remove(Trailers.cars, i)
+			end
+		end
+	end)
+end
 Trailers = {
 	Init = function(vehtable)
+		if not timer.Exists("trailers") then initTimer() end
 		if CLIENT then return end
 		if vehtable.github then return end
 		vehtable.connection = {}
 		local oldOnDelete = vehtable.ent.OnDelete
 		vehtable.ent.OnDelete = function(ent)
+			timer.Remove("trailers_" .. ent:EntIndex())
 			for k, v in pairs(Trailers.cars) do
 				if ent == v.ent then table.remove(Trailers.cars, k) end
 			end
-			oldOnDelete()
+			oldOnDelete(ent)
 		end
 		table.insert(Trailers.cars, vehtable)
 		net.Start("trailers_reborn_debug_spheres")
@@ -118,22 +138,36 @@ Trailers = {
 				end
 			end
 		else
-			MsgC(Color(255,0,0), "cannot find connectable car")
+			MsgC(Color(255, 0, 0), "cannot find connectable car")
 		end
 	end,
 	Disconnect = function(car)
-		local ICar = findPreLast(car)
-		isITrailer(ICar)
-		if ICar.connection.constraint then
-			ICar.connection.ent = nil
-			SafeRemoveEntity(ICar.connection.constraint)
-			ICar.connection.constraint = nil
+		print(car)
+		local ICar = Trailers._getCarInfo(car)
+		local ITrail = findPreLast(ICar)
+		isITrailer(ITrail)
+		PrintTable(ITrail)
+		if ITrail.connection.constraint then
+			ITrail.connection.ent = nil
+			SafeRemoveEntity(ITrail.connection.constraint)
+			ITrail.connection.constraint = nil
 		end
 	end,
 	github = {},
 	extensions = {},
-	cars={}
+	cars = {}
 }
+
+local files, _ = file.Find("trailers_extensions/*", "LUA")
+local oldSystem
+if SYSTEM then oldSystem = SYSTEM end
+for i = 1, #files do
+	SYSTEM = {}
+	pcall(include, "trailers_extensions/" .. files[i])
+	table.insert(Trailers.extensions, SYSTEM)
+	SYSTEM = nil
+end
+SYSTEM = oldSystem
 
 concommand.Add("trailer_reborn_connect", function(ply, _, _, arg)
 	-- local num = tonumber(arg)

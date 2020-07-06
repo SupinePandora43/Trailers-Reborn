@@ -1,9 +1,11 @@
 {
-    "title": "[simfphys] Trailers Base FIX",
+    "title": "[simfphys] Trailers Reborn",
     "type": "vehicle",
     "tags": ["roleplay", "realism"],
     "ignore":[
-        "__lua/*",
-        ".vscode/*"
+        "src/*",
+		".vscode/*",
+		"node_modules/*",
+		".github/*"
     ]
 }

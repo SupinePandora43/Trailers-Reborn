@@ -1,25 +1,19 @@
 {
 	"compilerOptions": {
-		"target": "es2019",
-		"lib": [ "es2019" ],
-		"types": [ "@glua-ts/types/typings/garrysmod","./src/typings" ], //"lua-types/5.2", "./src/somelib"
+		"target": "ESNext",
+		"lib": [ "ESNext" ],
+		"types": [
+			"@glua-ts/types/typings/garrysmod",
+			"lua-types/5.2",
+			"./src/typings"
+		],
 		"module": "commonjs",
-		"experimentalDecorators": true,
 		"rootDir": "./src",
 		"outDir": "./lua",
 		"declaration": false,
 		"sourceMap": false,
-		"newLine": "LF",
-		"stripInternal": true,
-
-		"skipLibCheck": true,
-
+		"skipLibCheck": true, // FAST AF BOI
 		"strict": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": true,
-
-		"noImplicitAny": false,
-		"noEmitOnError": false,
 		"removeComments": true
 	},
 	"tstl": {

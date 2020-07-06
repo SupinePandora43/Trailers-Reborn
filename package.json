@@ -1,0 +1,17 @@
+{
+  "name": "tstoluatest",
+  "version": "0.0.0",
+  "description": "tstoluatest",
+  "main": "app.js",
+  "devDependencies": {
+    "@glua-ts/types": "0.1.0",
+    "typescript-to-lua": "0.34.0"
+  },
+  "scripts": {
+    "build": "tstl",
+    "dev": "tstl --watch"
+  },
+  "author": {
+    "name": "SupinePandora43"
+  }
+}

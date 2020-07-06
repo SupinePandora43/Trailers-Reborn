@@ -1,238 +1,295 @@
+-- Lua Library inline imports
+function __TS__ArrayFilter(arr, callbackfn)
+    local result = {}
+    do
+        local i = 0
+        while i < #arr do
+            if callbackfn(_G, arr[i + 1], i, arr) then
+                result[#result + 1] = arr[i + 1]
+            end
+            i = i + 1
+        end
+    end
+    return result
+end
+
+function __TS__ArrayForEach(arr, callbackFn)
+    do
+        local i = 0
+        while i < #arr do
+            callbackFn(_G, arr[i + 1], i, arr)
+            i = i + 1
+        end
+    end
+end
+
+function __TS__ArrayPush(arr, ...)
+    local items = {...}
+    for ____, item in ipairs(items) do
+        arr[#arr + 1] = item
+    end
+    return #arr
+end
+
+local ____exports = {}
+local Trailers
 if not simfphys then
-	error(
-					"Install SimFphys first https://steamcommunity.com/workshop/filedetails/?id=771487490")
+    error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
 end
-function isITrailer(ITrailer)
-	if not istable(ITrailer) then error("IT DOESN'T ITRAILER") end
-	return true
+AddCSLuaFile("autorun/client/TR_debugspheres.lua")
+print("loads")
+local function valid(safe)
+    if safe and (safe > 255) then
+        error("TR: stack overflow?")
+    end
+    Trailers.cars = __TS__ArrayFilter(
+        Trailers.cars,
+        function(____, ventity)
+            return IsValid(ventity.ent)
+        end
+    )
+    __TS__ArrayForEach(
+        Trailers.cars,
+        function(____, ventity)
+            if ventity.connection and (not IsValid(ventity.connection.socket)) then
+                ventity.connection = nil
+            end
+        end
+    )
 end
-local function findPreLast(ICar, IOriginal, safe) -- shit code
-	PrintTable(ICar)
-	isITrailer(ICar)
-	if IOriginal then isITrailer(IOriginal) end
-	safe = safe or 0
-	if safe > 255 then error("LUA PANIC") end
-	if isentity(ICar) then ICar = Trailers._getCarInfo(car) end
-	for _, IEnt in pairs(Trailers.cars) do
-		if ICar.ent ~= IEnt.ent and ICar.connection then
-			if ICar.connection.ent == IEnt.ent then
-				print("recursive")
-				return findPreLast(IEnt, IOriginal, safe)
-			end
-		end
-	end
-	if IOriginal then PrintTable(IOriginal) end
-	if IOriginal and IsValid(IOriginal.ent) then return IOriginal end
-	return ICar
+local function findVEntity(entity)
+    do
+        local i = 0
+        while i < #Trailers.cars do
+            if Trailers.cars[i + 1].ent == entity then
+                return Trailers.cars[i + 1]
+            end
+            i = i + 1
+        end
+    end
+    print("not found")
 end
-local function findLast(ICar, safe) -- good recursion
-	isITrailer(ICar)
-	safe = safe or 0
-	if safe > 255 then error("LUA PANIC") end
-	for _, IEnt in pairs(Trailers.cars) do
-		if ICar.ent ~= IEnt.ent then
-			if ICar.connection.ent == IEnt.ent then return findLast(IEnt, safe) end
-		end
-	end
-	return ICar
+local function getNext(ventity)
+    if ventity and ventity.connection then
+        return findVEntity(ventity.connection.ent)
+    end
 end
-local function initTimer()
-	timer.Create("trailers", 1, 0, function()
-		for i = 1, #Trailers.cars do
-			if IsValid(Trailers.cars[i].ent) then
-				for i_extension = 1, #Trailers.extensions do
-					if Trailers.extensions[i_extension].HandleTruck then
-						Trailers.extensions[i_extension].HandleTruck(Trailers.cars[i])
-					end
-				end
-			else
-				table.remove(Trailers.cars, i)
-			end
-		end
-	end)
+local function getwhole(ventity)
+    local buffer = {}
+    local current = ventity
+    __TS__ArrayPush(buffer, current)
+    while getNext(current) ~= nil do
+        current = getNext(current)
+        __TS__ArrayPush(buffer, current)
+    end
+    return buffer
 end
-Trailers = {
-	Init = function(vehtable)
-		if not timer.Exists("trailers") then initTimer() end
-		if CLIENT then return end
-		if vehtable.github then return end
-		vehtable.connection = {}
-		local oldOnDelete = vehtable.ent.OnDelete
-		vehtable.ent.OnDelete = function(ent)
-			timer.Remove("trailers_" .. ent:EntIndex())
-			for k, v in pairs(Trailers.cars) do
-				if ent == v.ent then table.remove(Trailers.cars, k) end
-			end
-			oldOnDelete(ent)
-		end
-		table.insert(Trailers.cars, vehtable)
-		net.Start("trailers_reborn_debug_spheres")
-		net.WriteEntity(vehtable.ent)
-		if vehtable.inputPos then
-			net.WriteBool(true)
-			net.WriteVector(vehtable.inputPos)
-		else
-			net.WriteBool(false)
-		end
-		if vehtable.outputPos then
-			net.WriteBool(true)
-			net.WriteVector(vehtable.outputPos)
-		else
-			net.WriteBool(false)
-		end
-		net.Broadcast()
-	end,
-	Register = function(codename, extension)
-		if CLIENT then return end
-		Trailers.extensions[codename] = extension
-	end,
-	_getCarInfo = function(car)
-		for i = 1, #Trailers.cars do
-			if Trailers.cars[i].ent == car then return Trailers.cars[i] end
-		end
-	end,
-	_isConnectable = function(IEnt1, IEnt2)
-		isITrailer(IEnt1)
-		isITrailer(IEnt2)
-		MsgC(Color(100, 0, 0), IEnt1, Color(100, 100, 0), IEnt2)
-		PrintTable(IEnt1)
-		PrintTable(IEnt2)
-		if (IEnt1.outputPos and IEnt2.inputPos) then
-			if IEnt1.ent:LocalToWorld(IEnt1.outputPos):DistToSqr(
-							IEnt2.ent:LocalToWorld(IEnt2.inputPos)) < 100 * 100 then return true end
-		end
-		return false
-	end,
-	_getIConnectable = function(IEnt)
-		for i = 1, #Trailers.cars do
-			if IEnt ~= Trailers.cars[i] and
-							Trailers._isConnectable(IEnt, Trailers.cars[i]) then
-				return Trailers.cars[i]
-			end
-		end
-		return false
-	end,
-	Connect = function(car)
-		print("car is ", car)
-		local ICar = Trailers._getCarInfo(car)
-		isITrailer(ICar)
-		local ITrail = findLast(ICar)
-		isITrailer(ITrail)
-		local IConnectable = Trailers._getIConnectable(ITrail)
-		if IConnectable then
-			isITrailer(IConnectable)
-			if ITrail.outputPos and IConnectable then
-				local constraintEntity = constraint.AdvBallsocket( --
-				ITrail.ent, IConnectable.ent, -- entities
-				0, 0, -- bones
-				ITrail.outputPos, IConnectable.inputPos, -- connection positions in local-space
-				0, 0, -- force limit, torque limit
-				0, 0, 0, -- xmin, ymin, zmin
-				360, 360, 360, -- xmax, ymax, zmax
-				0, 0, 0, -- xfric, yfric, zfric
-				0, 0 -- only rotation, nocollide
-				)
-				if constraintEntity then
-					ITrail.connection.ent = IConnectable.ent
-					ITrail.connection.constraint = constraintEntity
-				end
-			end
-		else
-			MsgC(Color(255, 0, 0), "cannot find connectable car")
-		end
-	end,
-	Disconnect = function(car)
-		print(car)
-		local ICar = Trailers._getCarInfo(car)
-		local ITrail = findPreLast(ICar)
-		isITrailer(ITrail)
-		PrintTable(ITrail)
-		if ITrail.connection.constraint then
-			ITrail.connection.ent = nil
-			SafeRemoveEntity(ITrail.connection.constraint)
-			ITrail.connection.constraint = nil
-		end
-	end,
-	github = {},
-	extensions = {},
-	cars = {}
-}
-
-local files, _ = file.Find("trailers_extensions/*", "LUA")
-local oldSystem
-if SYSTEM then oldSystem = SYSTEM end
-for i = 1, #files do
-	SYSTEM = {}
-	pcall(include, "trailers_extensions/" .. files[i])
-	table.insert(Trailers.extensions, SYSTEM)
-	SYSTEM = nil
+local function IsConnectable(vent1, vent2)
+    if vent1.output and vent2.input then
+        return vent1.ent:LocalToWorld(vent1.output):DistToSqr(
+            vent2.ent:LocalToWorld(vent2.input)
+        ) < 400
+    end
 end
-SYSTEM = oldSystem
-
-concommand.Add("trailer_reborn_connect", function(ply, _, _, arg)
-	-- local num = tonumber(arg)
-	-- if num and num < 128 and num > 0 then Trailers.Connect(ply:GetSimfphys(), num) end
-	Trailers.Connect(ply:GetSimfphys())
-end)
-concommand.Add("trailer_reborn_disconnect", function(ply, _, _, arg)
-	Trailers.Disconnect(ply:GetSimfphys())
-end)
+local function GetConnectable(ventity)
+    do
+        local i = 0
+        while i < #Trailers.cars do
+            do
+                if ventity == Trailers.cars[i + 1] then
+                    goto __continue18
+                end
+                if IsConnectable(ventity, Trailers.cars[i + 1]) then
+                    return Trailers.cars[i + 1]
+                end
+            end
+            ::__continue18::
+            i = i + 1
+        end
+    end
+end
+Trailers = {}
+do
+    Trailers.cars = {}
+    Trailers.systems = {}
+    function Trailers.Init(ventity)
+        __TS__ArrayPush(Trailers.cars, ventity)
+        net.Start("trailers_reborn_debug_spheres", true)
+        net.WriteTable({ent = ventity.ent, input = ventity.input, output = ventity.output})
+        net.Broadcast()
+    end
+    function Trailers.InitBySpawn(ent)
+        if IsValid(ent) then
+            local spawnname = ent:GetSpawn_List()
+            if IsValid(ent) and (spawnname ~= "") then
+                local spawnlistentity = list.Get("simfphys_vehicles")[spawnname]
+                if spawnlistentity then
+                    if spawnlistentity.Members and spawnlistentity.Members.Trailers then
+                        spawnlistentity.Members.Trailers.ent = ent
+                        Trailers.Init(spawnlistentity.Members.Trailers)
+                    else
+                        print(
+                            "TR:\n\tvehicle's spawnlist missing 'Members' or 'Members.Trailers'\n" .. tostring(
+                                debug.traceback()
+                            )
+                        )
+                    end
+                else
+                    print(
+                        "TR:\n\tvehicle is missing simfphys spawn list\n" .. tostring(
+                            debug.traceback()
+                        )
+                    )
+                end
+            else
+                print(
+                    (((("TR:\n\t" .. tostring(ent)) .. "\n\t") .. tostring(spawnname)) .. "\n\t^ something isn't valid\n") .. tostring(
+                        debug.traceback()
+                    )
+                )
+            end
+        else
+            print(
+                (("TR:\n\t" .. tostring(ent)) .. " is NOT valid\n") .. tostring(
+                    debug.traceback()
+                )
+            )
+        end
+    end
+    function Trailers.Connect(ventity)
+        if ventity == nil then
+            print("TR: ventity == null")
+            print(
+                debug.traceback()
+            )
+            return
+        end
+        local whole = getwhole(ventity)
+        PrintTable(whole, 0, {})
+        print(#whole)
+        ventity = whole[#whole]
+        local vtrailer = GetConnectable(ventity)
+        if vtrailer then
+            PrintTable(vtrailer, 0, {})
+            local ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.output, vtrailer.input, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
+            ventity.connection = {ent = vtrailer.ent, socket = ballsocketent}
+        else
+            print("TR: no connectable trailers found :C")
+        end
+    end
+    function Trailers.ConnectEnt(entity)
+        valid()
+        Trailers.Connect(
+            findVEntity(entity)
+        )
+    end
+    function Trailers.Disconnect(ventity)
+        if ventity == nil then
+            print("TR: ventity == null")
+            print(
+                debug.traceback()
+            )
+            return
+        end
+        if ventity.connection then
+            local whole = getwhole(ventity)
+            PrintTable(whole, 0, {})
+            print(#whole)
+            ventity = whole[(#whole - 2) + 1]
+            SafeRemoveEntity(ventity.connection.socket)
+            ventity.connection = nil
+        else
+            print("TR: no connections found")
+            print(
+                debug.traceback()
+            )
+        end
+    end
+    function Trailers.DisconnectEnt(entity)
+        valid()
+        Trailers.Disconnect(
+            findVEntity(entity)
+        )
+    end
+end
+local files = ({
+    file.Find("TR_extensions/*", "LUA")
+})[1]
+for ____, system in ipairs(files) do
+    print(system)
+    __TS__ArrayPush(
+        Trailers.systems,
+        include(
+            "TR_extensions/" .. tostring(system)
+        )
+    )
+end
+timer.Remove("TR_system")
+timer.Create(
+    "TR_system",
+    0.5,
+    0,
+    function()
+        valid()
+        for ____, ventity in ipairs(Trailers.cars) do
+            for ____, system in ipairs(Trailers.systems) do
+                if system.HandleTruck then
+                    system.HandleTruck(ventity)
+                end
+            end
+        end
+    end
+)
+hook.Add(
+    "OnEntityCreated",
+    "TR_handle",
+    function(ent)
+        if ent:GetClass() == "gmod_sent_vehicle_fphysics_base" then
+            timer.Simple(
+                0.1,
+                function()
+                    Trailers.InitBySpawn(ent)
+                end
+            )
+        end
+    end
+)
+concommand.Add(
+    "trailers_connect",
+    function(ply)
+        if IsValid(ply) then
+            print(
+                ply:GetSimfphys()
+            )
+            Trailers.ConnectEnt(
+                ply:GetSimfphys()
+            )
+        else
+            print("TR: IsValid(ply) == false")
+            print(
+                debug.traceback()
+            )
+        end
+    end
+)
+concommand.Add(
+    "trailers_disconnect",
+    function(ply)
+        if IsValid(ply) then
+            print(
+                ply:GetSimfphys()
+            )
+            Trailers.DisconnectEnt(
+                ply:GetSimfphys()
+            )
+        else
+            print("TR: IsValid(ply) == false")
+            print(
+                debug.traceback()
+            )
+        end
+    end
+)
 util.AddNetworkString("trailers_reborn_debug_spheres")
-util.AddNetworkString("trailers_reborn_ply_vehicle")
-util.AddNetworkString("trailers_reborn_connect")
-util.AddNetworkString("trailers_reborn_disconnect")
-hook.Add("PlayerEnteredVehicle", "trailers_reborn_player_listener",
-         function(ply, veh)
-	if veh:IsValid() and simfphys.IsCar(veh:GetParent()) then
-		for _, trucki in pairs(Trailers.cars) do
-			if trucki.ent:IsVehicle() then
-				if trucki.ent:GetDriverSeat() == veh then
-					if veh:GetDriver() == ply then
-						net.Start("trailers_reborn_ply_vehicle")
-						net.WriteBool(true)
-						net.Send(ply)
-					end
-				end
-			end
-		end
-	end
-end)
-hook.Add("PlayerLeaveVehicle", "trailers_reborn_player_listener",
-         function(ply, veh)
-	net.Start("trailers_reborn_ply_vehicle")
-	net.WriteBool(false)
-	net.Send(ply)
-end)
-hook.Add("Think", "trailers_reborn", function()
-	-- for _, ent in pairs(Trailers.cars) do
-	-- 	if not IsValid(ent) then table.remove(Trailers.cars, _) end
-	-- end
-end)
-net.Receive("trailers_reborn_connect", function(len, ply)
-	if IsValid(ply) then
-		for _, car in pairs(Trailers.cars) do
-			local simfphyscar = ply:GetSimfphys()
-			if simfphys == car then
-				Trailers.Connect(car)
-				return
-			end
-		end
-	else
-		ErrorNoHalt("Invalid " .. ply)
-	end
-end)
-net.Receive("trailers_reborn_disconnect", function(len, ply)
-	local seat = ply:GetVehicle()
-	if IsValid(seat) and IsValid(seat:GetParent()) and -- ply:GetSimfphys() - © NotAKid
-					simfphys.IsCar(seat:GetParent()) then
-		for _, trucki in pairs(Trailers.trucks) do
-			if trucki.ent == seat:GetParent() then
-				if seat:GetParent():GetDriver() == ply then
-					print(net.ReadUInt(8)) -- 254 trailers max
-				end
-			end
-		end
-	else
-		ErrorNoHalt("You're not in vehicle " .. ply)
-	end
-end)
+_G.Trailers = Trailers
+return ____exports

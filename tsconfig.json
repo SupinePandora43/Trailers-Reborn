@@ -1,0 +1,37 @@
+{
+	"compilerOptions": {
+		"target": "es2019",
+		"lib": [ "es2019" ],
+		"types": [ "@glua-ts/types/typings/garrysmod","./src/typings" ], //"lua-types/5.2", "./src/somelib"
+		"module": "commonjs",
+		"experimentalDecorators": true,
+		"rootDir": "./src",
+		"outDir": "./lua",
+		"declaration": false,
+		"sourceMap": false,
+		"newLine": "LF",
+		"stripInternal": true,
+
+		"skipLibCheck": true,
+
+		"strict": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": true,
+
+		"noImplicitAny": false,
+		"noEmitOnError": false,
+		"removeComments": true
+	},
+	"tstl": {
+		"luaTarget": "5.2", // 5.2
+		//"luaBundleEntry": "src/main.ts",
+		//"luaBundle": "lob",
+		"noHeader": true,
+		// if true, BadCoderZ is broken
+		"sourceMapTraceback": false,
+		"luaLibImport": "inline"
+	},
+	"exclude": [
+		"node_modules"
+	]
+}

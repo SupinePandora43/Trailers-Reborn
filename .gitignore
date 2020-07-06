@@ -1,1 +1,4 @@
 lua/autorun/simftrailers_shared.lua
+.vs
+node_modules
+package-lock.json

@@ -181,6 +181,5 @@ concommand.Add("trailers_disconnect", (ply: Player | any) => {
 	}
 })
 util.AddNetworkString("trailers_reborn_debug_spheres")
-globalThis["Trailers"] = Trailers
-
+_G["Trailers"]= Trailers
 export { }

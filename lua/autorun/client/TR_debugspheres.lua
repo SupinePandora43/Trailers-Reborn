@@ -70,7 +70,7 @@ list.Set(
         title = "Context Menu Icon",
         icon = "icon64/icon.png",
         init = function(____, icon, window)
-            print(icon)
+            print("clicked")
             window:Remove()
         end
     }

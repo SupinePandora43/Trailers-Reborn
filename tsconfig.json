@@ -3,9 +3,10 @@
 		"target": "ESNext",
 		"lib": [ "ESNext" ],
 		"types": [
+			"./src/typings",
 			"@glua-ts/types/typings/garrysmod",
-			"lua-types/5.2",
-			"./src/typings"
+			"lua-types/5.2"
+
 		],
 		"module": "commonjs",
 		"rootDir": "./src",

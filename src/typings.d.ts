@@ -1,3 +1,4 @@
+declare const _G: any
 declare type VConnection = {
 	ent: Entity
 	socket: Entity

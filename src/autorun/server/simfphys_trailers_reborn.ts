@@ -1,6 +1,6 @@
-declare const simfphys;
-declare function error(this: void, message: string, errorLevel?: number);
-declare namespace debug { function traceback(this: void): string };
+declare const simfphys: any
+declare function error(this: void, message: string, errorLevel?: number): void
+declare namespace debug { function traceback(this: void): string }
 
 if (!simfphys) {
 	error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")

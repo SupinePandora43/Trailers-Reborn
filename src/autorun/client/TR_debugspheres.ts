@@ -32,8 +32,8 @@ hook.Add("PostDrawTranslucentRenderables", "simfphys_trailers_reborn", () => {
 list.Set("DesktopWindows", "Connect Traier", {
 	title: "Context Menu Icon",
 	icon: "icon64/icon.png",
-	init: (icon, window) => {
-		print(icon)
+	init: (icon: Panel, window: Panel) => {
+		print("clicked")
 		//net.Start("simf_trail_connect")
 		//net.SendToServer()
 		window.Remove()

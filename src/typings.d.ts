@@ -6,9 +6,9 @@ declare type VConnection = {
 /** Storage for handling car info */
 declare type VEntity = {
 	ent: Entity
-	input: Vector
-	output: Vector
-	connection: VConnection
+	input?: Vector
+	output?: Vector
+	connection?: VConnection
 };
 declare type System = {
 	HandleTruck: (this: void, ventity: VEntity) => void

@@ -58,38 +58,6 @@ namespace Trailers {
 		net.WriteTable({ ent: ventity.ent, input: ventity.input, output: ventity.output })
 		net.Broadcast()
 	}
-	export function InitBySpawn(this: void, ent: Entity | any) {
-		if (IsValid(ent)) {
-			const spawnname = ent.GetSpawn_List()
-			if (IsValid(ent) && spawnname != "") {
-				const spawnlistentity = list.Get("simfphys_vehicles")[spawnname]
-				if (spawnlistentity) {
-					if (spawnlistentity.Members && spawnlistentity.Members.Trailers) {
-						spawnlistentity.Members.Trailers.ent = ent
-						Trailers.Init(spawnlistentity.Members.Trailers)
-					} else {
-						print(`TR:
-	vehicle's spawnlist missing 'Members' or 'Members.Trailers'
-${debug.traceback()}`)
-					}
-				} else {
-					print(`TR:
-	vehicle is missing simfphys spawn list
-${debug.traceback()}`)
-				}
-			} else {
-				print(`TR:
-	${ent}
-	${spawnname}
-	^ something isn't valid
-${debug.traceback()}`)
-			}
-		} else {
-			print(`TR:
-	${ent} is NOT valid
-${debug.traceback()}`)
-		}
-	}
 	export function Connect(this: void, ventity: VEntity | undefined) {
 		if (ventity == undefined) {
 			print("TR: ventity == null")
@@ -103,7 +71,7 @@ ${debug.traceback()}`)
 		const vtrailer = GetConnectable(ventity)
 		if (vtrailer) {
 			PrintTable(vtrailer as VEntity, 0, {})
-			const ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.output, vtrailer.input, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
+			const ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.output as Vector, vtrailer.input as Vector, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
 			ventity.connection = { ent: vtrailer.ent, socket: ballsocketent }
 		} else {
 			print("TR: no connectable trailers found :C")
@@ -124,7 +92,7 @@ ${debug.traceback()}`)
 			PrintTable(whole, 0, {})
 			print(whole.length)
 			ventity = whole[whole.length - 2]
-			SafeRemoveEntity(ventity.connection.socket)
+			SafeRemoveEntity((ventity.connection as VConnection).socket)
 			// WHAT ?
 			ventity.connection = null as any as VConnection
 		} else {
@@ -155,10 +123,42 @@ timer.Create("TR_system", 0.5, 0, () => {
 		}
 	}
 })
-hook.Add("OnEntityCreated", "TR_handle", (ent) => {
+list.Set("FLEX", "Trailers", (ent: Entity, vtable: VEntity) => {
+	if (istable(vtable)) {
+		Trailers.Init({
+			ent: ent,
+			input: vtable.input,
+			output: vtable.output
+		})
+	} else {
+		print("TR: seems like vehicle's spawnlist is wrong")
+	}
+})
+hook.Add("OnEntityCreated", "TR_handle", (ent: Entity | any) => {
 	if (ent.GetClass() == "gmod_sent_vehicle_fphysics_base") {
 		timer.Simple(0.1, () => {
-			Trailers.InitBySpawn(ent)
+			if (IsValid(ent)) {
+				const entSpawnList = list.Get("simfphys_vehicles")[ent.GetSpawn_List()]
+				if (entSpawnList) {
+					if (istable(entSpawnList.FLEX)) {
+						const flexlist = list.Get("FLEX")
+						Object.keys(flexlist).forEach(k => {
+							if (entSpawnList.FLEX[k]) {
+								const callback = flexlist[k]
+								callback(ent, entSpawnList.FLEX[k])
+							} else {
+								print("ent doesn't have " + k)
+							}
+						})
+					} else {
+						print("FLEX: nothing special, doesn't support it")
+					}
+				} else {
+					print("FLEX: vehicle doesn't in spawn list?")
+				}
+			} else {
+				print("FLEX: seems like vehicle disappeared")
+			}
 		})
 	}
 })
@@ -181,5 +181,5 @@ concommand.Add("trailers_disconnect", (ply: Player | any) => {
 	}
 })
 util.AddNetworkString("trailers_reborn_debug_spheres")
-_G["Trailers"]= Trailers
+_G["Trailers"] = Trailers
 export { }

@@ -62,11 +62,13 @@ list.Set("simfphys_vehicles","lw_transporter_trailer",{
 	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 1150,
+	FLEX = {
 		Trailers = {
 			input = Vector(0,250,35)
-		},
+		}
+	},
+	Members = {
+		Mass = 1150,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,
@@ -213,11 +215,13 @@ list.Set( "simfphys_vehicles","lw_schimedbigcargo",{
 	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 900,
+	FLEX={
 		Trailers = {
 			input = Vector(0,122,30)
-		},
+		}
+	},
+	Members = {
+		Mass = 900,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,
@@ -354,11 +358,13 @@ list.Set("simfphys_vehicles","lw_trailerpanel",{
 	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 700,
+	FLEX = {
 		Trailers = {
 			input = Vector(0,235,32)
-		},
+		}
+	},
+	Members = {
+		Mass = 700,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,
@@ -495,11 +501,13 @@ list.Set("simfphys_vehicles","lw_trucktrans",{
 	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 700,
+	FLEX = {
 		Trailers = {
 			input = Vector(0,226,33)
-		},
+		}
+	},
+	Members = {
+		Mass = 700,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,
@@ -647,11 +655,13 @@ list.Set("simfphys_vehicles","lw_profiliner",{
 	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 700,
+	FLEX = {
 		Trailers = {
 			input = Vector(0,211,30)
-		},
+		}
+	},
+	Members = {
+		Mass = 700,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,
@@ -777,11 +787,13 @@ list.Set("simfphys_vehicles","lw_glasstrailer",{
 	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 700,
+	FLEX = {
 		Trailers = {
 			input = Vector(0,194,30)
-		},
+		}
+	},
+	Members = {
+		Mass = 700,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,
@@ -912,11 +924,13 @@ list.Set("simfphys_vehicles","lw_livestocktrailer",{
 	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 700,
+	FLEX = {
 		Trailers = {
 			input = Vector(0,216,30)
-		},
+		}
+	},
+	Members = {
+		Mass = 700,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,
@@ -1042,11 +1056,13 @@ list.Set("simfphys_vehicles","lw_mediumbox",{
 	Category = "LW Trailers123",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
-	Members = {
-		Mass = 700,
+	FLEX = {
 		Trailers = {
 			input = Vector(0,170,23)
-		},
+		}
+	},
+	Members = {
+		Mass = 700,
 		OnSpawn = function(ent)
 			ent:Lock()
 		end,

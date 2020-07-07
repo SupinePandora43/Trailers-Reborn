@@ -3,7 +3,7 @@
 		"target": "ESNext",
 		"lib": [ "ESNext" ],
 		"types": [
-			"@glua-addon-types/FLEX/index",
+			"@glua-addon-types/flex/index",
 			"./src/typings",
 			"@glua-ts/types/typings/garrysmod",
 			"lua-types/5.2"

@@ -16,6 +16,8 @@ local SYSTEM = {
             )
             trailer.PressedKeys.joystick_brake = ((truck.GearRatio < 0) and 1) or 0
             trailer.PressedKeys.joystick_throttle = ((truck:EngineActive() and (not (truck.GearRatio < 0))) and 1) or 0
+            trailer.PressedKeys.joystick_brake = (truck.PressedKeys.S and 1) or truck.PressedKeys.joystick_brake
+            trailer.PressedKeys.joystick_handbrake = (truck.PressedKeys.Space and 1) or truck.PressedKeys.joystick_handbrake
             local turndirection = truck.TSMode or 0
             trailer.TSMode = turndirection
             net.Start("simfphys_turnsignal")

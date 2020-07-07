@@ -23,6 +23,14 @@ const SYSTEM: System = {
 			trailer.PressedKeys["joystick_throttle"] = truck.EngineActive() && !(truck.GearRatio < 0) ? 1 : 0
 			//ent: SetGear(1)
 
+			// brakes
+			trailer.PressedKeys["joystick_brake"] = truck.PressedKeys["S"] ? 1 : truck.PressedKeys["joystick_brake"]
+			// handbrake
+			trailer.PressedKeys["joystick_handbrake"] = truck.PressedKeys["Space"] ? 1 : truck.PressedKeys["joystick_handbrake"]
+			/*print("Space", truck.PressedKeys["Space"])
+			print("jhbr", truck.PressedKeys["joystick_handbrake"])
+			print("br", truck.PressedKeys["joystick_brake"])*/
+
 			let turndirection = truck.TSMode || 0
 			trailer.TSMode = turndirection
 			net.Start("simfphys_turnsignal")

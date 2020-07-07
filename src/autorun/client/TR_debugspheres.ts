@@ -29,13 +29,12 @@ hook.Add("PostDrawTranslucentRenderables", "simfphys_trailers_reborn", () => {
 	})
 })
 
-list.Set("DesktopWindows", "Connect Traier", {
-	title: "Context Menu Icon",
-	icon: "icon64/icon.png",
-	init: (icon: Panel, window: Panel) => {
+list.Set("DesktopWindows", "TR_connect", {
+	title: "Connect Trailer",
+	icon: "icon64/playermodel.png",
+	init: (icon: Panel) => {
 		print("clicked")
 		//net.Start("simf_trail_connect")
 		//net.SendToServer()
-		window.Remove()
 	}
 })

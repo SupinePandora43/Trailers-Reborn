@@ -65,13 +65,12 @@ hook.Add(
 )
 list.Set(
     "DesktopWindows",
-    "Connect Traier",
+    "TR_connect",
     {
-        title = "Context Menu Icon",
-        icon = "icon64/icon.png",
-        init = function(____, icon, window)
+        title = "Connect Trailer",
+        icon = "icon64/playermodel.png",
+        init = function(____, icon)
             print("clicked")
-            window:Remove()
         end
     }
 )

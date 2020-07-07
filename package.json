@@ -4,6 +4,7 @@
 	"description": "simfphys trailers for gmod",
 	"main": "",
 	"devDependencies": {
+		"@glua-addon-types/flex": "^1.1.0",
 		"@glua-ts/types": "0.1.0",
 		"typescript-to-lua": "0.34.0",
 		"lua-types": "^2.8.0"
@@ -14,6 +15,5 @@
 	},
 	"author": {
 		"name": "SupinePandora43"
-	},
-	"dependencies": {}
+	}
 }

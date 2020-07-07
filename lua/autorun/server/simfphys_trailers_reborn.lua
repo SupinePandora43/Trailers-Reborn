@@ -31,14 +31,6 @@ function __TS__ArrayPush(arr, ...)
     return #arr
 end
 
-function __TS__ObjectKeys(obj)
-    local result = {}
-    for key in pairs(obj) do
-        result[#result + 1] = key
-    end
-    return result
-end
-
 local ____exports = {}
 local Trailers
 if not simfphys then
@@ -213,51 +205,11 @@ timer.Create(
 list.Set(
     "FLEX",
     "Trailers",
-    function(____, ent, vtable)
+    function(ent, vtable)
         if istable(vtable) then
             Trailers.Init({ent = ent, input = vtable.input, output = vtable.output})
         else
-            print("TR: seems like vehicle's spawnlist is wrong")
-        end
-    end
-)
-hook.Add(
-    "OnEntityCreated",
-    "TR_handle",
-    function(ent)
-        if ent:GetClass() == "gmod_sent_vehicle_fphysics_base" then
-            timer.Simple(
-                0.1,
-                function()
-                    if IsValid(ent) then
-                        local entSpawnList = list.Get("simfphys_vehicles")[ent:GetSpawn_List()]
-                        if entSpawnList then
-                            if istable(entSpawnList.FLEX) then
-                                local flexlist = list.Get("FLEX")
-                                __TS__ArrayForEach(
-                                    __TS__ObjectKeys(flexlist),
-                                    function(____, k)
-                                        if entSpawnList.FLEX[k] then
-                                            local callback = flexlist[k]
-                                            callback(nil, ent, entSpawnList.FLEX[k])
-                                        else
-                                            print(
-                                                "ent doesn't have " .. tostring(k)
-                                            )
-                                        end
-                                    end
-                                )
-                            else
-                                print("FLEX: nothing special, doesn't support it")
-                            end
-                        else
-                            print("FLEX: vehicle doesn't in spawn list?")
-                        end
-                    else
-                        print("FLEX: seems like vehicle disappeared")
-                    end
-                end
-            )
+            print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")
         end
     end
 )

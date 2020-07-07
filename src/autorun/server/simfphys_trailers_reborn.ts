@@ -123,7 +123,7 @@ timer.Create("TR_system", 0.5, 0, () => {
 		}
 	}
 })
-list.Set("FLEX", "Trailers", (ent: Entity, vtable: VEntity) => {
+list.Set("FLEX", "Trailers", (ent, vtable) => {
 	if (istable(vtable)) {
 		Trailers.Init({
 			ent: ent,
@@ -131,35 +131,7 @@ list.Set("FLEX", "Trailers", (ent: Entity, vtable: VEntity) => {
 			output: vtable.output
 		})
 	} else {
-		print("TR: seems like vehicle's spawnlist is wrong")
-	}
-})
-hook.Add("OnEntityCreated", "TR_handle", (ent: Entity | any) => {
-	if (ent.GetClass() == "gmod_sent_vehicle_fphysics_base") {
-		timer.Simple(0.1, () => {
-			if (IsValid(ent)) {
-				const entSpawnList = list.Get("simfphys_vehicles")[ent.GetSpawn_List()]
-				if (entSpawnList) {
-					if (istable(entSpawnList.FLEX)) {
-						const flexlist = list.Get("FLEX")
-						Object.keys(flexlist).forEach(k => {
-							if (entSpawnList.FLEX[k]) {
-								const callback = flexlist[k]
-								callback(ent, entSpawnList.FLEX[k])
-							} else {
-								print("ent doesn't have " + k)
-							}
-						})
-					} else {
-						print("FLEX: nothing special, doesn't support it")
-					}
-				} else {
-					print("FLEX: vehicle doesn't in spawn list?")
-				}
-			} else {
-				print("FLEX: seems like vehicle disappeared")
-			}
-		})
+		print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")
 	}
 })
 concommand.Add("trailers_connect", (ply: Player | any) => {

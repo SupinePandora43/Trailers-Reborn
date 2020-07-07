@@ -1053,7 +1053,7 @@ list.Set( "simfphys_lights", "lw_mediumbox", {
 list.Set("simfphys_vehicles","lw_mediumbox",{
 	Name = "Medium Box Trailer",
 	Model = "models/lonewolfie/trailers/trailer_medbox.mdl",
-	Category = "LW Trailers123",
+	Category = "LW Trailers",
 	SpawnOffset = Vector(0,0,0),
 	SpawnAngleOffset = 0,
 	FLEX = {
@@ -1128,4 +1128,3 @@ list.Set("simfphys_vehicles","lw_mediumbox",{
 	}
 })
 end
-print("YES")

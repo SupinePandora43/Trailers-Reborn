@@ -7,13 +7,13 @@ if (!simfphys) {
 }
 AddCSLuaFile("autorun/client/TR_debugspheres.lua")
 print("loads")
-function valid(this: void, safe?: number) {
-	if (safe && safe > 255) error("TR: stack overflow?")
+function valid(this: void, callbackfn?: (this:void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
 	Trailers.cars.forEach((ventity) => {
 		if (ventity.connection && !IsValid(ventity.connection.socket)) {
 			ventity.connection = null as any as VConnection
 		}
+		if (callbackfn) callbackfn(ventity)
 	})
 }
 function findVEntity(this: void, entity: Entity) {
@@ -114,14 +114,13 @@ for (const system of (files as string[])) {
 }
 timer.Remove("TR_system")
 timer.Create("TR_system", 0.5, 0, () => {
-	valid()
-	for (const ventity of Trailers.cars) {
+	valid((ventity) => {
 		for (const system of Trailers.systems) {
 			if (system.HandleTruck) {
 				system.HandleTruck(ventity)
 			}
 		}
-	}
+	})
 })
 list.Set("FLEX", "Trailers", (ent, vtable) => {
 	if (istable(vtable)) {

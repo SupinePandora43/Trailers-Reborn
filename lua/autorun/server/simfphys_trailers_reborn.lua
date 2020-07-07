@@ -38,10 +38,7 @@ if not simfphys then
 end
 AddCSLuaFile("autorun/client/TR_debugspheres.lua")
 print("loads")
-local function valid(safe)
-    if safe and (safe > 255) then
-        error("TR: stack overflow?")
-    end
+local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
         Trailers.cars,
         function(____, ventity)
@@ -53,6 +50,9 @@ local function valid(safe)
         function(____, ventity)
             if ventity.connection and (not IsValid(ventity.connection.socket)) then
                 ventity.connection = nil
+            end
+            if callbackfn then
+                callbackfn(ventity)
             end
         end
     )
@@ -192,14 +192,15 @@ timer.Create(
     0.5,
     0,
     function()
-        valid()
-        for ____, ventity in ipairs(Trailers.cars) do
-            for ____, system in ipairs(Trailers.systems) do
-                if system.HandleTruck then
-                    system.HandleTruck(ventity)
+        valid(
+            function(ventity)
+                for ____, system in ipairs(Trailers.systems) do
+                    if system.HandleTruck then
+                        system.HandleTruck(ventity)
+                    end
                 end
             end
-        end
+        )
     end
 )
 list.Set(

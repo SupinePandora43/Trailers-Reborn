@@ -127,8 +127,6 @@ do
             return
         end
         local whole = getwhole(ventity)
-        PrintTable(whole, 0, {})
-        print(#whole)
         ventity = whole[#whole]
         local vtrailer = GetConnectable(ventity)
         if vtrailer then
@@ -158,6 +156,11 @@ do
             PrintTable(whole, 0, {})
             print(#whole)
             ventity = whole[(#whole - 2) + 1]
+            for ____, system in ipairs(Trailers.systems) do
+                if system.Disconnect then
+                    system.Disconnect(ventity)
+                end
+            end
             SafeRemoveEntity(ventity.connection.socket)
             ventity.connection = nil
         else

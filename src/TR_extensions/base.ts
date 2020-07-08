@@ -15,21 +15,14 @@ const SYSTEM: System = {
 			trailer.SetLightsEnabled(truck.GetLightsEnabled())
 			trailer.SetFogLightsEnabled(truck.GetFogLightsEnabled())
 
-			// Reverse Lights
-			trailer.PressedKeys["joystick_brake"] = truck.GearRatio < 0 ? 1 : 0
-			// enable handbrake:
-			// trailer.PressedKeys["joystick_handbrake"] = 1
 			// Disabling Brakes
 			trailer.PressedKeys["joystick_throttle"] = truck.EngineActive() && !(truck.GearRatio < 0) ? 1 : 0
-			//ent: SetGear(1)
 
-			// brakes
+			// Reverse Lights
+			// Brakes
 			trailer.PressedKeys["joystick_brake"] = truck.PressedKeys["S"] ? 1 : truck.PressedKeys["joystick_brake"]
-			// handbrake
+			// Handbrake
 			trailer.PressedKeys["joystick_handbrake"] = truck.PressedKeys["Space"] ? 1 : truck.PressedKeys["joystick_handbrake"]
-			/*print("Space", truck.PressedKeys["Space"])
-			print("jhbr", truck.PressedKeys["joystick_handbrake"])
-			print("br", truck.PressedKeys["joystick_brake"])*/
 
 			let turndirection = truck.TSMode || 0
 			trailer.TSMode = turndirection
@@ -49,6 +42,15 @@ const SYSTEM: System = {
 				end
 			end
 		*/
+		}
+	},
+	Disconnect(this: void, ventity: VEntity) {
+		if (ventity.connection && IsValid(ventity.connection.ent)) {
+			const trailer = ventity.connection.ent as any
+			trailer.SetActive(false)
+			trailer.PressedKeys["joystick_throttle"] = 0
+			trailer.PressedKeys["joystick_brake"] = 0
+			//trailer.PressedKeys["joystick_handbrake"]
 		}
 	}
 }

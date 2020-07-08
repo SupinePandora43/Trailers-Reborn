@@ -28,13 +28,26 @@ hook.Add("PostDrawTranslucentRenderables", "simfphys_trailers_reborn", () => {
 		}
 	})
 })
-
-list.Set("DesktopWindows", "TR_connect", {
-	title: "Connect Trailer",
-	icon: "icon64/playermodel.png",
-	init: (icon: Panel) => {
-		print("clicked")
-		//net.Start("simf_trail_connect")
-		//net.SendToServer()
+declare namespace list {
+	function Set(this: void, identifier: "FLEX_UI", key: any, item: (this: void, layout: DListLayout) => void): void
+}
+declare namespace vgui {
+	function Create(this: void, classname: string, parent?: DPanel, name?: string): Panel
+}
+list.Set("FLEX_UI", "TR_UI", (layout: DListLayout) => {
+	const row = vgui.Create("DTileLayout") as DTileLayout
+	row.SetBackgroundColor(Color(0, 255, 255, 255) as Color)
+	const connnectBTN = vgui.Create("DButton", row) as DButton
+	connnectBTN.SetSize(100,50)
+	connnectBTN.SetText("Connect")
+	connnectBTN.DoClick = () => {
+		RunConsoleCommand("trailers_connect")
 	}
+	const disconnectBTN = vgui.Create("DButton", row) as DButton
+	disconnectBTN.SetSize(100, 50)
+	disconnectBTN.SetText("Disconnect")
+	disconnectBTN.DoClick = () => {
+		RunConsoleCommand("trailers_disconnect")
+	}
+	layout.Add(row)
 })

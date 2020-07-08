@@ -64,13 +64,25 @@ hook.Add(
     end
 )
 list.Set(
-    "DesktopWindows",
-    "TR_connect",
-    {
-        title = "Connect Trailer",
-        icon = "icon64/playermodel.png",
-        init = function(____, icon)
-            print("clicked")
+    "FLEX_UI",
+    "TR_UI",
+    function(layout)
+        local row = vgui.Create("DTileLayout")
+        row:SetBackgroundColor(
+            Color(0, 255, 255, 255)
+        )
+        local connnectBTN = vgui.Create("DButton", row)
+        connnectBTN:SetSize(100, 50)
+        connnectBTN:SetText("Connect")
+        connnectBTN.DoClick = function()
+            RunConsoleCommand("trailers_connect")
         end
-    }
+        local disconnectBTN = vgui.Create("DButton", row)
+        disconnectBTN:SetSize(100, 50)
+        disconnectBTN:SetText("Disconnect")
+        disconnectBTN.DoClick = function()
+            RunConsoleCommand("trailers_disconnect")
+        end
+        layout:Add(row)
+    end
 )

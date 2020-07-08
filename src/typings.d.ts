@@ -11,7 +11,8 @@ declare type VEntity = {
 	connection?: VConnection
 };
 declare type System = {
-	HandleTruck: (this: void, ventity: VEntity) => void
+	HandleTruck?: (this: void, ventity: VEntity) => void
+	Disconnect?: (this: void, ventity: VEntity) => void
 }
 /** why i should write it by myself? */
 declare namespace net {

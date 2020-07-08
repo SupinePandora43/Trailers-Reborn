@@ -7,7 +7,7 @@ if (!simfphys) {
 }
 AddCSLuaFile("autorun/client/TR_debugspheres.lua")
 print("loads")
-function valid(this: void, callbackfn?: (this:void, ventity: VEntity) => void) {
+function valid(this: void, callbackfn?: (this: void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
 	Trailers.cars.forEach((ventity) => {
 		if (ventity.connection && !IsValid(ventity.connection.socket)) {
@@ -39,7 +39,6 @@ function getwhole(this: void, ventity: VEntity) {
 	return buffer
 }
 function IsConnectable(this: void, vent1: VEntity, vent2: VEntity) {
-	//return true
 	if (vent1.output && vent2.input)
 		return vent1.ent.LocalToWorld(vent1.output).DistToSqr(vent2.ent.LocalToWorld(vent2.input)) < 400
 }
@@ -65,8 +64,6 @@ namespace Trailers {
 			return
 		}
 		const whole = getwhole(ventity)
-		PrintTable(whole, 0, {})
-		print(whole.length)
 		ventity = whole[whole.length - 1]
 		const vtrailer = GetConnectable(ventity)
 		if (vtrailer) {
@@ -91,7 +88,12 @@ namespace Trailers {
 			const whole = getwhole(ventity)
 			PrintTable(whole, 0, {})
 			print(whole.length)
-			ventity = whole[whole.length - 2]
+			ventity = whole[whole.length - 2] // mafs
+			for (const system of Trailers.systems) {
+				if (system.Disconnect) {
+					system.Disconnect(ventity)
+				}
+			}
 			SafeRemoveEntity((ventity.connection as VConnection).socket)
 			// WHAT ?
 			ventity.connection = null as any as VConnection

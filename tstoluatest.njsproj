@@ -54,7 +54,7 @@
     <TypeScriptCompile Include="src\autorun\TR_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\rule34js.ts">
+    <TypeScriptCompile Include="src\includes\modules\rule34js.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\tdlib.ts">
@@ -77,6 +77,8 @@
     <Folder Include="lua\TR_extensions\" />
     <Folder Include="src\" />
     <Folder Include="src\autorun\" />
+    <Folder Include="src\includes\" />
+    <Folder Include="src\includes\modules\" />
     <Folder Include="src\TR\" />
     <Folder Include="src\TR_extensions\" />
   </ItemGroup>

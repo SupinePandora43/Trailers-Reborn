@@ -1,14 +1,14 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
-		"lib": [ "ES2020" ],
+		"target": "ESNext",
+		"lib": [ "ESNext" ],
 		"types": [
 			"lua-types/5.2",
 			"./src/typings",
 			"@glua-addon-types/flex/index",
 			"@glua-addon-types/glua-types/typings/garrysmod"
 		],
-		"module": "ES2020", // commonjs
+		"module": "commonjs", // commonjs
 		"charset": "UTF8",
 		"rootDir": "./src",
 		"outDir": "./lua",

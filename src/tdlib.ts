@@ -1,4 +1,4 @@
-declare function Material(this: void, materialName: string, pngParameters?: string): [Material, number]
+
 declare namespace surface {
 	function SetDrawColor(this: void, col: IColor | Color): void
 	function SetDrawColor(this: void, r: number, g: number, b: number, a?: number): void
@@ -11,16 +11,18 @@ declare namespace surface {
 	function GetTextSize(this: void, name: string): [number, number]
 	function SetFont(this: void, name: string): void
 }
+/*
 declare namespace math {
 	export function Round(this: void, value: number, decimals?: number): number
 	function cos(this: void, value: number): number
 	function rad(this: void, value: number): number
 	function sin(this: void, value: number): number
-}
+}*/
+/*
 declare type PolygonVertex = {
 	y: number
 	x: number
-}
+}*/
 const blur = Material("pp/blurscreen")[0]
 const gradLeft = Material("vgui/gradient-l")[0]
 const gradUp = Material("vgui/gradient-u")[0]
@@ -72,7 +74,7 @@ function drawCircle(this: void, x: number, y: number, r: number) {
 		circle[i] = {
 			x: x + math.cos(math.rad(i * 360) / 360) * r,
 			y: y + math.sin(math.rad(i * 360) / 360) * r
-		}
+		} as PolygonVertex
 	}
 	surface.DrawPoly(circle)
 }

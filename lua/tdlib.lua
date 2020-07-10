@@ -1,9 +1,19 @@
 local ____exports = {}
-local blur = Material("pp/blurscreen")[1]
-local gradLeft = Material("vgui/gradient-l")[1]
-local gradUp = Material("vgui/gradient-u")[1]
-local gradRight = Material("vgui/gradient-r")[1]
-local gradDown = Material("vgui/gradient-d")[1]
+local blur = ({
+    Material("pp/blurscreen")
+})[1]
+local gradLeft = ({
+    Material("vgui/gradient-l")
+})[1]
+local gradUp = ({
+    Material("vgui/gradient-u")
+})[1]
+local gradRight = ({
+    Material("vgui/gradient-r")
+})[1]
+local gradDown = ({
+    Material("vgui/gradient-d")
+})[1]
 local TDLibUtil = {}
 TDLibUtil.DrawCircle = function(x, y, r, col)
     local circle = {}

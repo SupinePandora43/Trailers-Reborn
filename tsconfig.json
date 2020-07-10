@@ -6,7 +6,7 @@
 			"lua-types/5.2",
 			"./src/typings",
 			"@glua-addon-types/flex/index",
-			"@glua-ts/types/typings/garrysmod"
+			"@glua-addon-types/glua-types/typings/garrysmod"
 		],
 		"module": "ES2020", // commonjs
 		"charset": "UTF8",

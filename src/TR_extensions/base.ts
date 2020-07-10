@@ -54,4 +54,4 @@ const SYSTEM: System = {
 		}
 	}
 }
-export = SYSTEM
+export default SYSTEM

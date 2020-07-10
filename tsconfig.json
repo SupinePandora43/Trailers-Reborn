@@ -1,31 +1,34 @@
 {
 	"compilerOptions": {
-		"target": "ESNext",
-		"lib": [ "ESNext" ],
+		"target": "ES2020",
+		"lib": [ "ES2020" ],
 		"types": [
-			"@glua-addon-types/flex/index",
+			"lua-types/5.2",
 			"./src/typings",
-			"@glua-ts/types/typings/garrysmod",
-			"lua-types/5.2"
-
+			"@glua-addon-types/flex/index",
+			"@glua-ts/types/typings/garrysmod"
 		],
-		"module": "commonjs",
+		"module": "ES2020", // commonjs
+		"charset": "UTF8",
 		"rootDir": "./src",
 		"outDir": "./lua",
 		"declaration": false,
 		"sourceMap": false,
 		"skipLibCheck": true, // FAST AF BOI
+		//"allowSyntheticDefaultImports": true,
+		//"esModuleInterop": true, // import 
 		"strict": true,
 		"removeComments": true
 	},
 	"tstl": {
 		"luaTarget": "5.2", // 5.2
-		//"luaBundleEntry": "src/main.ts",
+		//"luaBundleEntry": "src/autorun/server/simfphys_trailers_reborn.ts",
 		//"luaBundle": "lob",
 		"noHeader": true,
 		// if true, BadCoderZ is broken
 		"sourceMapTraceback": false,
 		"luaLibImport": "inline"
+		//"luaLibImport": "require" // for bundle
 	},
 	"exclude": [
 		"node_modules"

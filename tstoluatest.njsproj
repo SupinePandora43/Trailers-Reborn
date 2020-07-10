@@ -42,6 +42,7 @@
     <Content Include="lua\trailers_extensions\lights.lua" />
     <Content Include="lua\trailers_extensions\turn_signals.lua" />
     <Content Include="lua\trailers_extensions\wires.lua" />
+    <Content Include="lua\TR\deprecated.lua" />
     <Content Include="lua\TR_extensions\base.lua" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -57,6 +58,15 @@
     <TypeScriptCompile Include="lua\benchmark.lua">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\rule34js.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\tdlib.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\TR\deprecated.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\TR_extensions\base.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -70,11 +80,13 @@
     <Folder Include="lua\autorun\client\" />
     <Folder Include="lua\autorun\server\" />
     <Folder Include="lua\trailers_extensions\" />
+    <Folder Include="lua\TR\" />
     <Folder Include="lua\TR_extensions\" />
     <Folder Include="src\" />
     <Folder Include="src\autorun\" />
     <Folder Include="src\autorun\client\" />
     <Folder Include="src\autorun\server\" />
+    <Folder Include="src\TR\" />
     <Folder Include="src\TR_extensions\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />

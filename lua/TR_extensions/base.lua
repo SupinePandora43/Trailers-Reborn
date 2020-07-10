@@ -1,3 +1,4 @@
+local ____exports = {}
 local SYSTEM = {
     HandleTruck = function(ventity)
         if ventity.connection then
@@ -34,5 +35,5 @@ local SYSTEM = {
         end
     end
 }
-local ____exports = SYSTEM
+____exports.default = SYSTEM
 return ____exports

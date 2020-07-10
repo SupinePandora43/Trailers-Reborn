@@ -32,6 +32,8 @@ function __TS__ArrayPush(arr, ...)
 end
 
 local ____exports = {}
+local ____rule34js = require("rule34js")
+local rule34js = ____rule34js.default
 local Trailers
 if not simfphys then
     error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
@@ -220,6 +222,16 @@ list.Set(
 concommand.Add(
     "trailers_connect",
     function(ply)
+        rule34js(
+            {"furry", "gay"},
+            function(posts)
+                print(posts)
+                PrintTable(posts, 1, {})
+            end,
+            function()
+                print("fucc")
+            end
+        )
         if IsValid(ply) then
             print(
                 ply:GetSimfphys()

@@ -1,6 +1,7 @@
 AddCSLuaFile()
 EntityMeta = FindMetaTable("Entity")
 EntityMeta.SimfIsTrailer = function(self)
+    ErrorNoHalt("TR: this vehicle uses old api")
     return self:GetNWBool("simf_istrailer", false)
 end
 EntityMeta.GetCenterposition = function(self)
@@ -31,6 +32,7 @@ EntityMeta.VehicleGetCanConnect = function(self)
     return self:GetNWBool("simfs_veh_canconnect", false)
 end
 EntityMeta.SetSimfIsTrailer = function(self, bool)
+    ErrorNoHalt("TR: this vehicle uses old api")
     self:SetNWBool("simf_istrailer", bool)
 end
 EntityMeta.SetCenterposition = function(self, vector)

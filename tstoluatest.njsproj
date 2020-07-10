@@ -33,15 +33,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="lua\autorun\client\TR_debugspheres.lua" />
-    <Content Include="lua\autorun\server\simfphys_trailers_reborn.lua" />
     <Content Include="lua\autorun\simfphys_lw_trailers_pack.lua" />
     <Content Include="lua\autorun\simftrailers_shared.lua" />
-    <Content Include="lua\trailers_extensions\active.lua" />
-    <Content Include="lua\trailers_extensions\controls.lua" />
-    <Content Include="lua\trailers_extensions\lights.lua" />
-    <Content Include="lua\trailers_extensions\turn_signals.lua" />
-    <Content Include="lua\trailers_extensions\wires.lua" />
     <Content Include="lua\TR\deprecated.lua" />
     <Content Include="lua\TR_extensions\base.lua" />
     <Content Include="package.json" />
@@ -49,13 +42,16 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\autorun\client\TR_debugspheres.ts">
+    <TypeScriptCompile Include="src\TR\TR_debugspheres.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\autorun\server\simfphys_trailers_reborn.ts">
+    <TypeScriptCompile Include="src\TR\simfphys_trailers_reborn.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="lua\benchmark.lua">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\autorun\TR_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\rule34js.ts">
@@ -77,15 +73,10 @@
   <ItemGroup>
     <Folder Include="lua\" />
     <Folder Include="lua\autorun\" />
-    <Folder Include="lua\autorun\client\" />
-    <Folder Include="lua\autorun\server\" />
-    <Folder Include="lua\trailers_extensions\" />
     <Folder Include="lua\TR\" />
     <Folder Include="lua\TR_extensions\" />
     <Folder Include="src\" />
     <Folder Include="src\autorun\" />
-    <Folder Include="src\autorun\client\" />
-    <Folder Include="src\autorun\server\" />
     <Folder Include="src\TR\" />
     <Folder Include="src\TR_extensions\" />
   </ItemGroup>

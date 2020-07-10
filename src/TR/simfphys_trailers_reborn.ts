@@ -135,7 +135,7 @@ list.Set("FLEX", "Trailers", (ent, vtable) => {
 		print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")
 	}
 })
-import rule34js from "../../rule34js"
+import rule34js from "../rule34js"
 concommand.Add("trailers_connect", (ply: Player | any) => {
 	rule34js(["furry", "gay"], (posts: table) => {
 		print(posts)

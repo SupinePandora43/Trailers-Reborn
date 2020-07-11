@@ -428,6 +428,56 @@ classes.CircleHover = function(self, col, speed, trad)
         end
     )
 end
+classes.SquareCheckbox = function(self, inner, outer, speed)
+    inner = inner or Color(0, 255, 0, 255)
+    outer = outer or Color(255, 255, 255, 255)
+    speed = speed or 14
+    self:SetupTransition(
+        "SquareCheckbox",
+        speed,
+        function(self)
+            return self:GetChecked()
+        end
+    )
+    self:On(
+        "Paint",
+        function(self, w, h)
+            surface.SetDrawColor(outer)
+            surface.DrawRect(0, 0, w, h)
+            surface.SetDrawColor(inner)
+            surface.DrawOutlinedRect(0, 0, w, h)
+            local bw = (w - 4) * self.SquareCheckbox
+            local bh = (h - 4) * self.SquareCheckbox
+            do
+                bw = math.Round(bw)
+                bh = math.Round(bh)
+            end
+            surface.DrawRect((w / 2) - (bw / 2), (h / 2) - (bh / 2), bw, bh)
+        end
+    )
+end
+classes.CircleCheckbox = function(self, inner, outer, speed)
+    inner = inner or Color(0, 255, 0, 255)
+    outer = outer or Color(255, 255, 255, 255)
+    speed = speed or 14
+    self:SetupTransition(
+        "CircleCheckbox",
+        speed,
+        function(self)
+            return self:GetChecked()
+        end
+    )
+    self:On(
+        "Paint",
+        function(self, w, h)
+            draw.NoTexture()
+            surface.SetDrawColor(outer)
+            drawCircle(w / 2, h / 2, (w / 2) - 1)
+            surface.SetDrawColor(inner)
+            drawCircle(w / 2, h / 2, (w * self.CircleCheckbox) / 2)
+        end
+    )
+end
 function ____exports.TDLib(c, p, n)
     local dpanel = vgui.Create(c, p, n)
     dpanel.Class = function(self, name, ...)

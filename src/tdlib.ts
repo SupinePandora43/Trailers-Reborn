@@ -324,36 +324,36 @@ classes.CircleHover = function (this: Panel | any, col: Color, speed: number, tr
 		drawCircle(this.LastX, this.LastY, this.CircleHover * (trad || w))
 	})
 }
-/*
-classes.SquareCheckbox = function(pnl, inner, outer, speed)
+classes.SquareCheckbox = function (this: Panel | any, inner: Color | IColor, outer: Color | IColor, speed: number) {
 	inner = inner || Color(0, 255, 0, 255)
 	outer = outer || Color(255, 255, 255, 255)
 	speed = speed || 14
-	pnl:SetupTransition("SquareCheckbox", speed, function(s) return s:GetChecked() end)
-	pnl:On("Paint", function(s, w, h)
+	this.SetupTransition("SquareCheckbox", speed, function (this: Panel | any) { return this.GetChecked() })
+	this.On("Paint", function (this: Panel | any, w: number, h: number) {
 		surface.SetDrawColor(outer)
 		surface.DrawRect(0, 0, w, h)
 		surface.SetDrawColor(inner)
 		surface.DrawOutlinedRect(0, 0, w, h)
-		local bw, bh = (w-4)*s.SquareCheckbox, (h-4)*s.SquareCheckbox
-		bw, bh = math.Round(bw), math.Round(bh)
-		surface.DrawRect(w/2-bw/2, h/2-bh/2, bw, bh)
-	end)
-end
-classes.CircleCheckbox = function(pnl, inner, outer, speed)
+		let bw = (w - 4) * this.SquareCheckbox, bh = (h - 4) * this.SquareCheckbox
+		bw = math.Round(bw), bh = math.Round(bh)
+		surface.DrawRect(w / 2 - bw / 2, h / 2 - bh / 2, bw, bh)
+	})
+}
+classes.CircleCheckbox = function (this: Panel | any, inner: Color, outer: Color, speed: number) {
 	inner = inner || Color(0, 255, 0, 255)
 	outer = outer || Color(255, 255, 255, 255)
 	speed = speed || 14
-	pnl:SetupTransition("CircleCheckbox", speed, function(s) return s:GetChecked() end)
-	pnl:On("Paint", function(s, w, h)
+	this.SetupTransition("CircleCheckbox", speed, function (this: Panel | any) { return this.GetChecked() })
+	this.On("Paint", function (this: Panel | any, w: number, h: number) {
 		draw.NoTexture()
 		surface.SetDrawColor(outer)
-		drawCircle(w/2, h/2, w/2-1)
+		drawCircle(w / 2, h / 2, w / 2 - 1)
 
 		surface.SetDrawColor(inner)
-		drawCircle(w/2, h/2, w*s.CircleCheckbox/2)
-	end)
-end
+		drawCircle(w / 2, h / 2, w * this.CircleCheckbox / 2)
+	})
+}
+/*
 classes.AvatarMask = function(pnl, mask)
 	pnl.Avatar = vgui.Create("AvatarImage", pnl)
 	pnl.Avatar:SetPaintedManually(true)

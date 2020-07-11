@@ -1,4 +1,3 @@
-AddCSLuaFile()
 EntityMeta = FindMetaTable("Entity")
 EntityMeta.SimfIsTrailer = function(self)
     ErrorNoHalt("TR: this vehicle uses old api")

@@ -1,8 +1,9 @@
 AddCSLuaFile()
 if SERVER then
-    include("TR/simfphys_trailers_reborn.lua")
-    AddCSLuaFile("TR/TR_debugspheres.lua")
+    include("TR/sv_init.lua")
+    AddCSLuaFile("TR/cl_init.lua")
 elseif CLIENT then
-    include("TR/TR_debugspheres.lua")
+    include("TR/cl_init.lua")
 end
-include("TR/deprecated.lua")
+AddCSLuaFile("TR/sh_deprecated.lua")
+include("TR/sh_deprecated.lua")

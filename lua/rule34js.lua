@@ -1,13 +1,12 @@
-local ____exports = {}
 local toJSON
 toJSON = util.JSONToTable
-function ____exports.default(tags, succ, fail)
+local function ____exports(options, succ, fail)
     HTTP(
         {
             method = "GET",
-            url = "https://rule34js.glitch.me/api?tags=" .. tostring(
-                table.concat(tags, "+" or ",")
-            ),
+            url = (((("https://rule34js.glitch.me/api?tags=" .. tostring(
+                table.concat(options.tags, "+" or ",")
+            )) .. "&limit=") .. tostring(options.limit or 100)) .. "&pid=") .. tostring(options.pid or 0),
             success = function(code, body, headers)
                 succ(
                     toJSON(body)

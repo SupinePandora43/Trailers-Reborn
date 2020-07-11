@@ -35,17 +35,16 @@
   <ItemGroup>
     <Content Include="lua\autorun\simfphys_lw_trailers_pack.lua" />
     <Content Include="lua\autorun\simftrailers_shared.lua" />
-    <Content Include="lua\TR\deprecated.lua" />
-    <Content Include="lua\TR_extensions\base.lua" />
+    <Content Include="lua\TR\extensions\base.lua" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\TR\TR_debugspheres.ts">
+    <TypeScriptCompile Include="src\TR\cl_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\TR\simfphys_trailers_reborn.ts">
+    <TypeScriptCompile Include="src\TR\sv_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="lua\benchmark.lua">
@@ -54,16 +53,16 @@
     <TypeScriptCompile Include="src\autorun\TR_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\includes\modules\rule34js.ts">
+    <TypeScriptCompile Include="src\rule34js.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\tdlib.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\TR\deprecated.ts">
+    <TypeScriptCompile Include="src\TR\sh_deprecated.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\TR_extensions\base.ts">
+    <TypeScriptCompile Include="src\TR\extensions\base.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\typings.d.ts">
@@ -74,13 +73,11 @@
     <Folder Include="lua\" />
     <Folder Include="lua\autorun\" />
     <Folder Include="lua\TR\" />
-    <Folder Include="lua\TR_extensions\" />
+    <Folder Include="lua\TR\extensions\" />
     <Folder Include="src\" />
     <Folder Include="src\autorun\" />
-    <Folder Include="src\includes\" />
-    <Folder Include="src\includes\modules\" />
     <Folder Include="src\TR\" />
-    <Folder Include="src\TR_extensions\" />
+    <Folder Include="src\TR\extensions\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

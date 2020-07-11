@@ -108,11 +108,11 @@ namespace Trailers {
 	}
 }
 
-const files = file.Find("TR_extensions/*", "LUA")[0]
+const files = file.Find("TR/extensions/*", "LUA")[0]
 for (const system of (files as string[])) {
 	print(system)
 	// still WHAT?
-	Trailers.systems.push(include("TR_extensions/" + system) as any as System)
+	Trailers.systems.push(include("TR/extensions/" + system) as any as System)
 }
 timer.Remove("TR_system")
 timer.Create("TR_system", 0.5, 0, () => {
@@ -136,12 +136,12 @@ list.Set("FLEX", "Trailers", (ent, vtable) => {
 	}
 })
 //import rule34js from "rule34js"
-const rule34js = (include("includes/modules/rule34js.lua") as any).default as any as (this: void, tags: string[], c: (this: void, posts: table)=>void, f:(this:void)=>void)=>void;
+const rule34js = (include("rule34js.lua") as any).default as any as (this: void, options: { tags: string[], pid: number, limit: number }, c: (this: void, posts: table) => void, f: (this: void) => void) => void;
 concommand.Add("trailers_connect", (ply: Player | any) => {
-	rule34js(["furry", "gay"], (posts: table) => {
+	rule34js({ tags: ["furry", "gay"], limit: 2, pid: 2 }, (posts: table) => {
 		print(posts)
 		PrintTable(posts, 1, {})
-	}, () => { print("fucc")})
+	}, () => { print("fucc") })
 	if (IsValid(ply)) {
 		print(ply.GetSimfphys())
 		Trailers.ConnectEnt(ply.GetSimfphys())

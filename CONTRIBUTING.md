@@ -1,4 +1,5 @@
-- [For Developers](#for-developers)
+
+<!-- [For Developers](#for-developers)
 	- [`Trailers`](#trailers)
 		- [`Init`](#init)
 			- [`vehtable`](#vehtable)
@@ -73,3 +74,7 @@ use Trailers-Base repository to get info about vehicle
 * `joint`
 
 `AdvBallSocket` is always used, it just to prevent connecting big trailers to small passenger cars
+-->
+# OUTDATED
+
+rewriting in progress (here we go again)

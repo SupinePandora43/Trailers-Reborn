@@ -34,9 +34,15 @@ function getwhole(this: void, ventity: VEntity) {
 	}
 	return buffer
 }
+function IsConnectableTypes(this: void, ctype1?: string, ctype2?: string) {
+	if (ctype1 != null && ctype2 != null) {
+		return ctype1 === ctype2
+	}
+	return true
+}
 function IsConnectable(this: void, vent1: VEntity, vent2: VEntity) {
-	if (vent1.output && vent2.input)
-		return vent1.ent.LocalToWorld(vent1.output).DistToSqr(vent2.ent.LocalToWorld(vent2.input)) < 400
+	if (vent1.outputPos && vent2.inputPos)
+		return IsConnectableTypes(vent1.outputType, vent2.inputType) ? vent1.ent.LocalToWorld(vent1.outputPos).DistToSqr(vent2.ent.LocalToWorld(vent2.inputPos)) < 400 : false
 }
 function GetConnectable(this: void, ventity: VEntity) {
 	for (let i = 0; i < Trailers.cars.length; i++) {
@@ -50,7 +56,7 @@ namespace Trailers {
 	export function Init(this: void, ventity: VEntity) {
 		Trailers.cars.push(ventity)
 		net.Start("trailers_reborn_debug_spheres", true)
-		net.WriteTable({ ent: ventity.ent, input: ventity.input, output: ventity.output })
+		net.WriteTable({ ent: ventity.ent, input: ventity.inputPos, output: ventity.outputPos })
 		net.Broadcast()
 	}
 	export function Connect(this: void, ventity: VEntity | undefined) {
@@ -64,7 +70,7 @@ namespace Trailers {
 		const vtrailer = GetConnectable(ventity)
 		if (vtrailer) {
 			PrintTable(vtrailer as VEntity, 0, {})
-			const ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.output as Vector, vtrailer.input as Vector, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
+			const ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.outputPos as Vector, vtrailer.inputPos as Vector, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
 			ventity.connection = { ent: vtrailer.ent, socket: ballsocketent }
 		} else {
 			print("TR: no connectable trailers found :C")
@@ -126,8 +132,8 @@ list.Set("FLEX", "Trailers", (ent, vtable) => {
 	if (istable(vtable)) {
 		Trailers.Init({
 			ent: ent,
-			input: vtable.input,
-			output: vtable.output
+			inputPos: vtable.input,
+			outputPos: vtable.output
 		})
 	} else {
 		print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")

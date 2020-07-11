@@ -33,7 +33,7 @@ EntityMeta.SetSimfIsTrailer = function (this: Entity, bool: boolean) {
 	Queue[this as any] = {}
 	timer.Simple(0.25, () => { // now i know why arrow functions exists :D
 		if (IsValid(this)) {
-			Trailers.Init({ ent: this, input: Queue[this as any].trailerCenterposition, output: Queue[this as any].centerposition })
+			Trailers.Init({ ent: this, inputPos: Queue[this as any].trailerCenterposition, outputPos: Queue[this as any].centerposition })
 			Queue[this as any] = null
 		}
 	})

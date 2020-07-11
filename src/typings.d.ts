@@ -6,8 +6,10 @@ declare type VConnection = {
 /** Storage for handling car info */
 declare type VEntity = {
 	ent: Entity
-	input?: Vector
-	output?: Vector
+	inputPos?: Vector
+	outputPos?: Vector
+	inputType?: string
+	outputType?: string
 	connection?: VConnection
 };
 declare type System = {

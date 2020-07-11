@@ -38,7 +38,7 @@ EntityMeta.SetSimfIsTrailer = function(self, bool)
         0.25,
         function()
             if IsValid(self) then
-                Trailers.Init({ent = self, input = Queue[self].trailerCenterposition, output = Queue[self].centerposition})
+                Trailers.Init({ent = self, inputPos = Queue[self].trailerCenterposition, outputPos = Queue[self].centerposition})
                 Queue[self] = nil
             end
         end

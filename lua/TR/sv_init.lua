@@ -79,11 +79,17 @@ local function getwhole(ventity)
     end
     return buffer
 end
+local function IsConnectableTypes(ctype1, ctype2)
+    if (ctype1 ~= nil) and (ctype2 ~= nil) then
+        return ctype1 == ctype2
+    end
+    return true
+end
 local function IsConnectable(vent1, vent2)
-    if vent1.output and vent2.input then
-        return vent1.ent:LocalToWorld(vent1.output):DistToSqr(
-            vent2.ent:LocalToWorld(vent2.input)
-        ) < 400
+    if vent1.outputPos and vent2.inputPos then
+        return ((IsConnectableTypes(vent1.outputType, vent2.inputType) and (function() return vent1.ent:LocalToWorld(vent1.outputPos):DistToSqr(
+            vent2.ent:LocalToWorld(vent2.inputPos)
+        ) < 400 end)) or (function() return false end))()
     end
 end
 local function GetConnectable(ventity)
@@ -92,13 +98,13 @@ local function GetConnectable(ventity)
         while i < #Trailers.cars do
             do
                 if ventity == Trailers.cars[i + 1] then
-                    goto __continue17
+                    goto __continue19
                 end
                 if IsConnectable(ventity, Trailers.cars[i + 1]) then
                     return Trailers.cars[i + 1]
                 end
             end
-            ::__continue17::
+            ::__continue19::
             i = i + 1
         end
     end
@@ -110,7 +116,7 @@ do
     function Trailers.Init(ventity)
         __TS__ArrayPush(Trailers.cars, ventity)
         net.Start("trailers_reborn_debug_spheres", true)
-        net.WriteTable({ent = ventity.ent, input = ventity.input, output = ventity.output})
+        net.WriteTable({ent = ventity.ent, input = ventity.inputPos, output = ventity.outputPos})
         net.Broadcast()
     end
     function Trailers.Connect(ventity)
@@ -126,7 +132,7 @@ do
         local vtrailer = GetConnectable(ventity)
         if vtrailer then
             PrintTable(vtrailer, 0, {})
-            local ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.output, vtrailer.input, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
+            local ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.outputPos, vtrailer.inputPos, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
             ventity.connection = {ent = vtrailer.ent, socket = ballsocketent}
         else
             print("TR: no connectable trailers found :C")
@@ -211,7 +217,7 @@ list.Set(
     "Trailers",
     function(ent, vtable)
         if istable(vtable) then
-            Trailers.Init({ent = ent, input = vtable.input, output = vtable.output})
+            Trailers.Init({ent = ent, inputPos = vtable.input, outputPos = vtable.output})
         else
             print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")
         end

@@ -23,7 +23,7 @@
 	"tstl": {
 		"luaTarget": "5.2", // 5.2
 		//"luaBundleEntry": "src/autorun/server/simfphys_trailers_reborn.ts",
-		//"luaBundle": "lob",
+		//"luaBundle": "lua/bundle.lua",
 		"noHeader": true,
 		// if true, BadCoderZ is broken
 		"sourceMapTraceback": false,

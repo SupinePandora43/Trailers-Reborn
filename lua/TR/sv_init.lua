@@ -217,21 +217,9 @@ list.Set(
         end
     end
 )
-local rule34js
-rule34js = include("rule34js.lua")
 concommand.Add(
     "trailers_connect",
     function(ply)
-        rule34js(
-            {tags = {"furry", "gay"}, limit = 2, pid = 2},
-            function(posts)
-                print(posts)
-                PrintTable(posts, 1, {})
-            end,
-            function()
-                print("fucc")
-            end
-        )
         if IsValid(ply) then
             print(
                 ply:GetSimfphys()

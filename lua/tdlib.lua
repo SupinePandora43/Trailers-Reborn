@@ -342,6 +342,92 @@ classes.Blur = function(self, amount)
         end
     )
 end
+classes.CircleClick = function(self, col, speed, trad)
+    col = col or Color(255, 255, 255, 50)
+    speed = speed or 5
+    do
+        do
+            do
+                do
+                    do
+                        do
+                            local ____ = self.Rad
+                            local ____ = self.Alpha
+                        end
+                        local ____ = self.ClickX
+                    end
+                    self.ClickY = 0
+                end
+                local ____ = 0
+            end
+            local ____ = 0
+        end
+        local ____ = 0
+    end
+    self:On(
+        "Paint",
+        function(self, w, h)
+            if self.Alpha >= 1 then
+                surface.SetDrawColor(
+                    ColorAlpha(col, self.Alpha)
+                )
+                draw.NoTexture()
+                drawCircle(self.ClickX, self.ClickY, self.Rad)
+                self.Rad = Lerp(
+                    FrameTime() * speed,
+                    self.Rad,
+                    trad or w
+                )
+                self.Alpha = Lerp(
+                    FrameTime() * speed,
+                    self.Alpha,
+                    0
+                )
+            end
+        end
+    )
+    self:On(
+        "DoClick",
+        function(self)
+            local cursorpos = self:CursorPos()
+            self.ClickX = cursorpos[0]
+            self.ClickY = cursorpos[1]
+            self.Rad = 0
+            self.Alpha = col.a
+        end
+    )
+end
+classes.CircleHover = function(self, col, speed, trad)
+    col = col or Color(255, 255, 255, 30)
+    speed = speed or 6
+    do
+        self.LastX = 0
+        self.LastY = 0
+    end
+    self:SetupTransition("CircleHover", speed, TDLibUtil.HoverFunc)
+    self:On(
+        "Think",
+        function(self)
+            if self:IsHovered() then
+                local cursorpos = self:CursorPos()
+                do
+                    self.LastX = cursorpos[0]
+                    self.LastY = cursorpos[1]
+                end
+            end
+        end
+    )
+    self:On(
+        "PaintOver",
+        function(self, w, h)
+            draw.NoTexture()
+            surface.SetDrawColor(
+                ColorAlpha(col, col.a * self.CircleHover)
+            )
+            drawCircle(self.LastX, self.LastY, self.CircleHover * (trad or w))
+        end
+    )
+end
 function ____exports.TDLib(c, p, n)
     local dpanel = vgui.Create(c, p, n)
     dpanel.Class = function(self, name, ...)

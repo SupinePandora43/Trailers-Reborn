@@ -33,9 +33,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="lua\autorun\simfphys_lw_trailers_pack.lua" />
-    <Content Include="lua\autorun\simftrailers_shared.lua" />
-    <Content Include="lua\TR\extensions\base.lua" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
@@ -47,13 +44,7 @@
     <TypeScriptCompile Include="src\TR\sv_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="lua\benchmark.lua">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="src\autorun\TR_init.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="src\rule34js.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\tdlib.ts">
@@ -70,10 +61,6 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="lua\" />
-    <Folder Include="lua\autorun\" />
-    <Folder Include="lua\TR\" />
-    <Folder Include="lua\TR\extensions\" />
     <Folder Include="src\" />
     <Folder Include="src\autorun\" />
     <Folder Include="src\TR\" />

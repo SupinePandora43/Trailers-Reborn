@@ -286,42 +286,45 @@ classes.Blur = function (this: Panel | any, amount: number) {
 		}
 	})
 }
-/*
-classes.CircleClick = function(pnl, col, speed, trad)
+classes.CircleClick = function (this: Panel | any, col: Color, speed: number, trad: NUM) {
 	col = col || Color(255, 255, 255, 50)
 	speed = speed || 5
-	pnl.Rad, pnl.Alpha, pnl.ClickX, pnl.ClickY = 0, 0, 0, 0
-	pnl:On("Paint", function(s, w, h)
-		if(s.Alpha >= 1) then
-			surface.SetDrawColor(ColorAlpha(col, s.Alpha))
+	this.Rad, this.Alpha, this.ClickX, this.ClickY = 0, 0, 0, 0
+	this.On("Paint", function (this: Panel | any, w: number, h: number) {
+		if (this.Alpha >= 1) {
+			surface.SetDrawColor(ColorAlpha(col, this.Alpha))
 			draw.NoTexture()
-			drawCircle(s.ClickX, s.ClickY, s.Rad)
-			s.Rad = Lerp(FrameTime()*speed, s.Rad, trad || w)
-			s.Alpha = Lerp(FrameTime()*speed, s.Alpha, 0)
-		end
-	end)
-	pnl:On("DoClick", function(s)
-		s.ClickX, s.ClickY = s:CursorPos()
-		s.Rad = 0
-		s.Alpha = col.a
-	end)
-end
-classes.CircleHover = function(pnl, col, speed, trad)
+			drawCircle(this.ClickX, this.ClickY, this.Rad)
+			this.Rad = Lerp(FrameTime() * speed, this.Rad, trad || w)
+			this.Alpha = Lerp(FrameTime() * speed, this.Alpha, 0)
+		}
+	})
+	this.On("DoClick", function (this: Panel | any) {
+		const cursorpos = this.CursorPos()
+		this.ClickX = cursorpos[0]
+		this.ClickY = cursorpos[1]
+		this.Rad = 0
+		this.Alpha = col.a
+	})
+}
+classes.CircleHover = function (this: Panel | any, col: Color, speed: number, trad: number) {
 	col = col || Color(255, 255, 255, 30)
 	speed = speed || 6
-	pnl.LastX, pnl.LastY = 0, 0
-	pnl:SetupTransition("CircleHover", speed, TDLibUtil.HoverFunc)
-	pnl:On("Think", function(s)
-		if(s:IsHovered()) then
-			s.LastX, s.LastY = s:CursorPos()
-		end
-	end)
-	pnl:On("PaintOver", function(s, w, h)
+	this.LastX = 0, this.LastY = 0
+	this.SetupTransition("CircleHover", speed, TDLibUtil.HoverFunc)
+	this.On("Think", function (this: Panel | any) {
+		if (this.IsHovered()) {
+			const cursorpos = this.CursorPos()
+			this.LastX = cursorpos[0], this.LastY = cursorpos[1]
+		}
+	})
+	this.On("PaintOver", function (this: Panel | any, w: number, h: number) {
 		draw.NoTexture()
-		surface.SetDrawColor(ColorAlpha(col, col.a*s.CircleHover))
-		drawCircle(s.LastX, s.LastY, s.CircleHover*(trad || w))
-	end)
-end
+		surface.SetDrawColor(ColorAlpha(col, col.a * this.CircleHover))
+		drawCircle(this.LastX, this.LastY, this.CircleHover * (trad || w))
+	})
+}
+/*
 classes.SquareCheckbox = function(pnl, inner, outer, speed)
 	inner = inner || Color(0, 255, 0, 255)
 	outer = outer || Color(255, 255, 255, 255)

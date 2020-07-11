@@ -1,5 +1,5 @@
-declare const simfphys: any
-declare function error(this: void, message: string, errorLevel?: number): void
+//declare const simfphys: any
+//declare function error(this: void, message: string, errorLevel?: number): void
 declare namespace debug { function traceback(this: void): string }
 // reborn loads faster than simfphys :C
 // error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
@@ -133,13 +133,7 @@ list.Set("FLEX", "Trailers", (ent, vtable) => {
 		print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")
 	}
 })
-//import rule34js from "rule34js"
-const rule34js = include("rule34js.lua") as any as (this: void, options: { tags: string[], pid: number, limit: number }, c: (this: void, posts: table) => void, f: (this: void) => void) => void;
 concommand.Add("trailers_connect", (ply: Player | any) => {
-	rule34js({ tags: ["furry", "gay"], limit: 2, pid: 2 }, (posts: table) => {
-		print(posts)
-		PrintTable(posts, 1, {})
-	}, () => { print("fucc") })
 	if (IsValid(ply)) {
 		print(ply.GetSimfphys())
 		Trailers.ConnectEnt(ply.GetSimfphys())

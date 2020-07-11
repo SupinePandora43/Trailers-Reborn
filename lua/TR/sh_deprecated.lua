@@ -1,4 +1,5 @@
-EntityMeta = FindMetaTable("Entity")
+local Queue = {}
+local EntityMeta = FindMetaTable("Entity")
 EntityMeta.SimfIsTrailer = function(self)
     ErrorNoHalt("TR: this vehicle uses old api")
     return self:GetNWBool("simf_istrailer", false)
@@ -32,12 +33,24 @@ EntityMeta.VehicleGetCanConnect = function(self)
 end
 EntityMeta.SetSimfIsTrailer = function(self, bool)
     ErrorNoHalt("TR: this vehicle uses old api")
+    Queue[self] = {}
+    timer.Simple(
+        0.25,
+        function()
+            if IsValid(self) then
+                Trailers.Init({ent = self, input = Queue[self].trailerCenterposition, output = Queue[self].centerposition})
+                Queue[self] = nil
+            end
+        end
+    )
     self:SetNWBool("simf_istrailer", bool)
 end
 EntityMeta.SetCenterposition = function(self, vector)
+    Queue[self].centerposition = vector
     self:SetNWVector("simf_centerpos", vector)
 end
 EntityMeta.SetTrailerCenterposition = function(self, vector)
+    Queue[self].trailerCenterposition = vector
     self:SetNWVector("simf_trailercenterpos", vector)
 end
 EntityMeta.SetTrailerCanConnect = function(self, bool)
@@ -55,3 +68,5 @@ end
 EntityMeta.VehicleSetCanConnect = function(self, bool)
     self:SetNWBool("simfs_veh_canconnect", bool)
 end
+local ____exports = nil
+return ____exports

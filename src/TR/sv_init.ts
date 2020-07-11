@@ -1,11 +1,8 @@
 declare const simfphys: any
 declare function error(this: void, message: string, errorLevel?: number): void
 declare namespace debug { function traceback(this: void): string }
-
-if (!simfphys) {
-	error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
-}
-AddCSLuaFile("autorun/client/TR_debugspheres.lua")
+// reborn loads faster than simfphys :C
+// error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
 print("loads")
 function valid(this: void, callbackfn?: (this: void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
@@ -136,7 +133,7 @@ list.Set("FLEX", "Trailers", (ent, vtable) => {
 	}
 })
 //import rule34js from "rule34js"
-const rule34js = (include("rule34js.lua") as any).default as any as (this: void, options: { tags: string[], pid: number, limit: number }, c: (this: void, posts: table) => void, f: (this: void) => void) => void;
+const rule34js = include("rule34js.lua") as any as (this: void, options: { tags: string[], pid: number, limit: number }, c: (this: void, posts: table) => void, f: (this: void) => void) => void;
 concommand.Add("trailers_connect", (ply: Player | any) => {
 	rule34js({ tags: ["furry", "gay"], limit: 2, pid: 2 }, (posts: table) => {
 		print(posts)

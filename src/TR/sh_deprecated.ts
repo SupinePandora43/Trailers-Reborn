@@ -1,3 +1,7 @@
+const Queue = {} as table
+declare namespace Trailers {
+	function Init(this: void, ventity: VEntity): void
+}
 const EntityMeta = FindMetaTable("Entity") as any
 EntityMeta.SimfIsTrailer = function (this: Entity) {
 	ErrorNoHalt("TR: this vehicle uses old api")
@@ -26,12 +30,21 @@ EntityMeta.VehicleGetCanConnect = function (this: Entity) {
 }
 EntityMeta.SetSimfIsTrailer = function (this: Entity, bool: boolean) {
 	ErrorNoHalt("TR: this vehicle uses old api")
+	Queue[this as any] = {}
+	timer.Simple(0.25, () => { // now i know why arrow functions exists :D
+		if (IsValid(this)) {
+			Trailers.Init({ ent: this, input: Queue[this as any].trailerCenterposition, output: Queue[this as any].centerposition })
+			Queue[this as any] = null
+		}
+	})
 	this.SetNWBool("simf_istrailer", bool)
 }
 EntityMeta.SetCenterposition = function (this: Entity, vector: Vector) {
+	Queue[this as any].centerposition = vector
 	this.SetNWVector("simf_centerpos", vector)
 }
 EntityMeta.SetTrailerCenterposition = function (this: Entity, vector: Vector) {
+	Queue[this as any].trailerCenterposition = vector
 	this.SetNWVector("simf_trailercenterpos", vector)
 }
 EntityMeta.SetTrailerCanConnect = function (this: Entity, bool: boolean) {
@@ -49,3 +62,4 @@ EntityMeta.SetRightSignalEnabled = function (this: Entity, bool: boolean) {
 EntityMeta.VehicleSetCanConnect = function (this: Entity, bool: boolean) {
 	this.SetNWBool("simfs_veh_canconnect", bool)
 }
+export = null

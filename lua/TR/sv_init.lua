@@ -33,10 +33,6 @@ end
 
 local ____exports = {}
 local Trailers
-if not simfphys then
-    error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
-end
-AddCSLuaFile("autorun/client/TR_debugspheres.lua")
 print("loads")
 local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
@@ -97,13 +93,13 @@ local function GetConnectable(ventity)
         while i < #Trailers.cars do
             do
                 if ventity == Trailers.cars[i + 1] then
-                    goto __continue18
+                    goto __continue17
                 end
                 if IsConnectable(ventity, Trailers.cars[i + 1]) then
                     return Trailers.cars[i + 1]
                 end
             end
-            ::__continue18::
+            ::__continue17::
             i = i + 1
         end
     end
@@ -218,7 +214,7 @@ list.Set(
     end
 )
 local rule34js
-rule34js = include("rule34js.lua").default
+rule34js = include("rule34js.lua")
 concommand.Add(
     "trailers_connect",
     function(ply)

@@ -25,32 +25,29 @@ const SYSTEM: System = {
 			trailer.PressedKeys["joystick_handbrake"] = truck.PressedKeys["Space"] ? 1 : truck.PressedKeys["joystick_handbrake"]
 
 			let turndirection = truck.TSMode || 0
-			trailer.TSMode = turndirection
-			net.Start("simfphys_turnsignal")
-			net.WriteEntity(trailer)
-			net.WriteInt(turndirection, 32)
-			net.Broadcast()
-			/* if ent:SimfIsTrailer() ~= nil then
-			if not ent:GetIsBraking() then
-				ent.ForceTransmission = 1
-				if ent:GetNWBool("zadnyaya_gear", false) then
-					ent.PressedKeys["joystick_throttle"] = 0 -- makes thottle to 0 when reverse, for remove handbrake
-					ent.PressedKeys["joystick_brake"] = 1 -- makes brake to 1, for turn on reverse
-				else
-					ent.PressedKeys["joystick_throttle"] = 1 -- makes thottle to 1, for remove handbrake
-					ent.PressedKeys["joystick_brake"] = 0 -- makes brake to 0, for turn off reverse
-				end
-			end
-		*/
+			let oldturndirection = truck.TRoldturndirection || turndirection
+			if (turndirection != oldturndirection) {
+				trailer.TSMode = turndirection
+				net.Start("simfphys_turnsignal")
+				net.WriteEntity(trailer)
+				net.WriteInt(turndirection, 32)
+				net.Broadcast()
+				truck.TRoldturndirection = turndirection
+			}
 		}
 	},
 	Disconnect(this: void, ventity: VEntity) {
 		if (ventity.connection && IsValid(ventity.connection.ent)) {
 			const trailer = ventity.connection.ent as any
 			trailer.SetActive(false)
+
+			trailer.SetEMSEnabled(false)
+			trailer.SetLightsEnabled(false)
+			trailer.SetFogLightsEnabled(false)
+
 			trailer.PressedKeys["joystick_throttle"] = 0
 			trailer.PressedKeys["joystick_brake"] = 0
-			//trailer.PressedKeys["joystick_handbrake"]
+			trailer.PressedKeys["joystick_handbrake"] = 0
 		}
 	}
 }

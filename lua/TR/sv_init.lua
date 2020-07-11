@@ -33,7 +33,6 @@ end
 
 local ____exports = {}
 local Trailers
-print("loads")
 local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
         Trailers.cars,
@@ -176,8 +175,12 @@ end
 local files = ({
     file.Find("TR/extensions/*", "LUA")
 })[1]
+print("TR: initializing systems")
+print("| --- SYSTEMS ---")
 for ____, system in ipairs(files) do
-    print(system)
+    print(
+        "|- " .. tostring(system)
+    )
     __TS__ArrayPush(
         Trailers.systems,
         include(
@@ -185,6 +188,7 @@ for ____, system in ipairs(files) do
         )
     )
 end
+print("| --- SYSTEMS ---")
 timer.Remove("TR_system")
 timer.Create(
     "TR_system",
@@ -263,4 +267,5 @@ concommand.Add(
 )
 util.AddNetworkString("trailers_reborn_debug_spheres")
 _G.Trailers = Trailers
+print("TR: loaded")
 return ____exports

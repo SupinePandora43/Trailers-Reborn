@@ -1,7 +1,7 @@
 local Queue = {}
 local EntityMeta = FindMetaTable("Entity")
 EntityMeta.SimfIsTrailer = function(self)
-    ErrorNoHalt("TR: this vehicle uses old api")
+    print("TR: this vehicle uses old api")
     return self:GetNWBool("simf_istrailer", false)
 end
 EntityMeta.GetCenterposition = function(self)

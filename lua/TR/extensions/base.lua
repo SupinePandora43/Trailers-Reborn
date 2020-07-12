@@ -17,16 +17,11 @@ local SYSTEM = {
             trailer.PressedKeys.joystick_throttle = ((truck:EngineActive() and (not (truck.GearRatio < 0))) and 1) or 0
             trailer.PressedKeys.joystick_brake = (truck.PressedKeys.S and 1) or truck.PressedKeys.joystick_brake
             trailer.PressedKeys.joystick_handbrake = (truck.PressedKeys.Space and 1) or truck.PressedKeys.joystick_handbrake
-            local turndirection = truck.TSMode or 0
-            local oldturndirection = truck.TRoldturndirection or turndirection
-            if turndirection ~= oldturndirection then
-                trailer.TSMode = turndirection
-                net.Start("simfphys_turnsignal")
-                net.WriteEntity(trailer)
-                net.WriteInt(turndirection, 32)
-                net.Broadcast()
-                truck.TRoldturndirection = turndirection
-            end
+            net.Start("simfphys_turnsignal")
+            net.WriteEntity(trailer)
+            net.WriteInt(truck.TSMode or 0, 32)
+            net.Broadcast()
+            trailer.TSMode = truck.TSMode
         end
     end,
     Disconnect = function(ventity)

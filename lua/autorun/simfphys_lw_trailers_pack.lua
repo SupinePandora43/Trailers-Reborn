@@ -8,40 +8,40 @@ list.Set( "simfphys_lights","lw_transporter_trailer",{
 	R_RearLampPos=Vector(96,23.6,3.3),
 	R_RearLampAng=Angle(0,0,0),
 	FogLight_sprites = {
-	{pos = Vector(-48,294.62,142.06-0.4),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -48, 182.81, 137.15-0.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -48, 75.34, 132.21),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -48, -31.94, 128.03 -0.1 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -48, -138.79, 123.96 -0.2 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -48, -260.47, 118.93 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -47, -38.54 -0.6, 32 -0.25 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -47, -128.94, 31.6 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( -45, -218.2, 26.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( 48, 294.62, 142.06 -0.4 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( 48, 182.81, 137.15 -0.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( 48, 75.34, 132.21),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( 48, -31.94, 128.03 -0.1 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( 48, -138.79, 123.96 -0.2 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector( 48, -260.47, 118.93 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector(47, -38.54 -0.6, 32 -0.25 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector(47, -128.94, 31.6 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-	{pos = Vector(45, -218.2, 26.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+	{pos = Vector(-48,294.62,142.06-0.4),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -48, 182.81, 137.15-0.3 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -48, 75.34, 132.21),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -48, -31.94, 128.03 -0.1 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -48, -138.79, 123.96 -0.2 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -48, -260.47, 118.93 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -47, -38.54 -0.6, 32 -0.25 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -47, -128.94, 31.6 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( -45, -218.2, 26.5 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( 48, 294.62, 142.06 -0.4 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( 48, 182.81, 137.15 -0.3 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( 48, 75.34, 132.21),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( 48, -31.94, 128.03 -0.1 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( 48, -138.79, 123.96 -0.2 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector( 48, -260.47, 118.93 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector(47, -38.54 -0.6, 32 -0.25 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector(47, -128.94, 31.6 ),size = 5,color=Color(255,120,0,255)},
+	{pos = Vector(45, -218.2, 26.5 ),size = 5,color=Color(255,120,0,255)},
 	},
 	Rearlight_sprites = {
 		Vector( -36, -277.6, 26.5 ),
 		Vector( 36,  -277.6, 26.5 ),
-		{pos = Vector( -43, -272.5, 34 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( -43, -272.5, 37 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( -43, -272.5, 40 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( -43, -272.5, 43 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( -43, -272.5, 46 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( -43, -272.5, 49 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( 43, -272.5, 34 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( 43, -272.5, 37 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( 43, -272.5, 40 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( 43, -272.5, 43 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( 43, -272.5, 46 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
-		{pos = Vector( 43, -272.5, 49 -1 ),size = 15,color=Color(255,120,0,100),material="sprites/light_ignorez"},
+		{pos = Vector( -43, -272.5, 34 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( -43, -272.5, 37 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( -43, -272.5, 40 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( -43, -272.5, 43 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( -43, -272.5, 46 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( -43, -272.5, 49 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( 43, -272.5, 34 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( 43, -272.5, 37 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( 43, -272.5, 40 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( 43, -272.5, 43 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( 43, -272.5, 46 -1 ),size = 15,color=Color(255,120,0,100)},
+		{pos = Vector( 43, -272.5, 49 -1 ),size = 15,color=Color(255,120,0,100)},
 	},
 	ems_sprites = {
 		{pos = Vector( -42.38,-273 -4, 26.71 ),size = 25,Colors = {Color(255,0,0,255),Color(255,0,0,255)},Speed = 0.04,},
@@ -64,7 +64,8 @@ list.Set("simfphys_vehicles","lw_transporter_trailer",{
 	SpawnAngleOffset = 0,
 	FLEX = {
 		Trailers = {
-			input = Vector(0,250,35)
+			inputPos = Vector(0,250,35),
+			inputType = "axis"
 		}
 	},
 	Members = {
@@ -155,14 +156,14 @@ list.Set( "simfphys_lights","lw_schimedbigcargo",{
 	R_RearLampPos = Vector(96,23.6,3.3),
 	R_RearLampAng = Angle(0,0,0),
 	FogLight_sprites = {
-		{pos = Vector( 50, 134.2, 51.09 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector(-50, 134.2, 51.09 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( 50, 134.2, 51.09 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector(-50, 134.2, 51.09 ),size = 5,color=Color(255,120,0,255)},
 
-		{pos = Vector( 22.5, 82, 50.18 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -22.5, 82, 50.18 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( 22.5, 82, 50.18 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -22.5, 82, 50.18 ),size = 5,color=Color(255,120,0,255)},
 
-		{pos = Vector( 30, -41.5, 50.15 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -30, -41.5, 50.15 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( 30, -41.5, 50.15 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -30, -41.5, 50.15 ),size = 5,color=Color(255,120,0,255)},
 	},
 	Rearlight_sprites = { Vector( -40, -144.29, 42.65 ),
 		{pos = Vector( -40, -143, 42.65 ), size = 30, color = Color(255,0,0,100),},
@@ -217,7 +218,8 @@ list.Set( "simfphys_vehicles","lw_schimedbigcargo",{
 	SpawnAngleOffset = 0,
 	FLEX={
 		Trailers = {
-			input = Vector(0,122,30)
+			inputPos = Vector(0,122,30),
+			inputType = "axis"
 		}
 	},
 	Members = {
@@ -312,17 +314,17 @@ list.Set("simfphys_lights","lw_paneltrailer",{
 	R_RearLampPos = Vector(96,23.6,3.3),
 	R_RearLampAng = Angle(0,0,0),
 	FogLight_sprites = {
-		{pos = Vector( -51.3, 194.5, 48.75 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -53.3, 75.5, 13 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -53.3, -12.5, 13 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -53.3, -101.04, 13 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -51.3, -203.94, 43 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( -51.3, 194.5, 48.75 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -53.3, 75.5, 13 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -53.3, -12.5, 13 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -53.3, -101.04, 13 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -51.3, -203.94, 43 ),size = 5,color=Color(255,120,0,255)},
 
-		{pos = Vector( 51.3, 194.5, 48.75 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 53.3, 75.5, 13 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 53.3, -12.5, 13 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 53.3, -101.04, 13 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 51.3, -203.94, 43 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( 51.3, 194.5, 48.75 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 53.3, 75.5, 13 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 53.3, -12.5, 13 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 53.3, -101.04, 13 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 51.3, -203.94, 43 ),size = 5,color=Color(255,120,0,255)},
 	},
 	Rearlight_sprites = {
 		{pos = Vector( -24.41, -258, 20.37 ),size = 20,color=Color(255,50,0,255)},
@@ -360,7 +362,8 @@ list.Set("simfphys_vehicles","lw_trailerpanel",{
 	SpawnAngleOffset = 0,
 	FLEX = {
 		Trailers = {
-			input = Vector(0,235,32)
+			inputPos = Vector(0,235,32),
+			inputType = "axis"
 		}
 	},
 	Members = {
@@ -451,18 +454,18 @@ list.Set("simfphys_lights","lw_trucktrans",{
 	R_RearLampPos = Vector(96,23.6,3.3),
 	R_RearLampAng = Angle(0,0,0),
 	FogLight_sprites = {
-		{pos = Vector( -53.5, 190.53, 55.8 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -53, 134.46, 26.65 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -53, 33.43, 21.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -52, -85.35, 31.71 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -52, -137.91, 31.71 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -50.5, -245.66, 18.09 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 53.5, 190.53, 55.8 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 53, 134.46, 26.65 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 53, 33.43, 21.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 52, -85.35, 31.71 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 52, -137.91, 31.71 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 50.5, -245.66, 18.09 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"}
+		{pos = Vector( -53.5, 190.53, 55.8 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -53, 134.46, 26.65 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -53, 33.43, 21.5 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -52, -85.35, 31.71 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -52, -137.91, 31.71 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -50.5, -245.66, 18.09 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 53.5, 190.53, 55.8 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 53, 134.46, 26.65 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 53, 33.43, 21.5 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 52, -85.35, 31.71 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 52, -137.91, 31.71 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 50.5, -245.66, 18.09 ),size = 5,color=Color(255,120,0,255)}
 	},
 	Rearlight_sprites = {
 		{pos = Vector( -45.72, -254.82, 15.93 ),size = 20,color=Color(255,0,0,200)},
@@ -482,14 +485,14 @@ list.Set("simfphys_lights","lw_trucktrans",{
 	},
 	Turnsignal_sprites = {
 		Left = {
-			{pos = Vector( -53.5, -251.6, 17.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-			{pos = Vector( -53.5, -253.8, 17.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+			{pos = Vector( -53.5, -251.6, 17.5 ),size = 5,color=Color(255,120,0,255)},
+			{pos = Vector( -53.5, -253.8, 17.5 ),size = 5,color=Color(255,120,0,255)},
 			{pos = Vector( -42.13, -254.1, 16.31 ),size = 10,color=Color(255,50,0,255)},
 			{pos = Vector( -37.88, -254.16, 16.28 ),size = 10,color=Color(255,50,0,255)},
 		},
 		Right = {
-			{pos = Vector( 53.5, -251.6, 17.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-			{pos = Vector( 53.5, -253.8, 17.5 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+			{pos = Vector( 53.5, -251.6, 17.5 ),size = 5,color=Color(255,120,0,255)},
+			{pos = Vector( 53.5, -253.8, 17.5 ),size = 5,color=Color(255,120,0,255)},
 			{pos = Vector( 42.13, -254.1, 16.31 ),size = 10,color=Color(255,50,0,255)},
 			{pos = Vector( 37.88, -254.16, 16.28 ),size = 10,color=Color(255,50,0,255)},
 		},
@@ -503,7 +506,8 @@ list.Set("simfphys_vehicles","lw_trucktrans",{
 	SpawnAngleOffset = 0,
 	FLEX = {
 		Trailers = {
-			input = Vector(0,226,33)
+			inputPos = Vector(0,226,33),
+			inputType = "axis"
 		}
 	},
 	Members = {
@@ -582,14 +586,14 @@ list.Set("simfphys_lights","lw_profiliner",{
 	R_RearLampPos = Vector(96,23.6,3.3),
 	R_RearLampAng = Angle(0,0,0),
 	FogLight_sprites = {
-		{pos = Vector( -48, 161.5, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -48, 48.7, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -48, -70.66, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -48, -182.63, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 48, 161.5, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 48, 48.7, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 48, -70.66, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 48, -182.63, 45.3 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"}
+		{pos = Vector( -48, 161.5, 45.3 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -48, 48.7, 45.3 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -48, -70.66, 45.3 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -48, -182.63, 45.3 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 48, 161.5, 45.3 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 48, 48.7, 45.3 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 48, -70.66, 45.3 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 48, -182.63, 45.3 ),size = 5,color=Color(255,120,0,255)}
 	},
 	Rearlight_sprites = {
 		{pos = Vector( 49.2,-140, 52 ),size = 7,color=Color(255,50,0,255)},
@@ -657,7 +661,8 @@ list.Set("simfphys_vehicles","lw_profiliner",{
 	SpawnAngleOffset = 0,
 	FLEX = {
 		Trailers = {
-			input = Vector(0,211,30)
+			inputPos = Vector(0,211,30),
+			inputType = "axis"
 		}
 	},
 	Members = {
@@ -736,26 +741,26 @@ list.Set("simfphys_lights", "lw_glasstrailer", {
 	R_RearLampPos = Vector(96,23.6,3.3),
 	R_RearLampAng = Angle(0,0,0),
 	FogLight_sprites = {
-		{pos = Vector( -46, 210.87, 69.93 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -50, 105.09, 57.06 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -52, -26.82, 57 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -52, -147.57, 56.96 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( -46, 210.87, 69.93 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -50, 105.09, 57.06 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -52, -26.82, 57 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -52, -147.57, 56.96 ),size = 5,color=Color(255,120,0,255)},
 
-		{pos = Vector( -41.38, -221, 63.03 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -45.97, -227, 104.75 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -46.1, -227, 137.28 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -25.54, -227, 161.96 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( -41.38, -221, 63.03 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -45.97, -227, 104.75 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -46.1, -227, 137.28 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -25.54, -227, 161.96 ),size = 5,color=Color(255,120,0,255)},
 
 
-		{pos = Vector( 46, 210.87, 69.93 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 50, 105.09, 57.06 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 52, -26.82, 57 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 52, -147.57, 56.96 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
+		{pos = Vector( 46, 210.87, 69.93 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 50, 105.09, 57.06 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 52, -26.82, 57 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 52, -147.57, 56.96 ),size = 5,color=Color(255,120,0,255)},
 		
-		{pos = Vector( 41.38, -221, 63.03 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 45.97, -227, 104.75 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 46.1, -227, 137.28 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 25.54, -227, 161.96 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"}
+		{pos = Vector( 41.38, -221, 63.03 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 45.97, -227, 104.75 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 46.1, -227, 137.28 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 25.54, -227, 161.96 ),size = 5,color=Color(255,120,0,255)}
 	},
 	Rearlight_sprites = {
 		{pos = Vector( -42.32, -222, 20.06 ),size = 45,Colors = {Color(255,0,0,100),Color(255,0,0,100)}},
@@ -789,7 +794,8 @@ list.Set("simfphys_vehicles","lw_glasstrailer",{
 	SpawnAngleOffset = 0,
 	FLEX = {
 		Trailers = {
-			input = Vector(0,194,30)
+			inputPos = Vector(0,194,30),
+			inputType = "axis"
 		}
 	},
 	Members = {
@@ -868,18 +874,18 @@ list.Set( "simfphys_lights", "lw_livestock", {
 	R_RearLampPos = Vector(96,23.6,3.3),
 	R_RearLampAng = Angle(0,0,0),
 	FogLight_sprites = {
-		{pos = Vector( -49.5, 250.8, 55.9 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -49.5, 152.03, 55.9 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -49.5, 69.15, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -49.5, -29.6, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -49.5, -128.4, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( -49.5, -227.2, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 49.5, 250.8, 55.9 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 49.5, 152.03, 55.9 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 49.5, 69.15, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 49.5, -29.6, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 49.5, -128.4, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"},
-		{pos = Vector( 49.5, -227.2, 43.21 ),size = 5,color=Color(255,120,0,255),material="sprites/light_ignorez"}
+		{pos = Vector( -49.5, 250.8, 55.9 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -49.5, 152.03, 55.9 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -49.5, 69.15, 43.21 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -49.5, -29.6, 43.21 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -49.5, -128.4, 43.21 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( -49.5, -227.2, 43.21 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 49.5, 250.8, 55.9 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 49.5, 152.03, 55.9 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 49.5, 69.15, 43.21 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 49.5, -29.6, 43.21 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 49.5, -128.4, 43.21 ),size = 5,color=Color(255,120,0,255)},
+		{pos = Vector( 49.5, -227.2, 43.21 ),size = 5,color=Color(255,120,0,255)}
 	},
 	Rearlight_sprites = {
 		{pos =  Vector( -19.3,-250, 32.5 ),size = 35,color=Color(255,0,0,200)},
@@ -926,7 +932,8 @@ list.Set("simfphys_vehicles","lw_livestocktrailer",{
 	SpawnAngleOffset = 0,
 	FLEX = {
 		Trailers = {
-			input = Vector(0,216,30)
+			inputPos = Vector(0,216,30),
+			inputType = "axis"
 		}
 	},
 	Members = {
@@ -1058,7 +1065,8 @@ list.Set("simfphys_vehicles","lw_mediumbox",{
 	SpawnAngleOffset = 0,
 	FLEX = {
 		Trailers = {
-			input = Vector(0,170,23)
+			inputPos = Vector(0,170,23),
+			inputType = "ballsocket"
 		}
 	},
 	Members = {

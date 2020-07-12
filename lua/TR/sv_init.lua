@@ -33,6 +33,8 @@ end
 
 local ____exports = {}
 local Trailers
+resource.AddFile("sound/TR/nope.wav")
+resource.AddFile("TR/nope.wav")
 local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
         Trailers.cars,
@@ -136,6 +138,7 @@ do
             ventity.connection = {ent = vtrailer.ent, socket = ballsocketent}
         else
             print("TR: no connectable trailers found :C")
+            ventity.ent:EmitSound("TR/nope.wav")
         end
     end
     function Trailers.ConnectEnt(entity)
@@ -217,7 +220,7 @@ list.Set(
     "Trailers",
     function(ent, vtable)
         if istable(vtable) then
-            Trailers.Init({ent = ent, inputPos = vtable.input, outputPos = vtable.output})
+            Trailers.Init({ent = ent, inputPos = vtable.inputPos, outputPos = vtable.outputPos, inputType = vtable.inputType, outputType = vtable.outputType})
         else
             print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")
         end

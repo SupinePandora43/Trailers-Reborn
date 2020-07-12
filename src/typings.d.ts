@@ -17,8 +17,7 @@ declare type System = {
 	Disconnect?: (this: void, ventity: VEntity) => void
 }
 declare namespace table {
-	
-	export function insert<T>(this: void, tbl:T[],T)
+	export function insert<T>(this: void, tbl: T[], T)
 }
 /** why i should write it by myself? */
 declare namespace net {

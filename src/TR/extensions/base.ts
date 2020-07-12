@@ -3,8 +3,9 @@ const SYSTEM: System = {
 		if (ventity.connection) {
 			const truck = ventity.ent as any
 			const trailer = ventity.connection.ent as any
-			trailer.trailers_systems_base_active = truck.EngineActive() || truck.trailers_systems_base_active
-			trailer.SetActive(trailer.trailers_systems_base_active)
+			//trailer.trailers_systems_base_active = truck.EngineActive() || truck.trailers_systems_base_active
+			//trailer.SetActive(trailer.trailers_systems_base_active)
+			// TODO: better variant
 			trailer.SetActive(true)
 
 			const brakes = truck.GetIsBraking() // truck.GetHandBrakeEnabled() - Handbrakes does NOT enable EMS lights
@@ -13,9 +14,13 @@ const SYSTEM: System = {
 			trailer.SetFogLightsEnabled(truck.GetFogLightsEnabled())
 
 			// Disabling Brakes
-			trailer.PressedKeys["joystick_throttle"] = truck.EngineActive() && !(truck.GearRatio < 0) ? 1 : 0
+			trailer.StartEngine()
+			trailer.SetGear(2)
+			//trailer.PressedKeys["joystick_throttle"] = truck.EngineActive() && !(truck.GearRatio < 0) ? 1 : 0
+			trailer.PressedKeys["joystick_throttle"] = truck.GearRatio > 0 ? (truck.GetIsBraking() == true ? 0 : 1) : 0
 			// Reverse Lights
 			// Brakes
+			//TODO: fix it
 			trailer.PressedKeys["joystick_brake"] = truck.PressedKeys["S"] ? 1 : truck.PressedKeys["joystick_brake"]
 			// Handbrake
 			trailer.PressedKeys["joystick_handbrake"] = truck.PressedKeys["Space"] ? 1 : truck.PressedKeys["joystick_handbrake"]
@@ -30,6 +35,9 @@ const SYSTEM: System = {
 	Disconnect(this: void, ventity: VEntity) {
 		if (ventity.connection && IsValid(ventity.connection.ent)) {
 			const trailer = ventity.connection.ent as any
+
+			trailer.SetGear(1)
+
 			trailer.SetActive(false)
 
 			trailer.SetEMSEnabled(false)

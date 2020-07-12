@@ -3,8 +3,6 @@ local SYSTEM = {
         if ventity.connection then
             local truck = ventity.ent
             local trailer = ventity.connection.ent
-            trailer.trailers_systems_base_active = truck:EngineActive() or truck.trailers_systems_base_active
-            trailer:SetActive(trailer.trailers_systems_base_active)
             trailer:SetActive(true)
             local brakes = truck:GetIsBraking()
             trailer:SetEMSEnabled(brakes)
@@ -14,7 +12,9 @@ local SYSTEM = {
             trailer:SetFogLightsEnabled(
                 truck:GetFogLightsEnabled()
             )
-            trailer.PressedKeys.joystick_throttle = ((truck:EngineActive() and (not (truck.GearRatio < 0))) and 1) or 0
+            trailer:StartEngine()
+            trailer:SetGear(2)
+            trailer.PressedKeys.joystick_throttle = ((truck.GearRatio > 0) and (((truck:GetIsBraking() == true) and 0) or 1)) or 0
             trailer.PressedKeys.joystick_brake = (truck.PressedKeys.S and 1) or truck.PressedKeys.joystick_brake
             trailer.PressedKeys.joystick_handbrake = (truck.PressedKeys.Space and 1) or truck.PressedKeys.joystick_handbrake
             net.Start("simfphys_turnsignal")
@@ -27,6 +27,7 @@ local SYSTEM = {
     Disconnect = function(ventity)
         if ventity.connection and IsValid(ventity.connection.ent) then
             local trailer = ventity.connection.ent
+            trailer:SetGear(1)
             trailer:SetActive(false)
             trailer:SetEMSEnabled(false)
             trailer:SetLightsEnabled(false)

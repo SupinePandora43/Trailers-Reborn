@@ -1,80 +1,67 @@
-
-<!-- [For Developers](#for-developers)
-	- [`Trailers`](#trailers)
-		- [`Init`](#init)
-			- [`vehtable`](#vehtable)
-				- [`ent`](#ent)
-				- [`vehtype`](#vehtype)
-				- [`outputPos`](#outputpos)
-				- [`inputPos`](#inputpos)
-				- [`outputType`](#outputtype)
-				- [`inputType`](#inputtype)
-			- [`github`](#github)
-			- [Connection Types](#connection-types)
-
 # For Developers
 
-## `Trailers`
+# Adding Support to vehicle
 
-### `Init`
+you need to append vehicle's spawnlist
 
-#### `vehtable`
+you need add
 
-##### `ent`
+```lua
+FLEX = {
+	Trailers = {
+		
+	}
+}
+```
+should look like
+```lua
+list.Set("simfphys_vehicles", "myvehicle", {
+	Name = "My Car",
+	Model = "models/path/to/model.mdl",
+	Category = "My Category",
+	SpawnOffset = Vector(0,0,0),
+	SpawnAngleOffset = 0,
+	FLEX = {
+		Trailers = {
+			-- #goto FLEX.Trailers params
+		}
+	},
+	Members = {
+		OnSpawn = function(ent)
+			-- if you making trailer
+			-- you need `ent:Lock()` here
+		end,
+		-- car configuration stuff here
+	}
+})
+```
 
-**[`Entity`](https://wiki.facepunch.com/gmod/Entity)**
+# FLEX.Trailers params
 
-simfphys vehicle entity ( `ent` inside of `OnSpawn(ent)` function)
+`inputPos`: Vector - input position of trailer/dolly
 
-##### `vehtype`
+`inputType`: string | any - type of input ([ConnectionTypes](#ConnectionTypes))
 
-Only 3 different types of vehicles (case non-sensetive)
+`outputPos`: Vector - output position of truck/dolly
 
-* **Truck** ( [ `outputPos` ](#outputpos) )
-* **Dolly** ( [ `outputPos` ](#outputpos) , [ `inputPos` ](#inputpos) )
-* **Trailer** ( [ `inputPos` ](#inputpos) )
+`outputType`: string | any - type of output ([ConnectionTypes](#ConnectionTypes))
 
-##### `outputPos`
+# ConnectionTypes
 
-**[`Vector`](https://wiki.facepunch.com/gmod/Vector)**
+**NOTE**: types can be of any type // more detailed info
 
-Truck's/dolly's connector point
+`"axis"` for 
 
-###### *still useable with trailers*
+![pic](https://moscowteslaclub.ru/upload/resize_cache/iblock/7e3/1266_715_2/7e3c6ca47f35796b90b4cf44cbaa3c4e.jpg)
 
-##### `inputPos`
+`"ballsocket"` for
 
-**[`Vector`](https://wiki.facepunch.com/gmod/Vector)**
+![pic](https://hips.hearstapps.com/pop.h-cdn.co/assets/16/38/980x652/gallery-1474470091-pmx100116-utilitytrailers07.jpg?resize=480:*)
 
-Dolly's/trailer's connector point
+# Low Level API
 
-###### *not useable with trucks*
+Can be used to directly initializate trailer support,
 
-##### `outputType`
+`Trailers.Init(ventitytable)`
 
-**[`string`](https://wiki.facepunch.com/gmod/string)**
-
-[Connection Types](#connection-types)
-
-##### `inputType`
-
-**[`string`](https://wiki.facepunch.com/gmod/string)**
-
-[Connection Types](#connection-types)
-
-#### `github`
-
-**[`boolean`](https://wiki.facepunch.com/gmod/boolean)**
-
-use Trailers-Base repository to get info about vehicle
-
-#### Connection Types
-
-* `axis`
-* `joint`
-
-`AdvBallSocket` is always used, it just to prevent connecting big trailers to small passenger cars
--->
-# OUTDATED
-
-rewriting in progress (here we go again)
+it requires a table, exactly like [FLEX.Trailers params](#FLEX.Trailers params), **BUT** with `ent` key, equal to target simfphys vehicle

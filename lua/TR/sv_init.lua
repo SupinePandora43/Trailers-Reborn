@@ -34,7 +34,6 @@ end
 local ____exports = {}
 local Trailers
 resource.AddFile("sound/TR/nope.wav")
-resource.AddFile("TR/nope.wav")
 local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
         Trailers.cars,
@@ -182,7 +181,7 @@ do
     end
 end
 local files = ({
-    file.Find("TR/extensions/*", "LUA")
+    file.Find("TR/systems/*", "LUA")
 })[1]
 print("TR: initializing systems")
 print("| --- SYSTEMS ---")
@@ -193,7 +192,7 @@ for ____, system in ipairs(files) do
     __TS__ArrayPush(
         Trailers.systems,
         include(
-            "TR/extensions/" .. tostring(system)
+            "TR/systems/" .. tostring(system)
         )
     )
 end
@@ -201,7 +200,7 @@ print("| --- SYSTEMS ---")
 timer.Remove("TR_system")
 timer.Create(
     "TR_system",
-    0.5,
+    0.2,
     0,
     function()
         valid(

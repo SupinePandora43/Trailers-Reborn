@@ -4,7 +4,6 @@ declare namespace debug { function traceback(this: void): string }
 // reborn loads faster than simfphys :C
 // error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
 resource.AddFile("sound/TR/nope.wav")
-resource.AddFile("TR/nope.wav")
 function valid(this: void, callbackfn?: (this: void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
 	Trailers.cars.forEach((ventity) => {
@@ -113,16 +112,16 @@ namespace Trailers {
 	}
 }
 
-const files = file.Find("TR/extensions/*", "LUA")[0]
+const files = file.Find("TR/systems/*", "LUA")[0]
 print("TR: initializing systems")
 print("| --- SYSTEMS ---")
 for (const system of (files as string[])) {
 	print("|- " + system)
-	Trailers.systems.push(include("TR/extensions/" + system) as any as System)
+	Trailers.systems.push(include("TR/systems/" + system) as any as System)
 }
 print("| --- SYSTEMS ---")
 timer.Remove("TR_system")
-timer.Create("TR_system", 0.5, 0, () => {
+timer.Create("TR_system", 0.2, 0, () => {
 	valid((ventity) => {
 		for (const system of Trailers.systems) {
 			if (system.HandleTruck) {

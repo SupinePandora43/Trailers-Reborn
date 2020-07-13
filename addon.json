@@ -6,6 +6,7 @@
         "src/*",
 		".vscode/*",
 		"node_modules/*",
-		".github/*"
+		".github/*",
+		".vs/*"
     ]
 }

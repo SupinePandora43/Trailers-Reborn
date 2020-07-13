@@ -53,6 +53,7 @@
     <TypeScriptCompile Include="src\TR\sh_deprecated.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\TR\systems\base.ts" />
     <TypeScriptCompile Include="src\typings.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -61,6 +62,7 @@
     <Folder Include="src\" />
     <Folder Include="src\autorun\" />
     <Folder Include="src\TR\" />
+    <Folder Include="src\TR\systems\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

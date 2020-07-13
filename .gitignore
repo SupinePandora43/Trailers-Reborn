@@ -6,3 +6,4 @@ obj
 bin
 /yarn.lock
 tstoluatest.njsproj.user
+*.gma

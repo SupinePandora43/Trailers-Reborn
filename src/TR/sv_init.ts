@@ -3,7 +3,7 @@
 declare namespace debug { function traceback(this: void): string }
 // reborn loads faster than simfphys :C
 // error("TR: missing: simfphys (https://steamcommunity.com/workshop/filedetails/?id=771487490)")
-resource.AddFile("sound/TR/nope.wav")
+resource.AddFile("sound/tr/nope.wav")
 function valid(this: void, callbackfn?: (this: void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
 	Trailers.cars.forEach((ventity) => {
@@ -75,7 +75,7 @@ namespace Trailers {
 			ventity.connection = { ent: vtrailer.ent, socket: ballsocketent }
 		} else {
 			print("TR: no connectable trailers found :C")
-			ventity.ent.EmitSound("TR/nope.wav")
+			ventity.ent.EmitSound("tr/nope.wav")
 		}
 	}
 	export function ConnectEnt(this: void, entity: Entity) {
@@ -112,12 +112,12 @@ namespace Trailers {
 	}
 }
 
-const files = file.Find("TR/systems/*", "LUA")[0]
+const files = file.Find("tr/systems/*", "LUA")[0]
 print("TR: initializing systems")
 print("| --- SYSTEMS ---")
 for (const system of (files as string[])) {
 	print("|- " + system)
-	Trailers.systems.push(include("TR/systems/" + system) as any as System)
+	Trailers.systems.push(include("tr/systems/" + system) as any as System)
 }
 print("| --- SYSTEMS ---")
 timer.Remove("TR_system")

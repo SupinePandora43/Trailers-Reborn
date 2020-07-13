@@ -38,10 +38,10 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\TR\cl_init.ts">
+    <TypeScriptCompile Include="src\tr\cl_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\TR\sv_init.ts">
+    <TypeScriptCompile Include="src\tr\sv_init.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\autorun\TR_init.ts">
@@ -50,7 +50,7 @@
     <TypeScriptCompile Include="src\tdlib.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\TR\sh_deprecated.ts">
+    <TypeScriptCompile Include="src\tr\sh_deprecated.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\TR\systems\base.ts" />
@@ -61,8 +61,8 @@
   <ItemGroup>
     <Folder Include="src\" />
     <Folder Include="src\autorun\" />
-    <Folder Include="src\TR\" />
-    <Folder Include="src\TR\systems\" />
+    <Folder Include="src\tr\" />
+    <Folder Include="src\tr\systems\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

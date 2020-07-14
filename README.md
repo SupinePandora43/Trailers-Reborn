@@ -1,4 +1,3 @@
-# Trailers Reborn
-## Features
-* trailers (up to 254 per truck)
-* nice ui
+# [Trailers Reborn](https://steamcommunity.com/sharedfiles/filedetails/?id=2083101470)
+
+look at workshop page for more info

@@ -80,6 +80,13 @@ most of them doesn't require additional help, but anyways
 
 ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
 
+### `Disconnect`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/src/typings.d.ts#L7))
+ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
+Called before it get disconnected.
+
+`local disconnecting_truck = ventity.ent`
+`local disconnecting_trailer = ventity.connection.ent`
+
 ## Examples
 
 * [Base](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/lua/TR/systems/base.lua) handles lights, turnlights, brakes...

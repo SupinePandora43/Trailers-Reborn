@@ -33,6 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="addon.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />

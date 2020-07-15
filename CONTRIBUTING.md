@@ -60,8 +60,49 @@ list.Set("simfphys_vehicles", "myvehicle", {
 
 # Low Level API
 
+## `Trailers.Init(ventitytable)`
 Can be used to directly initializate trailer support,
 
-`Trailers.Init(ventitytable)`
-
 it requires a table, exactly like [FLEX.Trailers params](#FLEX.Trailers params), **BUT** with `ent` key, equal to target simfphys vehicle
+
+# Systems
+
+rules are:
+* they should be in `lua/tr/systems`
+* they should return a table object
+* they can have [these methods](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/src/typings.d.ts#L15-L18)
+
+## Functions
+
+most of them doesn't require additional help, but anyways
+
+### `HandleTruck`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/src/typings.d.ts#L7))
+
+ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
+
+### `Disconnect`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/src/typings.d.ts#L7))
+ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
+Called before it get disconnected.
+
+`local disconnecting_truck = ventity.ent`
+`local disconnecting_trailer = ventity.connection.ent`
+
+## Examples
+
+* [Base](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/lua/TR/systems/base.lua) handles lights, turnlights, brakes...
+* [NAKbaggageBoxSteer](https://github.com/NotAKidOnSteam/simfphys-bodygroup-hitboxes/blob/newer/lua/tr/systems/nak_baggagebox_steer.lua) steers nak's trailer for easier trailer movement
+
+```lua
+-- lua/tr/systems/example.lua
+return {
+	HandleTruck = function(ventity)
+		print("Truck is "..ventity.ent)
+		if ventity.connection then
+			print("Trailer is "..ventity.connection.ent)
+		end
+	end,
+	Disconnect = function(ventity)
+		print("You're disconnecting trailer ("..ventity.connection.ent.."), from truck ("..ventity.ent..")")
+	end
+}
+```

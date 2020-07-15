@@ -63,7 +63,7 @@ list.Set("simfphys_vehicles", "myvehicle", {
 ## `Trailers.Init(ventitytable)`
 Can be used to directly initializate trailer support,
 
-it requires a table, exactly like [FLEX.Trailers params](#FLEX.Trailers params), **BUT** with `ent` key, equal to target simfphys vehicle
+it requires a table, exactly like [FLEX.Trailers_params](#FLEX.Trailers_params), **BUT** with `ent` key, equal to target simfphys vehicle
 
 # Systems
 

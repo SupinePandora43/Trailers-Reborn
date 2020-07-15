@@ -33,7 +33,7 @@ end
 
 local ____exports = {}
 local Trailers
-resource.AddFile("sound/TR/nope.wav")
+resource.AddFile("sound/tr/nope.wav")
 local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
         Trailers.cars,
@@ -137,7 +137,7 @@ do
             ventity.connection = {ent = vtrailer.ent, socket = ballsocketent}
         else
             print("TR: no connectable trailers found :C")
-            ventity.ent:EmitSound("TR/nope.wav")
+            ventity.ent:EmitSound("tr/nope.wav")
         end
     end
     function Trailers.ConnectEnt(entity)
@@ -181,7 +181,7 @@ do
     end
 end
 local files = ({
-    file.Find("TR/systems/*", "LUA")
+    file.Find("tr/systems/*", "LUA")
 })[1]
 print("TR: initializing systems")
 print("| --- SYSTEMS ---")
@@ -192,7 +192,7 @@ for ____, system in ipairs(files) do
     __TS__ArrayPush(
         Trailers.systems,
         include(
-            "TR/systems/" .. tostring(system)
+            "tr/systems/" .. tostring(system)
         )
     )
 end

@@ -1,7 +1,6 @@
 local Queue = {}
 local EntityMeta = FindMetaTable("Entity")
 EntityMeta.SimfIsTrailer = function(self)
-    print("TR: this vehicle uses old api")
     return self:GetNWBool("simf_istrailer", false)
 end
 EntityMeta.GetCenterposition = function(self)
@@ -31,25 +30,36 @@ end
 EntityMeta.VehicleGetCanConnect = function(self)
     return self:GetNWBool("simfs_veh_canconnect", false)
 end
-EntityMeta.SetSimfIsTrailer = function(self, bool)
-    ErrorNoHalt("TR: this vehicle uses old api")
-    Queue[self] = {}
+local function StartQueueIfNotExists(ent)
+    Queue[ent] = Queue[ent] or ({})
     timer.Simple(
-        0.25,
+        1,
         function()
-            if IsValid(self) then
-                Trailers.Init({ent = self, inputPos = Queue[self].trailerCenterposition, outputPos = Queue[self].centerposition})
-                Queue[self] = nil
+            if IsValid(ent) then
+                if Queue[ent] ~= nil then
+                    MsgC(
+                        Color(255, 255, 0),
+                        "TR: this vehicle uses old api\n"
+                    )
+                    Trailers.Init({ent = ent, inputPos = Queue[ent].trailerCenterposition, outputPos = Queue[ent].centerposition})
+                    Queue[ent] = nil
+                end
             end
         end
     )
+end
+EntityMeta.SetSimfIsTrailer = function(self, bool)
+    ErrorNoHalt("TR: this vehicle uses old api")
+    StartQueueIfNotExists(self)
     self:SetNWBool("simf_istrailer", bool)
 end
 EntityMeta.SetCenterposition = function(self, vector)
+    StartQueueIfNotExists(self)
     Queue[self].centerposition = vector
     self:SetNWVector("simf_centerpos", vector)
 end
 EntityMeta.SetTrailerCenterposition = function(self, vector)
+    StartQueueIfNotExists(self)
     Queue[self].trailerCenterposition = vector
     self:SetNWVector("simf_trailercenterpos", vector)
 end

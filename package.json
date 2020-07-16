@@ -15,5 +15,9 @@
 	},
 	"author": {
 		"name": "SupinePandora43"
+	},
+	"dependencies": {
+		"typedoc": "^0.17.8",
+		"typedoc-plugin-markdown": "^2.3.1"
 	}
 }

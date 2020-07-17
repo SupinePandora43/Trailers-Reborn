@@ -1,5 +1,9 @@
 declare namespace debug { function traceback(this: void): string }
+
 resource.AddWorkshop("2083101470")
+
+const connectedSound = file.Exists("sound/vcmod/car_connect.wav", "GAME")
+
 function valid(this: void, callbackfn?: (this: void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
 	Trailers.cars.forEach((ventity) => {
@@ -68,6 +72,7 @@ namespace Trailers {
 		ventity = whole[whole.length - 1]
 		const vtrailer = GetConnectable(ventity)
 		if (vtrailer) {
+			if (connectedSound) ventity.ent.EmitSound("vcmod/car_connect.wav")
 			const ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.outputPos as Vector, vtrailer.inputPos as Vector, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
 			ventity.connection = { ent: vtrailer.ent, socket: ballsocketent }
 		} else {

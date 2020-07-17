@@ -34,6 +34,7 @@ end
 local ____exports = {}
 local Trailers
 resource.AddWorkshop("2083101470")
+local connectedSound = file.Exists("sound/vcmod/car_connect.wav", "GAME")
 local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
         Trailers.cars,
@@ -136,6 +137,9 @@ do
         ventity = whole[#whole]
         local vtrailer = GetConnectable(ventity)
         if vtrailer then
+            if connectedSound then
+                ventity.ent:EmitSound("vcmod/car_connect.wav")
+            end
             local ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.outputPos, vtrailer.inputPos, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
             ventity.connection = {ent = vtrailer.ent, socket = ballsocketent}
         else

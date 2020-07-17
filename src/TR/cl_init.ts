@@ -83,7 +83,7 @@ function buildthemenu(pnl: Panel | any) {
 		Background1.SetType('Rect')
 		Background1.SetPos(20, 50 + 20)
 		Background1.SetColor(Color(0, 0, 0, 200))
-		Background1.SetSize(350, 100)
+		Background1.SetSize(350, 125)
 
 		const Label = vgui.Create('DLabel', pnl.PropPanel)
 		Label.SetPos(30, 50)
@@ -122,6 +122,13 @@ function buildthemenu(pnl: Panel | any) {
 		DamageMul.OnValueChanged = () => {
 			RunConsoleCommand("trailers_reload_SV_systemtimer")
 		}
+
+		const EnableConnectSound = vgui.Create("DCheckBoxLabel", pnl.PropPanel) as DCheckBoxLabel
+		EnableConnectSound.SetPos(25, 170)
+		EnableConnectSound.SetText("Enable connection sound")
+		EnableConnectSound.SetConVar("trailers_connectsound")
+		EnableConnectSound.SizeToContents()
+		EnableConnectSound.SetTooltip("if you have no vcmod CONTENT you'll hear noisy crowbar sounds, this can disable it")
 	}
 }
 hook.Add("SimfphysPopulateVehicles", "TR_config", (pc, t, n) => {

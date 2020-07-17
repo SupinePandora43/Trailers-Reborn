@@ -119,7 +119,7 @@ local function buildthemenu(self, pnl)
         Background1:SetColor(
             Color(0, 0, 0, 200)
         )
-        Background1:SetSize(350, 100)
+        Background1:SetSize(350, 125)
         local Label = vgui.Create("DLabel", pnl.PropPanel)
         Label:SetPos(30, 50)
         Label:SetText("Admin-Only Settings!")
@@ -154,6 +154,12 @@ local function buildthemenu(self, pnl)
         DamageMul.OnValueChanged = function()
             RunConsoleCommand("trailers_reload_SV_systemtimer")
         end
+        local EnableConnectSound = vgui.Create("DCheckBoxLabel", pnl.PropPanel)
+        EnableConnectSound:SetPos(25, 170)
+        EnableConnectSound:SetText("Enable connection sound")
+        EnableConnectSound:SetConVar("trailers_connectsound")
+        EnableConnectSound:SizeToContents()
+        EnableConnectSound:SetTooltip("if you have no vcmod CONTENT you'll hear noisy crowbar sounds, this can disable it")
     end
 end
 hook.Add(

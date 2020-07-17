@@ -4,6 +4,8 @@ resource.AddWorkshop("2083101470")
 
 const connectedSound = file.Exists("sound/vcmod/car_connect.wav", "GAME")
 
+const useConnectSound = CreateConVar("trailers_connectsound", "1", FCVAR.FCVAR_ARCHIVE, "Disables connection sound", 0, 1)
+
 function valid(this: void, callbackfn?: (this: void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
 	Trailers.cars.forEach((ventity) => {
@@ -72,9 +74,21 @@ namespace Trailers {
 		ventity = whole[whole.length - 1]
 		const vtrailer = GetConnectable(ventity)
 		if (vtrailer) {
-			if (connectedSound) ventity.ent.EmitSound("vcmod/car_connect.wav")
 			const ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.outputPos as Vector, vtrailer.inputPos as Vector, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
 			ventity.connection = { ent: vtrailer.ent, socket: ballsocketent }
+
+			if (useConnectSound.GetBool()) {
+				if (connectedSound) {
+					// VCMod Content required
+					// https://steamcommunity.com/sharedfiles/filedetails/?id=632470227
+					// it's completly free
+					ventity.ent.EmitSound("vcmod/car_connect.wav")
+				} else {
+					// RougeReapr gived sounds
+					ventity.ent.EmitSound(`weapons/crowbar/crowbar_impact${math.random(1, 2)}.wav`)
+				}
+			}
+
 		} else {
 			print("TR: no connectable trailers found :C")
 			ventity.ent.EmitSound("tr/nope.wav")

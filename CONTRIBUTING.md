@@ -82,7 +82,9 @@ ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry re
 
 ### `Disconnect`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/b29960c47048b1543b94fa138a1aa3efbfea7af4/src/typings.d.ts#L9))
 ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
-Called before it get disconnected.
+
+**Called before it get disconnected.**
+BUT DON't called when trailer get removed etc...
 
 `local disconnecting_truck = ventity.ent`
 `local disconnecting_trailer = ventity.connection.ent`

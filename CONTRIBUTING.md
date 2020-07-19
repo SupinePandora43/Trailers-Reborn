@@ -86,8 +86,10 @@ ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry re
 **Called before it get disconnected.**
 BUT DON't called when trailer get removed etc...
 
-`local disconnecting_truck = ventity.ent`
-`local disconnecting_trailer = ventity.connection.ent`
+```lua
+local disconnecting_truck = ventity.ent
+local disconnecting_trailer = ventity.connection.ent
+```
 
 ## Examples
 

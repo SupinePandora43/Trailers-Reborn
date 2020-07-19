@@ -62,36 +62,68 @@ list.Set("FLEX_UI", "TR_UI", (layout: DListLayout) => {
 	}
 	layout.Add(row)
 })
-
+const disconnectKey = CreateClientConVar("trailers_disconnect_key", tostring(KEY.KEY_PAD_MINUS), true, true, "disconnect key, used by DBinder")
+const connectKey = CreateClientConVar("trailers_connect_key", tostring(KEY.KEY_PAD_PLUS), true, true, "connect key, used by DBinder")
 function buildthemenu(pnl: Panel | any) {
+	let y = 20
 	const Background = vgui.Create('DShape', pnl.PropPanel) as DShape
 	Background.SetType('Rect')
-	Background.SetPos(20, 20)
+	Background.SetPos(20, y)
 	Background.SetColor(Color(0, 0, 0, 200))
-	Background.SetSize(350, 25)
+	Background.SetSize(350, 100)
 
+	y += 5
 	const spheresCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel) as DCheckBoxLabel
-	spheresCheckbox.SetPos(25, 25)
+	spheresCheckbox.SetPos(25, y)
 	spheresCheckbox.SetText("draw Spheres")
 	spheresCheckbox.OnChange = () => {
 		InitSpheres()
 	}
 	spheresCheckbox.SetConVar("trailers_spheres")
 	spheresCheckbox.SizeToContents()
+
+	y += 20
+	const connectBinder = vgui.Create("DBinder", pnl.PropPanel) as DBinder
+	connectBinder.OnChange = (butt: number) => {
+		connectKey.SetInt(butt)
+	}
+	connectBinder.SetPos(25, y)
+	connectBinder.SetText(input.GetKeyName(connectKey.GetInt()))
+
+	const connectBinderTip = vgui.Create("DLabel", pnl.PropPanel) as DLabel
+	connectBinderTip.SetText("Connect button")
+	connectBinderTip.SetPos(100, y + 5)
+	connectBinderTip.SizeToContents()
+
+	y += 40
+	const disconnectBinder = vgui.Create("DBinder", pnl.PropPanel) as DBinder
+	disconnectBinder.SetPos(25, y)
+	disconnectBinder.OnChange = (butt: number) => {
+		disconnectKey.SetInt(butt)
+	}
+	disconnectBinder.SetText(input.GetKeyName(disconnectKey.GetInt()))
+
+	const disconnectBinderTip = vgui.Create("DLabel", pnl.PropPanel) as DLabel
+	disconnectBinderTip.SetText("Disconnect button")
+	disconnectBinderTip.SetPos(100, y + 5)
+	disconnectBinderTip.SizeToContents()
+
 	if (LocalPlayer().IsSuperAdmin()) {
+		y+=50
 		const Background1 = vgui.Create('DShape', pnl.PropPanel) as DShape
 		Background1.SetType('Rect')
-		Background1.SetPos(20, 50 + 20)
+		Background1.SetPos(20, y+15)
 		Background1.SetColor(Color(0, 0, 0, 200))
 		Background1.SetSize(350, 125)
 
 		const Label = vgui.Create('DLabel', pnl.PropPanel)
-		Label.SetPos(30, 50)
+		Label.SetPos(30, y-10)
 		Label.SetText("Admin-Only Settings!")
 		Label.SizeToContents()
 
+		y+=25
 		const autoconnectCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel) as DCheckBoxLabel
-		autoconnectCheckbox.SetPos(25, 75)
+		autoconnectCheckbox.SetPos(25, y)
 		autoconnectCheckbox.SetText("Autoconnect")
 		autoconnectCheckbox.OnChange = () => {
 			RunConsoleCommand("trailers_reload_SV_systemtimer")
@@ -100,8 +132,9 @@ function buildthemenu(pnl: Panel | any) {
 		autoconnectCheckbox.SizeToContents()
 		autoconnectCheckbox.SetTooltip("Automatically connects trailer to truck")
 
+		y += 25
 		const hydrahelpCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel) as DCheckBoxLabel
-		hydrahelpCheckbox.SetPos(25, 100)
+		hydrahelpCheckbox.SetPos(25, y)
 		hydrahelpCheckbox.SetText("Hydraulic connectoin")
 		hydrahelpCheckbox.OnChange = () => {
 			RunConsoleCommand("trailers_reload_SV_systemtimer")
@@ -110,8 +143,9 @@ function buildthemenu(pnl: Panel | any) {
 		hydrahelpCheckbox.SizeToContents()
 		hydrahelpCheckbox.SetTooltip("Add some hydraulics to help\n!BUGGY!")
 
+		y += 25
 		const DamageMul = vgui.Create("DNumSlider", pnl.PropPanel) as DNumSlider
-		DamageMul.SetPos(30, 125)
+		DamageMul.SetPos(30, y)
 		DamageMul.SetSize(345, 30)
 		DamageMul.SetText("Autoconnect distance")
 		DamageMul.SetTooltip("uses DistToSqr")
@@ -123,8 +157,9 @@ function buildthemenu(pnl: Panel | any) {
 			RunConsoleCommand("trailers_reload_SV_systemtimer")
 		}
 
+		y += 40
 		const EnableConnectSound = vgui.Create("DCheckBoxLabel", pnl.PropPanel) as DCheckBoxLabel
-		EnableConnectSound.SetPos(25, 170)
+		EnableConnectSound.SetPos(25, y)
 		EnableConnectSound.SetText("Enable connection sound")
 		EnableConnectSound.SetConVar("trailers_connectsound")
 		EnableConnectSound.SizeToContents()

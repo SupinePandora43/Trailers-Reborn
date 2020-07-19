@@ -83,14 +83,14 @@ local function getwhole(ventity)
     return buffer
 end
 local function IsConnectableTypes(ctype1, ctype2)
-    if (ctype1 ~= nil) and (ctype2 ~= nil) then
+    if ctype1 and ctype2 then
         return ctype1 == ctype2
     end
     return true
 end
-local function IsConnectable(vent1, vent2)
-    if vent1.lastDisconnected and ((vent1.lastDisconnected + 10) > CurTime()) then
-        return false
+local function IsConnectable(vent1, vent2, autoconnected)
+    if (autoconnected and vent1.lastDisconnected) and ((vent1.lastDisconnected + 10) > CurTime()) then
+        return
     end
     if vent1.outputPos and vent2.inputPos then
         return ((IsConnectableTypes(vent1.outputType, vent2.inputType) and (function() return vent1.ent:LocalToWorld(vent1.outputPos):DistToSqr(
@@ -125,9 +125,9 @@ do
         net.WriteTable({ent = ventity.ent, input = ventity.inputPos, output = ventity.outputPos})
         net.Broadcast()
     end
-    function Trailers.Connect(ventity)
-        if ventity == nil then
-            print("TR: ventity == null")
+    function Trailers.Connect(ventity, autoconnected)
+        if not ventity then
+            print("TR: trying to connect nothing")
             print(
                 debug.traceback()
             )
@@ -151,6 +151,14 @@ do
                     )
                 end
             end
+            __TS__ArrayForEach(
+                Trailers.systems,
+                function(____, vsystem)
+                    if vsystem.Connect then
+                        vsystem.Connect(ventity, vtrailer)
+                    end
+                end
+            )
         else
             print("TR: no connectable trailers found :C")
             ventity.ent:EmitSound("tr/nope.wav")
@@ -170,10 +178,10 @@ do
             )
             return
         end
-        ventity.lastDisconnected = CurTime()
         if ventity.connection then
             local whole = getwhole(ventity)
             ventity = whole[(#whole - 2) + 1]
+            ventity.lastDisconnected = CurTime()
             for ____, system in ipairs(Trailers.systems) do
                 if system.Disconnect then
                     system.Disconnect(ventity)
@@ -217,6 +225,7 @@ local function RestartSystemHandler()
     local hydrahelp = CreateConVar("trailers_hydrahelp", "1", FCVAR_ARCHIVE, "some help", 0, 1):GetBool()
     local autoconnectDist = CreateConVar("trailers_autoconnect_distance", "5", FCVAR_ARCHIVE, "maximum Distance when trailer get automatically connected", 0, 1000):GetInt()
     timer.Remove("TR_system")
+    print("created timer")
     if not autoconnect then
         timer.Create(
             "TR_system",
@@ -227,7 +236,7 @@ local function RestartSystemHandler()
                     function(ventity)
                         for ____, system in ipairs(Trailers.systems) do
                             if system.HandleTruck then
-                                pcall(system.HandleTruck, ventity)
+                                system.HandleTruck(ventity)
                             end
                         end
                     end
@@ -244,7 +253,7 @@ local function RestartSystemHandler()
                     function(ventity)
                         for ____, system in ipairs(Trailers.systems) do
                             if system.HandleTruck then
-                                pcall(system.HandleTruck, ventity)
+                                system.HandleTruck(ventity)
                             end
                         end
                         if (not ventity.connection) and ventity.outputPos then
@@ -266,12 +275,12 @@ local function RestartSystemHandler()
                                                 print("TR: autoconnection cancelled")
                                                 SafeRemoveEntity(ventity.hydraulic)
                                                 ventity.hydraulic = nil
-                                            elseif IsConnectable(ventity, val) and (distance < autoconnectDist) then
+                                            elseif IsConnectable(ventity, val, true) and (distance < autoconnectDist) then
                                                 print("TR: connected trailer using autoconnection")
                                                 SafeRemoveEntity(ventity.hydraulic)
-                                                Trailers.Connect(ventity)
+                                                Trailers.Connect(ventity, true)
                                                 ventity.hydraulic = nil
-                                            elseif IsConnectable(ventity, val) and (not ventity.hydraulic) then
+                                            elseif IsConnectable(ventity, val, true) and (not ventity.hydraulic) then
                                                 local hydraulic = constraint.Hydraulic(nil, ventity.ent, val.ent, 0, 0, ventity.outputPos, val.inputPos, 0, 0, 0, KEY_PAD_MULTIPLY, 0, 10000000, nil, false)
                                                 local hydraulic2 = constraint.Hydraulic(nil, ventity.ent, val.ent, 0, 0, ventity.outputPos, val.inputPos, 0, 0, 0, KEY_PAD_MULTIPLY, 0, 10000000, nil, false)
                                                 local hydraulic3 = constraint.Hydraulic(nil, ventity.ent, val.ent, 0, 0, ventity.outputPos, val.inputPos, 0, 0, 0, KEY_PAD_MULTIPLY, 0, 10000000, nil, false)
@@ -299,7 +308,7 @@ local function RestartSystemHandler()
                     function(ventity)
                         for ____, system in ipairs(Trailers.systems) do
                             if system.HandleTruck then
-                                pcall(system.HandleTruck, ventity)
+                                system.HandleTruck(ventity)
                             end
                         end
                         if (not ventity.connection) and ventity.outputPos then
@@ -317,9 +326,9 @@ local function RestartSystemHandler()
                                             local outputPosWorld = ventity.ent:LocalToWorld(ventity.outputPos)
                                             local inputPosWorld = val.ent:LocalToWorld(val.inputPos)
                                             local distance = outputPosWorld:DistToSqr(inputPosWorld)
-                                            if IsConnectable(ventity, val) and (distance < autoconnectDist) then
+                                            if IsConnectable(ventity, val, true) and (distance < autoconnectDist) then
                                                 print("TR: connected trailer using autoconnection")
-                                                Trailers.Connect(ventity)
+                                                Trailers.Connect(ventity, true)
                                             end
                                         end
                                     end
@@ -378,6 +387,25 @@ concommand.Add(
             print(
                 debug.traceback()
             )
+        end
+    end
+)
+hook.Add(
+    "PlayerButtonDown",
+    "TR_binds",
+    function(ply, button)
+        if IsValid(ply) then
+            if button == ply:GetInfoNum("trailers_disconnect_key", KEY_PAD_MINUS) then
+                local vehicle = ply:GetSimfphys()
+                if IsValid(vehicle) then
+                    Trailers.DisconnectEnt(vehicle)
+                end
+            elseif button == ply:GetInfoNum("trailers_connect_key", KEY_PAD_PLUS) then
+                local vehicle = ply:GetSimfphys()
+                if IsValid(vehicle) then
+                    Trailers.ConnectEnt(vehicle)
+                end
+            end
         end
     end
 )

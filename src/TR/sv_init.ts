@@ -38,13 +38,13 @@ function getwhole(this: void, ventity: VEntity) {
 	return buffer
 }
 function IsConnectableTypes(this: void, ctype1?: string, ctype2?: string) {
-	if (ctype1 != null && ctype2 != null) {
+	if (ctype1 && ctype2) {
 		return ctype1 === ctype2
 	}
 	return true
 }
-function IsConnectable(this: void, vent1: VEntity, vent2: VEntity) {
-	if (vent1.lastDisconnected && vent1.lastDisconnected + 10 > CurTime()) return false
+function IsConnectable(this: void, vent1: VEntity, vent2: VEntity, autoconnected?: boolean) {
+	if (autoconnected && vent1.lastDisconnected && vent1.lastDisconnected + 10 > CurTime()) return
 	if (vent1.outputPos && vent2.inputPos)
 		return IsConnectableTypes(vent1.outputType, vent2.inputType) ? vent1.ent.LocalToWorld(vent1.outputPos).DistToSqr(vent2.ent.LocalToWorld(vent2.inputPos)) < 300 : false
 }
@@ -63,20 +63,21 @@ namespace Trailers {
 		net.WriteTable({ ent: ventity.ent, input: ventity.inputPos, output: ventity.outputPos })
 		net.Broadcast()
 	}
-	export function Connect(this: void, ventity: VEntity | undefined) {
-		if (ventity == undefined) {
-			print("TR: ventity == null")
+	export function Connect(this: void, ventity: VEntity, autoconnected?: boolean) {
+		if (!ventity) {
+			print("TR: trying to connect nothing")
 			print(debug.traceback())
 			return
 		}
 		ventity.hydraulic = undefined
 		const whole = getwhole(ventity)
 		ventity = whole[whole.length - 1]
-		const vtrailer = GetConnectable(ventity)
+		const vtrailer = GetConnectable(ventity) as VEntity
+		//if (vent1.lastDisconnected && vent1.lastDisconnected + 10 > CurTime()) return false
 		if (vtrailer) {
+			//if (ventity.lastDisconnected && v) return
 			const ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.outputPos as Vector, vtrailer.inputPos as Vector, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
 			ventity.connection = { ent: vtrailer.ent, socket: ballsocketent }
-
 			if (useConnectSound.GetBool()) {
 				if (connectedSound) {
 					// VCMod Content required
@@ -88,6 +89,11 @@ namespace Trailers {
 					ventity.ent.EmitSound(`weapons/crowbar/crowbar_impact${math.random(1, 2)}.wav`)
 				}
 			}
+			Trailers.systems.forEach((vsystem) => {
+				if (vsystem.Connect) {
+					vsystem.Connect(ventity, vtrailer)
+				}
+			})
 
 		} else {
 			print("TR: no connectable trailers found :C")
@@ -96,7 +102,7 @@ namespace Trailers {
 	}
 	export function ConnectEnt(this: void, entity: Entity) {
 		valid()
-		Trailers.Connect(findVEntity(entity))
+		Trailers.Connect(findVEntity(entity) as VEntity)
 	}
 	export function Disconnect(this: void, ventity: VEntity | undefined) {
 		if (ventity == null) {
@@ -104,10 +110,10 @@ namespace Trailers {
 			print(debug.traceback())
 			return
 		}
-		ventity.lastDisconnected = CurTime()
 		if (ventity.connection) {
 			const whole = getwhole(ventity)
 			ventity = whole[whole.length - 2] // mafs
+			ventity.lastDisconnected = CurTime()
 			for (const system of Trailers.systems) {
 				if (system.Disconnect) {
 					system.Disconnect(ventity)
@@ -151,12 +157,13 @@ function RestartSystemHandler(this: void) {
 	const hydrahelp = CreateConVar("trailers_hydrahelp", "1", FCVAR.FCVAR_ARCHIVE, "some help", 0, 1).GetBool()
 	const autoconnectDist = CreateConVar("trailers_autoconnect_distance", "5", FCVAR.FCVAR_ARCHIVE, "maximum Distance when trailer get automatically connected", 0, 1000).GetInt()
 	timer.Remove("TR_system")
+	print("created timer")
 	if (!autoconnect) {
 		timer.Create("TR_system", 0.2, 0, () => {
 			valid((ventity: VEntity) => {
 				for (const system of Trailers.systems) {
 					if (system.HandleTruck) {
-						pcall(system.HandleTruck, ventity)
+						system.HandleTruck(ventity)
 					}
 				}
 			})
@@ -166,7 +173,7 @@ function RestartSystemHandler(this: void) {
 			valid((ventity: VEntity) => {
 				for (const system of Trailers.systems) {
 					if (system.HandleTruck) {
-						pcall(system.HandleTruck, ventity)
+						system.HandleTruck(ventity)
 					}
 				}
 				if (!ventity.connection && ventity.outputPos) {
@@ -187,12 +194,12 @@ function RestartSystemHandler(this: void) {
 									SafeRemoveEntity(ventity.hydraulic as Entity)
 									ventity.hydraulic = undefined
 								}
-								else if (IsConnectable(ventity, val) && distance < autoconnectDist) {
+								else if (IsConnectable(ventity, val, true) && distance < autoconnectDist) {
 									print("TR: connected trailer using autoconnection")
 									SafeRemoveEntity(ventity.hydraulic as Entity)
-									Trailers.Connect(ventity)
+									Trailers.Connect(ventity, true)
 									ventity.hydraulic = undefined
-								} else if (IsConnectable(ventity, val) && !ventity.hydraulic) {
+								} else if (IsConnectable(ventity, val, true) && !ventity.hydraulic) {
 									const hydraulic = constraint.Hydraulic(null as any as Player, ventity.ent, val.ent, 0, 0, ventity.outputPos as Vector, val.inputPos, 0, 0, 0, KEY.KEY_PAD_MULTIPLY, 0, 10000000, null as any, false)
 									const hydraulic2 = constraint.Hydraulic(null as any as Player, ventity.ent, val.ent, 0, 0, ventity.outputPos as Vector, val.inputPos, 0, 0, 0, KEY.KEY_PAD_MULTIPLY, 0, 10000000, null as any, false)
 									const hydraulic3 = constraint.Hydraulic(null as any as Player, ventity.ent, val.ent, 0, 0, ventity.outputPos as Vector, val.inputPos, 0, 0, 0, KEY.KEY_PAD_MULTIPLY, 0, 10000000, null as any, false)
@@ -222,7 +229,7 @@ function RestartSystemHandler(this: void) {
 			valid((ventity: VEntity) => {
 				for (const system of Trailers.systems) {
 					if (system.HandleTruck) {
-						pcall(system.HandleTruck, ventity)
+						system.HandleTruck(ventity)
 					}
 				}
 				if (!ventity.connection && ventity.outputPos) {
@@ -238,9 +245,9 @@ function RestartSystemHandler(this: void) {
 								const outputPosWorld = ventity.ent.LocalToWorld(ventity.outputPos as Vector)
 								const inputPosWorld = val.ent.LocalToWorld(val.inputPos as Vector)
 								const distance = outputPosWorld.DistToSqr(inputPosWorld)
-								if (IsConnectable(ventity, val) && distance < autoconnectDist) {
+								if (IsConnectable(ventity, val, true) && distance < autoconnectDist) {
 									print("TR: connected trailer using autoconnection")
-									Trailers.Connect(ventity)
+									Trailers.Connect(ventity, true)
 								}
 							}
 						}
@@ -281,6 +288,23 @@ concommand.Add("trailers_disconnect", (ply: Player | any) => {
 	} else {
 		print("TR: IsValid(ply) == false")
 		print(debug.traceback())
+	}
+})
+/* **PREDICTED** it causes me to use it on server, if i used it on client, i probably need to RunConsoleCommand */
+hook.Add("PlayerButtonDown", "TR_binds", (ply: Player | any, button: number) => {
+	if (IsValid(ply)) {
+		if (button == ply.GetInfoNum("trailers_disconnect_key", KEY.KEY_PAD_MINUS)) {
+			const vehicle = ply.GetSimfphys()
+			if (IsValid(vehicle)) {
+				Trailers.DisconnectEnt(vehicle)
+			}
+		}
+		else if (button == ply.GetInfoNum("trailers_connect_key", KEY.KEY_PAD_PLUS)) {
+			const vehicle = ply.GetSimfphys()
+			if (IsValid(vehicle)) {
+				Trailers.ConnectEnt(vehicle)
+			}
+		}
 	}
 })
 util.AddNetworkString("trailers_reborn_debug_spheres")

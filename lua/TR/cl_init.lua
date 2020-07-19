@@ -96,36 +96,84 @@ list.Set(
         layout:Add(row)
     end
 )
+local disconnectKey = CreateClientConVar(
+    "trailers_disconnect_key",
+    tostring(KEY_PAD_MINUS),
+    true,
+    true,
+    "disconnect key, used by DBinder"
+)
+local connectKey = CreateClientConVar(
+    "trailers_connect_key",
+    tostring(KEY_PAD_PLUS),
+    true,
+    true,
+    "connect key, used by DBinder"
+)
 local function buildthemenu(self, pnl)
+    local y = 20
     local Background = vgui.Create("DShape", pnl.PropPanel)
     Background:SetType("Rect")
-    Background:SetPos(20, 20)
+    Background:SetPos(20, y)
     Background:SetColor(
         Color(0, 0, 0, 200)
     )
-    Background:SetSize(350, 25)
+    Background:SetSize(350, 100)
+    y = y + 5
     local spheresCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel)
-    spheresCheckbox:SetPos(25, 25)
+    spheresCheckbox:SetPos(25, y)
     spheresCheckbox:SetText("draw Spheres")
     spheresCheckbox.OnChange = function()
         InitSpheres()
     end
     spheresCheckbox:SetConVar("trailers_spheres")
     spheresCheckbox:SizeToContents()
+    y = y + 20
+    local connectBinder = vgui.Create("DBinder", pnl.PropPanel)
+    connectBinder.OnChange = function(____, butt)
+        connectKey:SetInt(butt)
+    end
+    connectBinder:SetPos(25, y)
+    connectBinder:SetText(
+        input.GetKeyName(
+            connectKey:GetInt()
+        )
+    )
+    local connectBinderTip = vgui.Create("DLabel", pnl.PropPanel)
+    connectBinderTip:SetText("Connect button")
+    connectBinderTip:SetPos(100, y + 5)
+    connectBinderTip:SizeToContents()
+    y = y + 40
+    local disconnectBinder = vgui.Create("DBinder", pnl.PropPanel)
+    disconnectBinder:SetPos(25, y)
+    disconnectBinder.OnChange = function(____, butt)
+        disconnectKey:SetInt(butt)
+    end
+    disconnectBinder:SetText(
+        input.GetKeyName(
+            disconnectKey:GetInt()
+        )
+    )
+    local disconnectBinderTip = vgui.Create("DLabel", pnl.PropPanel)
+    disconnectBinderTip:SetText("Disconnect button")
+    disconnectBinderTip:SetPos(100, y + 5)
+    disconnectBinderTip:SizeToContents()
     if LocalPlayer():IsSuperAdmin() then
+        y = y + 50
         local Background1 = vgui.Create("DShape", pnl.PropPanel)
         Background1:SetType("Rect")
-        Background1:SetPos(20, 50 + 20)
+        Background1:SetPos(20, y + 15)
         Background1:SetColor(
             Color(0, 0, 0, 200)
         )
         Background1:SetSize(350, 125)
         local Label = vgui.Create("DLabel", pnl.PropPanel)
-        Label:SetPos(30, 50)
+        Label:SetPos(30, y - 10)
         Label:SetText("Admin-Only Settings!")
         Label:SizeToContents()
+        y = y + 25
         local autoconnectCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel)
-        autoconnectCheckbox:SetPos(25, 75)
+        autoconnectCheckbox:SetPos(25, y)
         autoconnectCheckbox:SetText("Autoconnect")
         autoconnectCheckbox.OnChange = function()
             RunConsoleCommand("trailers_reload_SV_systemtimer")
@@ -133,8 +181,9 @@ local function buildthemenu(self, pnl)
         autoconnectCheckbox:SetConVar("trailers_autoconnect")
         autoconnectCheckbox:SizeToContents()
         autoconnectCheckbox:SetTooltip("Automatically connects trailer to truck")
+        y = y + 25
         local hydrahelpCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel)
-        hydrahelpCheckbox:SetPos(25, 100)
+        hydrahelpCheckbox:SetPos(25, y)
         hydrahelpCheckbox:SetText("Hydraulic connectoin")
         hydrahelpCheckbox.OnChange = function()
             RunConsoleCommand("trailers_reload_SV_systemtimer")
@@ -142,8 +191,9 @@ local function buildthemenu(self, pnl)
         hydrahelpCheckbox:SetConVar("trailers_hydrahelp")
         hydrahelpCheckbox:SizeToContents()
         hydrahelpCheckbox:SetTooltip("Add some hydraulics to help\n!BUGGY!")
+        y = y + 25
         local DamageMul = vgui.Create("DNumSlider", pnl.PropPanel)
-        DamageMul:SetPos(30, 125)
+        DamageMul:SetPos(30, y)
         DamageMul:SetSize(345, 30)
         DamageMul:SetText("Autoconnect distance")
         DamageMul:SetTooltip("uses DistToSqr")
@@ -154,8 +204,9 @@ local function buildthemenu(self, pnl)
         DamageMul.OnValueChanged = function()
             RunConsoleCommand("trailers_reload_SV_systemtimer")
         end
+        y = y + 40
         local EnableConnectSound = vgui.Create("DCheckBoxLabel", pnl.PropPanel)
-        EnableConnectSound:SetPos(25, 170)
+        EnableConnectSound:SetPos(25, y)
         EnableConnectSound:SetText("Enable connection sound")
         EnableConnectSound:SetConVar("trailers_connectsound")
         EnableConnectSound:SizeToContents()

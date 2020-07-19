@@ -3,8 +3,6 @@ const SYSTEM: System = {
 		if (ventity.connection) {
 			const truck = ventity.ent as any
 			const trailer = ventity.connection.ent as any
-			// TODO: better variant
-			trailer.SetActive(true)
 
 			let brakes = truck.GetIsBraking()
 			// pretty useless
@@ -14,15 +12,13 @@ const SYSTEM: System = {
 				brakes = true
 			}
 			let reverseLights = false
-			if (truck.GearRatio < 0) {
+			if ((truck.GearRatio || 0) < 0) {
 				reverseLights = true
 			}
 			trailer.SetEMSEnabled((!reverseLights) && brakes)
 			trailer.SetLightsEnabled(truck.GetLightsEnabled())
 			trailer.SetFogLightsEnabled(truck.GetFogLightsEnabled())
 
-			// Disabling Brakes
-			trailer.StartEngine()
 			// Reverse Lights
 			// Brakes
 			trailer.PressedKeys["joystick_brake"] = (reverseLights || brakes) ? 1 : 0
@@ -39,18 +35,30 @@ const SYSTEM: System = {
 			trailer.ForceGear(truck.CurrentGear)
 
 			// Handbrake
-			trailer.PressedKeys["joystick_handbrake"] = truck.PressedKeys["Space"] ? 1 : truck.PressedKeys["joystick_handbrake"]
+			trailer.PressedKeys["joystick_handbrake"] = truck.PressedKeys["Space"] ? 1 : truck.PressedKeys["joystick_handbrake"] || 0
 
-			// TODO: send new turn direction only when it get changed
-			net.Start("simfphys_turnsignal")
-			net.WriteEntity(trailer)
-			net.WriteInt(truck.TSMode || 0, 32)
-			net.Broadcast()
-			trailer.TSMode = truck.TSMode // allows long train-like connections work properly
+			if (trailer.TSMode != truck.TSMode) {
+				net.Start("simfphys_turnsignal")
+				net.WriteEntity(trailer)
+				net.WriteInt(truck.TSMode || 0, 32)
+				net.Broadcast()
+			}
+			// allows infinity stack of trailers toggle turn lights
+			trailer.TSMode = truck.TSMode
 		}
 	},
+	Connect(this: void, ventity: VEntity, vtrailer: VEntity) {
+		print("Connected")
+		const trailer = vtrailer.ent as any
+		// Disabling Brakes
+		// TODO: better variant
+		trailer.SetActive(true)
+		trailer.StartEngine()
+	},
+	// https://www.youtube.com/watch?v=PMbAAcO7i6o
 	Disconnect(this: void, ventity: VEntity) {
 		if (ventity.connection && IsValid(ventity.connection.ent)) {
+			print("disconnected")
 			const trailer = ventity.connection.ent as any
 
 			trailer.SetGear(1)

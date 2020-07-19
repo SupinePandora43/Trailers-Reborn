@@ -3,7 +3,6 @@ local SYSTEM = {
         if ventity.connection then
             local truck = ventity.ent
             local trailer = ventity.connection.ent
-            trailer:SetActive(true)
             local brakes = truck:GetIsBraking()
             if truck.PressedKeys.S == 1 then
                 brakes = true
@@ -11,7 +10,7 @@ local SYSTEM = {
                 brakes = true
             end
             local reverseLights = false
-            if truck.GearRatio < 0 then
+            if (truck.GearRatio or 0) < 0 then
                 reverseLights = true
             end
             trailer:SetEMSEnabled((not reverseLights) and brakes)
@@ -21,7 +20,6 @@ local SYSTEM = {
             trailer:SetFogLightsEnabled(
                 truck:GetFogLightsEnabled()
             )
-            trailer:StartEngine()
             trailer.PressedKeys.joystick_brake = ((reverseLights or brakes) and 1) or 0
             if trailer.PressedKeys.joystick_brake == 1 then
                 trailer.PressedKeys.joystick_throttle = 0
@@ -29,16 +27,25 @@ local SYSTEM = {
                 trailer.PressedKeys.joystick_throttle = 1
             end
             trailer:ForceGear(truck.CurrentGear)
-            trailer.PressedKeys.joystick_handbrake = (truck.PressedKeys.Space and 1) or truck.PressedKeys.joystick_handbrake
-            net.Start("simfphys_turnsignal")
-            net.WriteEntity(trailer)
-            net.WriteInt(truck.TSMode or 0, 32)
-            net.Broadcast()
+            trailer.PressedKeys.joystick_handbrake = (truck.PressedKeys.Space and 1) or (truck.PressedKeys.joystick_handbrake or 0)
+            if trailer.TSMode ~= truck.TSMode then
+                net.Start("simfphys_turnsignal")
+                net.WriteEntity(trailer)
+                net.WriteInt(truck.TSMode or 0, 32)
+                net.Broadcast()
+            end
             trailer.TSMode = truck.TSMode
         end
     end,
+    Connect = function(ventity, vtrailer)
+        print("Connected")
+        local trailer = vtrailer.ent
+        trailer:SetActive(true)
+        trailer:StartEngine()
+    end,
     Disconnect = function(ventity)
         if ventity.connection and IsValid(ventity.connection.ent) then
+            print("disconnected")
             local trailer = ventity.connection.ent
             trailer:SetGear(1)
             trailer:SetActive(false)

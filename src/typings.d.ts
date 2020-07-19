@@ -31,6 +31,8 @@ declare type System = {
 	HandleTruck?: (this: void, ventity: VEntity) => void
 	/** and probably this */
 	Disconnect?: (this: void, ventity: VEntity) => void
+	/** pls use this */
+	Connect?: (this: void, ventity: VEntity, vtrailer: VEntity) => void
 }
 /** why i should write it by myself? */
 declare namespace table {

@@ -70,17 +70,17 @@ it requires a table, exactly like [FLEX.Trailers params](#flextrailers-params), 
 rules are:
 * they should be in `lua/tr/systems`
 * they should return a table object
-* they can have [these methods](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/src/typings.d.ts#L15-L18)
+* they can have [these methods](https://github.com/SupinePandora43/Trailers-Reborn/blob/b29960c47048b1543b94fa138a1aa3efbfea7af4/src/typings.d.ts#L29-L34)
 
 ## Functions
 
 most of them doesn't require additional help, but anyways
 
-### `HandleTruck`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/src/typings.d.ts#L7))
+### `HandleTruck`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/b29960c47048b1543b94fa138a1aa3efbfea7af4/src/typings.d.ts#L9))
 
 ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
 
-### `Disconnect`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/master/src/typings.d.ts#L7))
+### `Disconnect`([`ventity: VEntity`](https://github.com/SupinePandora43/Trailers-Reborn/blob/b29960c47048b1543b94fa138a1aa3efbfea7af4/src/typings.d.ts#L9))
 ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
 Called before it get disconnected.
 

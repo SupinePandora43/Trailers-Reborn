@@ -8,27 +8,22 @@
 			"@glua-addon-types/flex/index",
 			"@glua-addon-types/glua-types/typings/garrysmod"
 		],
-		"module": "commonjs", // commonjs
+		"module": "commonjs",
 		"charset": "UTF8",
 		"rootDir": "./src",
 		"outDir": "./lua",
 		"declaration": false,
 		"sourceMap": false,
-		"skipLibCheck": true, // FAST AF BOI
-		//"allowSyntheticDefaultImports": true,
-		//"esModuleInterop": true, // import 
+		"skipLibCheck": true, // faster
 		"strict": true,
 		"removeComments": true
 	},
 	"tstl": {
-		"luaTarget": "5.2", // 5.2
-		//"luaBundleEntry": "src/autorun/server/simfphys_trailers_reborn.ts",
-		//"luaBundle": "lua/bundle.lua",
+		"luaTarget": "5.2",
 		"noHeader": true,
 		// if true, BadCoderZ is broken
 		"sourceMapTraceback": false,
 		"luaLibImport": "inline"
-		//"luaLibImport": "require" // for bundle
 	},
 	"exclude": [
 		"node_modules"

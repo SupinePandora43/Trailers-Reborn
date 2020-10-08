@@ -41,7 +41,6 @@ local SYSTEM = {
         print("Connected")
         local trailer = vtrailer.ent
         trailer:SetActive(true)
-        trailer:StartEngine()
     end,
     Disconnect = function(ventity)
         if ventity.connection and IsValid(ventity.connection.ent) then

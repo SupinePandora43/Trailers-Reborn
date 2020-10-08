@@ -36,6 +36,12 @@ list.Set("simfphys_vehicles", "myvehicle", {
 })
 ```
 
+# Trailer requirements
+
+* MaxRPM = 0
+* should have at least 3 gears
+`{-1, 0, 1}`
+
 # FLEX.Trailers params
 
 `inputPos`: Vector - input position of trailer/dolly
@@ -48,7 +54,7 @@ list.Set("simfphys_vehicles", "myvehicle", {
 
 # ConnectionTypes
 
-**NOTE**: types can be of any type // more detailed info
+**NOTE**: types can be of any type // simple `==` used, TODO: types as massives and functions
 
 `"axis"` for 
 
@@ -84,7 +90,7 @@ ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry re
 ventity - equals to `truckSpawnlist.FLEX.Trailers`, except it has `ent` entry reffering to entity, and [`connection`](https://github.com/SupinePandora43/Trailers-Reborn/blob/abfbd6264efd5150d1fb7842707753f8e4a65abd/src/typings.d.ts#L2)
 
 **Called before it get disconnected.**
-BUT DON't called when trailer get removed etc...
+BUT NOT called when trailer get removed etc...
 
 ```lua
 local disconnecting_truck = ventity.ent

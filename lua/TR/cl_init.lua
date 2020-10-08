@@ -9,7 +9,6 @@ function __TS__ArrayForEach(arr, callbackFn)
     end
 end
 
-local ____exports = {}
 net.Receive(
     "trailers_reborn_debug_spheres",
     function()
@@ -34,8 +33,8 @@ net.Receive(
         end
     end
 )
-local enableSpheres = CreateConVar("trailers_spheres", "0", FCVAR_ARCHIVE, "render spheres?", 0, 1)
-local function InitSpheres()
+enableSpheres = CreateConVar("trailers_spheres", "0", FCVAR_ARCHIVE, "render spheres?", 0, 1)
+function InitSpheres()
     hook.Remove("PostDrawTranslucentRenderables", "simfphys_trailers_reborn")
     if enableSpheres:GetBool() then
         hook.Add(
@@ -73,44 +72,21 @@ local function InitSpheres()
 end
 InitSpheres()
 concommand.Add("trailers_reload_CL", InitSpheres, nil, "reloads client side of TR")
-list.Set(
-    "FLEX_UI",
-    "TR_UI",
-    function(layout)
-        local row = vgui.Create("DTileLayout")
-        row:SetBackgroundColor(
-            Color(0, 255, 255, 255)
-        )
-        local connnectBTN = vgui.Create("DButton", row)
-        connnectBTN:SetSize(100, 50)
-        connnectBTN:SetText("Connect")
-        connnectBTN.DoClick = function()
-            RunConsoleCommand("trailers_connect")
-        end
-        local disconnectBTN = vgui.Create("DButton", row)
-        disconnectBTN:SetSize(100, 50)
-        disconnectBTN:SetText("Disconnect")
-        disconnectBTN.DoClick = function()
-            RunConsoleCommand("trailers_disconnect")
-        end
-        layout:Add(row)
-    end
-)
-local disconnectKey = CreateClientConVar(
+disconnectKey = CreateClientConVar(
     "trailers_disconnect_key",
     tostring(KEY_PAD_MINUS),
     true,
     true,
     "disconnect key, used by DBinder"
 )
-local connectKey = CreateClientConVar(
+connectKey = CreateClientConVar(
     "trailers_connect_key",
     tostring(KEY_PAD_PLUS),
     true,
     true,
     "connect key, used by DBinder"
 )
-local function buildthemenu(self, pnl)
+function buildthemenu(self, pnl)
     local y = 20
     local Background = vgui.Create("DShape", pnl.PropPanel)
     Background:SetType("Rect")
@@ -233,4 +209,3 @@ hook.Add(
         end
     end
 )
-return ____exports

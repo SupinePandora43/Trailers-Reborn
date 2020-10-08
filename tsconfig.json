@@ -22,6 +22,7 @@
 		"luaTarget": "5.2",
 		"noHeader": true,
 		// if true, BadCoderZ is broken
+		// that's problem of TypeScriptToLua
 		"sourceMapTraceback": false,
 		"luaLibImport": "inline"
 	},

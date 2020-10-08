@@ -1,4 +1,4 @@
-
+// idk why i do this lol
 declare namespace surface {
 	function SetDrawColor(this: void, col: IColor | Color): void
 	function SetDrawColor(this: void, r: number, g: number, b: number, a?: number): void

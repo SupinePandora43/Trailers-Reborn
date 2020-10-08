@@ -34,8 +34,8 @@ end
 local ____exports = {}
 local Trailers
 resource.AddWorkshop("2083101470")
-local connectedSound = file.Exists("sound/vcmod/car_connect.wav", "GAME")
-local useConnectSound = CreateConVar("trailers_connectsound", "1", FCVAR_ARCHIVE, "Disables connection sound", 0, 1)
+local useConnectSound = CreateConVar("trailers_connectsound", "1", FCVAR_ARCHIVE, "Use connection sound?", 0, 1)
+sound.Add({channel = CHAN_STATIC, name = "TR_connect", sound = "tr/trailer_connection.wav"})
 local function valid(callbackfn)
     Trailers.cars = __TS__ArrayFilter(
         Trailers.cars,
@@ -43,17 +43,26 @@ local function valid(callbackfn)
             return IsValid(ventity.ent)
         end
     )
-    __TS__ArrayForEach(
-        Trailers.cars,
-        function(____, ventity)
-            if ventity.connection and (not IsValid(ventity.connection.socket)) then
-                ventity.connection = nil
-            end
-            if callbackfn then
+    if callbackfn then
+        __TS__ArrayForEach(
+            Trailers.cars,
+            function(____, ventity)
+                if ventity.connection and (not IsValid(ventity.connection.socket)) then
+                    ventity.connection = nil
+                end
                 callbackfn(ventity)
             end
-        end
-    )
+        )
+    else
+        __TS__ArrayForEach(
+            Trailers.cars,
+            function(____, ventity)
+                if ventity.connection and (not IsValid(ventity.connection.socket)) then
+                    ventity.connection = nil
+                end
+            end
+        )
+    end
 end
 local function findVEntity(entity)
     do
@@ -65,7 +74,7 @@ local function findVEntity(entity)
             i = i + 1
         end
     end
-    print("not found")
+    print("TR: not found")
 end
 local function getNext(ventity)
     if ventity and ventity.connection then
@@ -98,19 +107,19 @@ local function IsConnectable(vent1, vent2, autoconnected)
         ) < 300 end)) or (function() return false end))()
     end
 end
-local function GetConnectable(ventity)
+local function GetConnectable(ventity, autoconnected)
     do
         local i = 0
         while i < #Trailers.cars do
             do
                 if ventity == Trailers.cars[i + 1] then
-                    goto __continue20
+                    goto __continue23
                 end
-                if IsConnectable(ventity, Trailers.cars[i + 1]) then
+                if IsConnectable(ventity, Trailers.cars[i + 1], autoconnected) then
                     return Trailers.cars[i + 1]
                 end
             end
-            ::__continue20::
+            ::__continue23::
             i = i + 1
         end
     end
@@ -120,8 +129,28 @@ do
     Trailers.cars = {}
     Trailers.systems = {}
     function Trailers.Init(ventity)
+        if ventity.disableUse then
+            ventity.ent.Use = nil
+        end
+        if ventity.disableUseOnWheels then
+            timer.Simple(
+                0.5,
+                function()
+                    if IsValid(ventity.ent) then
+                        do
+                            local i = 0
+                            while i < #ventity.ent.Wheels do
+                                local wheel = ventity.ent.Wheels[i + 1]
+                                wheel.Use = nil
+                                i = i + 1
+                            end
+                        end
+                    end
+                end
+            )
+        end
         __TS__ArrayPush(Trailers.cars, ventity)
-        net.Start("trailers_reborn_debug_spheres", true)
+        net.Start("trailers_reborn_debug_spheres")
         net.WriteTable({ent = ventity.ent, input = ventity.inputPos, output = ventity.outputPos})
         net.Broadcast()
     end
@@ -140,16 +169,14 @@ do
         if vtrailer then
             local ballsocketent = constraint.AdvBallsocket(ventity.ent, vtrailer.ent, 0, 0, ventity.outputPos, vtrailer.inputPos, 0, 0, 0, 0, 0, 360, 360, 360, 0, 0, 0, 0, 0)
             ventity.connection = {ent = vtrailer.ent, socket = ballsocketent}
-            if useConnectSound:GetBool() then
-                if connectedSound then
-                    ventity.ent:EmitSound("vcmod/car_connect.wav")
-                else
-                    ventity.ent:EmitSound(
-                        ("weapons/crowbar/crowbar_impact" .. tostring(
-                            math.random(1, 2)
-                        )) .. ".wav"
-                    )
-                end
+            if useConnectSound then
+                sound.Play(
+                    "TR_connect",
+                    ventity.ent:LocalToWorld(ventity.outputPos),
+                    75,
+                    100,
+                    1
+                )
             end
             __TS__ArrayForEach(
                 Trailers.systems,
@@ -191,9 +218,6 @@ do
             ventity.connection = nil
         else
             print("TR: no connections found")
-            print(
-                debug.traceback()
-            )
         end
     end
     function Trailers.DisconnectEnt(entity)
@@ -225,121 +249,54 @@ local function RestartSystemHandler()
     local hydrahelp = CreateConVar("trailers_hydrahelp", "1", FCVAR_ARCHIVE, "some help", 0, 1):GetBool()
     local autoconnectDist = CreateConVar("trailers_autoconnect_distance", "5", FCVAR_ARCHIVE, "maximum Distance when trailer get automatically connected", 0, 1000):GetInt()
     timer.Remove("TR_system")
-    print("created timer")
-    if not autoconnect then
-        timer.Create(
-            "TR_system",
-            0.2,
-            0,
-            function()
-                valid(
-                    function(ventity)
-                        for ____, system in ipairs(Trailers.systems) do
-                            if system.HandleTruck then
-                                system.HandleTruck(ventity)
-                            end
+    timer.Create(
+        "TR_system",
+        0.2,
+        0,
+        function()
+            valid(
+                function(ventity)
+                    for ____, system in ipairs(Trailers.systems) do
+                        if system.HandleTruck then
+                            system.HandleTruck(ventity)
                         end
                     end
-                )
-            end
-        )
-    elseif autoconnect and hydrahelp then
-        timer.Create(
-            "TR_system",
-            0.2,
-            0,
-            function()
-                valid(
-                    function(ventity)
-                        for ____, system in ipairs(Trailers.systems) do
-                            if system.HandleTruck then
-                                system.HandleTruck(ventity)
-                            end
-                        end
-                        if (not ventity.connection) and ventity.outputPos then
-                            if not ventity.phys then
-                                ventity.phys = ventity.ent:GetPhysicsObject()
-                            end
-                            __TS__ArrayForEach(
-                                Trailers.cars,
-                                function(____, val)
-                                    if val ~= ventity then
-                                        if not val.phys then
-                                            val.phys = val.ent:GetPhysicsObject()
-                                        end
-                                        if val.inputPos then
-                                            local outputPosWorld = ventity.ent:LocalToWorld(ventity.outputPos)
-                                            local inputPosWorld = val.ent:LocalToWorld(val.inputPos)
-                                            local distance = outputPosWorld:DistToSqr(inputPosWorld)
-                                            if IsValid(ventity.hydraulic) and (distance > 200) then
-                                                print("TR: autoconnection cancelled")
-                                                SafeRemoveEntity(ventity.hydraulic)
-                                                ventity.hydraulic = nil
-                                            elseif IsConnectable(ventity, val, true) and (distance < autoconnectDist) then
-                                                print("TR: connected trailer using autoconnection")
-                                                SafeRemoveEntity(ventity.hydraulic)
-                                                Trailers.Connect(ventity, true)
-                                                ventity.hydraulic = nil
-                                            elseif IsConnectable(ventity, val, true) and (not ventity.hydraulic) then
-                                                local hydraulic = constraint.Hydraulic(nil, ventity.ent, val.ent, 0, 0, ventity.outputPos, val.inputPos, 0, 0, 0, KEY_PAD_MULTIPLY, 0, 10000000, nil, false)
-                                                local hydraulic2 = constraint.Hydraulic(nil, ventity.ent, val.ent, 0, 0, ventity.outputPos, val.inputPos, 0, 0, 0, KEY_PAD_MULTIPLY, 0, 10000000, nil, false)
-                                                local hydraulic3 = constraint.Hydraulic(nil, ventity.ent, val.ent, 0, 0, ventity.outputPos, val.inputPos, 0, 0, 0, KEY_PAD_MULTIPLY, 0, 10000000, nil, false)
-                                                numpad.Activate(nil, KEY_PAD_MULTIPLY, true)
-                                                hydraulic:DeleteOnRemove(hydraulic2)
-                                                hydraulic:DeleteOnRemove(hydraulic3)
-                                                ventity.hydraulic = hydraulic
-                                            end
-                                        end
-                                    end
-                                end
-                            )
+                end
+            )
+        end
+    )
+    print("TR: created system timer")
+    timer.Create(
+        "TR_autoconnect",
+        0.1,
+        0,
+        function()
+            valid(
+                function(ventity)
+                    if not ventity.connection then
+                        local car = GetConnectable(ventity, true)
+                        if car then
+                            ventity.phys = ventity.ent:GetPhysicsObject()
+                            car.phys = car.ent:GetPhysicsObject()
+                            local outputPos = ventity.ent:LocalToWorld(ventity.outputPos)
+                            local inputPos = car.ent:LocalToWorld(car.inputPos)
+                            local targetVec = inputPos - outputPos
+                            targetVec:Div(2)
+                            local truckTargetPos = ventity.ent:GetPos()
+                            truckTargetPos:Add(targetVec)
+                            targetVec:Mul(-1)
+                            local trailerTargetPos = car.ent:GetPos()
+                            trailerTargetPos:Add(targetVec)
+                            ventity.ent:SetPos(truckTargetPos)
+                            car.ent:SetPos(trailerTargetPos)
+                            Trailers.Connect(ventity, true)
                         end
                     end
-                )
-            end
-        )
-    else
-        timer.Create(
-            "TR_system",
-            0.2,
-            0,
-            function()
-                valid(
-                    function(ventity)
-                        for ____, system in ipairs(Trailers.systems) do
-                            if system.HandleTruck then
-                                system.HandleTruck(ventity)
-                            end
-                        end
-                        if (not ventity.connection) and ventity.outputPos then
-                            if not ventity.phys then
-                                ventity.phys = ventity.ent:GetPhysicsObject()
-                            end
-                            __TS__ArrayForEach(
-                                Trailers.cars,
-                                function(____, val)
-                                    if val ~= ventity then
-                                        if not val.phys then
-                                            val.phys = val.ent:GetPhysicsObject()
-                                        end
-                                        if val.inputPos then
-                                            local outputPosWorld = ventity.ent:LocalToWorld(ventity.outputPos)
-                                            local inputPosWorld = val.ent:LocalToWorld(val.inputPos)
-                                            local distance = outputPosWorld:DistToSqr(inputPosWorld)
-                                            if IsConnectable(ventity, val, true) and (distance < autoconnectDist) then
-                                                print("TR: connected trailer using autoconnection")
-                                                Trailers.Connect(ventity, true)
-                                            end
-                                        end
-                                    end
-                                end
-                            )
-                        end
-                    end
-                )
-            end
-        )
-    end
+                end
+            )
+        end
+    )
+    print("TR: created autoconnect timer")
 end
 RestartSystemHandler()
 concommand.Add("trailers_reload_SV_systemtimer", RestartSystemHandler)
@@ -348,7 +305,8 @@ list.Set(
     "Trailers",
     function(ent, vtable)
         if istable(vtable) then
-            Trailers.Init({ent = ent, inputPos = vtable.inputPos, outputPos = vtable.outputPos, inputType = vtable.inputType, outputType = vtable.outputType})
+            vtable.ent = ent
+            Trailers.Init(vtable)
         else
             print("TR: seems like vehicle's 'Trailers' spawnlist is wrong")
         end
@@ -366,9 +324,6 @@ concommand.Add(
             )
         else
             print("TR: IsValid(ply) == false")
-            print(
-                debug.traceback()
-            )
         end
     end
 )
@@ -384,9 +339,6 @@ concommand.Add(
             )
         else
             print("TR: IsValid(ply) == false")
-            print(
-                debug.traceback()
-            )
         end
     end
 )

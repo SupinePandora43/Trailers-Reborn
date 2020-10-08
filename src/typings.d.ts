@@ -7,8 +7,6 @@ declare type VConnection = {
 }
 /** Storage for handling car info */
 declare type VEntity = {
-	/** entity */
-	ent: Entity
 	/** inputPos of vehicle */
 	inputPos?: Vector
 	/** outputPos of vehicle */
@@ -17,6 +15,13 @@ declare type VEntity = {
 	inputType?: string
 	/** outputType of vehicle */
 	outputType?: string
+	/** disable use on trailer? */
+	disableUse?: boolean
+	/** disable use on wheels only? */
+	disableUseOnWheels?: boolean
+
+	/** entity */
+	ent: Entity
 	/** connection */
 	connection?: VConnection
 	/** physic object */

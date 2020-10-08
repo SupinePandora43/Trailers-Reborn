@@ -1,5 +1,4 @@
-import sh_deprecated = require("./sh_deprecated")
-
+// schit code is here
 net.Receive("trailers_reborn_debug_spheres", () => {
 	const ventity = net.ReadTable()
 	if (ventity.input) {
@@ -45,7 +44,8 @@ declare namespace list {
 declare namespace vgui {
 	function Create(this: void, classname: string, parent?: DPanel, name?: string): Panel
 }
-list.Set("FLEX_UI", "TR_UI", (layout: DListLayout) => {
+// FLEX_ui is dead
+/*list.Set("FLEX_UI", "TR_UI", (layout: DListLayout) => {
 	const row = vgui.Create("DTileLayout") as DTileLayout
 	row.SetBackgroundColor(Color(0, 255, 255, 255) as Color)
 	const connnectBTN = vgui.Create("DButton", row) as DButton
@@ -61,7 +61,7 @@ list.Set("FLEX_UI", "TR_UI", (layout: DListLayout) => {
 		RunConsoleCommand("trailers_disconnect")
 	}
 	layout.Add(row)
-})
+})*/
 const disconnectKey = CreateClientConVar("trailers_disconnect_key", tostring(KEY.KEY_PAD_MINUS), true, true, "disconnect key, used by DBinder")
 const connectKey = CreateClientConVar("trailers_connect_key", tostring(KEY.KEY_PAD_PLUS), true, true, "connect key, used by DBinder")
 function buildthemenu(pnl: Panel | any) {
@@ -109,19 +109,19 @@ function buildthemenu(pnl: Panel | any) {
 	disconnectBinderTip.SizeToContents()
 
 	if (LocalPlayer().IsSuperAdmin()) {
-		y+=50
+		y += 50
 		const Background1 = vgui.Create('DShape', pnl.PropPanel) as DShape
 		Background1.SetType('Rect')
-		Background1.SetPos(20, y+15)
+		Background1.SetPos(20, y + 15)
 		Background1.SetColor(Color(0, 0, 0, 200))
 		Background1.SetSize(350, 125)
 
 		const Label = vgui.Create('DLabel', pnl.PropPanel)
-		Label.SetPos(30, y-10)
+		Label.SetPos(30, y - 10)
 		Label.SetText("Admin-Only Settings!")
 		Label.SizeToContents()
 
-		y+=25
+		y += 25
 		const autoconnectCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel) as DCheckBoxLabel
 		autoconnectCheckbox.SetPos(25, y)
 		autoconnectCheckbox.SetText("Autoconnect")

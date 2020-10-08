@@ -53,7 +53,7 @@ const SYSTEM: System = {
 		// Disabling Brakes
 		// TODO: better variant
 		trailer.SetActive(true)
-		trailer.StartEngine()
+		//trailer.StartEngine()
 	},
 	// https://www.youtube.com/watch?v=PMbAAcO7i6o
 	Disconnect(this: void, ventity: VEntity) {

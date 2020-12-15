@@ -5,6 +5,11 @@ declare type VConnection = {
 	/** AdvBallSocket  */
 	socket: Entity
 }
+/** @todo */
+type ExtensionData = {
+
+}
+
 /** Storage for handling car info */
 declare type VEntity = {
 	/** inputPos of vehicle */
@@ -24,12 +29,14 @@ declare type VEntity = {
 	ent: Entity
 	/** connection */
 	connection?: VConnection
-	/** physic object */
+	/** @deprecated */
 	phys?: PhysObj
-	/** hydraulics entity autoconnect helper */
+	/** @deprecated */
 	hydraulic?: Entity
 	/** fix for autodisconnect */
 	lastDisconnected?: number
+	/** @todo */
+	extensions?: ExtensionData[]
 };
 declare type System = {
 	/** you will use this */

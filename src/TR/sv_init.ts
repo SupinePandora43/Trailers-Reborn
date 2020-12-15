@@ -3,12 +3,10 @@
 // Server code          //
 //////////////////////////
 
-// download sounds to client
-
 /*
 resource.AddFile("sound/tr/trailer_connection.wav")
 resource.AddFile("sound/tr/nope.wav")
-// */
+*/
 
 resource.AddWorkshop("2083101470")
 
@@ -22,8 +20,7 @@ sound.Add({
 
 function valid(this: void, callbackfn?: (this: void, ventity: VEntity) => void) {
 	Trailers.cars = Trailers.cars.filter((ventity) => { return IsValid(ventity.ent) })
-	// this thing born when you compile something in production mode
-	// it used for performance, cuz checking "callbackfn" each time is slow
+	// some optimization
 	if (callbackfn) {
 		Trailers.cars.forEach((ventity) => {
 			if (ventity.connection && !IsValid(ventity.connection.socket)) {
@@ -100,14 +97,13 @@ namespace Trailers {
 		net.WriteTable({ ent: ventity.ent, input: ventity.inputPos, output: ventity.outputPos })
 		net.Broadcast()
 	}
-	// TODO: wt is this schit???
+	// TODO: make it prettier
 	export function Connect(this: void, ventity: VEntity, autoconnected?: boolean) {
 		if (!ventity) {
 			print("TR: trying to connect nothing")
 			print(debug.traceback())
 			return
 		}
-		ventity.hydraulic = undefined
 		const whole = getwhole(ventity)
 		ventity = whole[whole.length - 1]
 		const vtrailer = GetConnectable(ventity) as VEntity
@@ -158,9 +154,7 @@ namespace Trailers {
 	}
 }
 
-/**         */
 /** SYSTEMS */
-/**         */
 const files = file.Find("tr/systems/*", "LUA")[0]
 print("TR: initializing systems")
 print("| --- SYSTEMS ---")
@@ -170,18 +164,14 @@ for (const system of (files as string[])) {
 }
 print("| --- SYSTEMS ---")
 
-// would be nice to have #define
-// but const enum works same :D
+// would be nice to have #define, but const enum works same :D
 const enum SIZES {
 	HYDRAREMOVE = 200
 }
-
-/**              */
 /** SYSTEM timer */
-/**              */
 function RestartSystemHandler(this: void) {
 	const autoconnect = CreateConVar("trailers_autoconnect", "1", FCVAR.FCVAR_ARCHIVE, "some help", 0, 1).GetBool()
-	const hydrahelp = CreateConVar("trailers_hydrahelp", "1", FCVAR.FCVAR_ARCHIVE, "some help", 0, 1).GetBool()
+	const adjustposition = CreateConVar("trailers_autoconnect_adjustposition", "1", FCVAR.FCVAR_ARCHIVE, "set's vehicles positions to perfectly connected", 0, 1).GetBool()
 	const autoconnectDist = CreateConVar("trailers_autoconnect_distance", "5", FCVAR.FCVAR_ARCHIVE, "maximum Distance when trailer get automatically connected", 0, 1000).GetInt()
 	timer.Remove("TR_system")
 	timer.Create("TR_system", 0.2, 0, () => {
@@ -194,39 +184,53 @@ function RestartSystemHandler(this: void) {
 		})
 	})
 	print("TR: created system timer")
-	timer.Create("TR_autoconnect", 0.1, 0, () => {
-		valid((ventity: VEntity) => {
-			// Check if already have connection
-			if (!ventity.connection) {
-				// find connectable entity
-				const car = GetConnectable(ventity, true)
-				if (car) {
-					ventity.phys = ventity.ent.GetPhysicsObject()
-					car.phys = car.ent.GetPhysicsObject()
+	timer.Remove("TR_autoconnect")
+	if (autoconnect) {
+		if (adjustposition) {
+			timer.Create("TR_autoconnect", 0.1, 0, () => {
+				valid((ventity: VEntity) => {
+					// Check if already have connection
+					if (!ventity.connection) {
+						// find connectable entity
+						const car = GetConnectable(ventity, true)
+						if (car) {
+							const outputPos = ventity.ent.LocalToWorld(ventity.outputPos as Vector)
+							const inputPos = car.ent.LocalToWorld(car.inputPos as Vector)
+							// difference between connection positions
+							const targetVec = ((inputPos as any as number) - (outputPos as any as number)) as any as Vector
 
-					const outputPos = ventity.ent.LocalToWorld(ventity.outputPos as Vector)
-					const inputPos = car.ent.LocalToWorld(car.inputPos as Vector)
-					// difference between connection positions
-					const targetVec = ((inputPos as any as number) - (outputPos as any as number)) as any as Vector
+							// divide by 2, 50% for truck, 50% for trailer
+							targetVec.Div(2)
+							const truckTargetPos = ventity.ent.GetPos()
+							truckTargetPos.Add(targetVec)
 
-					// divide by 2, 50% for truck, 50% for trailer
-					targetVec.Div(2)
-					const truckTargetPos = ventity.ent.GetPos()
-					truckTargetPos.Add(targetVec)
+							// but it shared for them, we need to multiply by -1, to make it in opposite direction
+							targetVec.Mul(-1)
+							const trailerTargetPos = car.ent.GetPos()
+							trailerTargetPos.Add(targetVec)
 
-					// but it shared for them, we need to multiply by -1, to make it in opposite direction
-					targetVec.Mul(-1)
-					const trailerTargetPos = car.ent.GetPos()
-					trailerTargetPos.Add(targetVec)
-
-					ventity.ent.SetPos(truckTargetPos)
-					car.ent.SetPos(trailerTargetPos)
-					Trailers.Connect(ventity, true)
-				}
-			}
-		})
-	})
-	print("TR: created autoconnect timer")
+							ventity.ent.SetPos(truckTargetPos)
+							car.ent.SetPos(trailerTargetPos)
+							Trailers.Connect(ventity, true)
+						}
+					}
+				})
+			})
+		} else {
+			timer.Create("TR_autoconnect", 0.1, 0, () => {
+				valid((ventity: VEntity) => {
+					// Check if already have connection
+					if (!ventity.connection) {
+						// find connectable entity
+						const car = GetConnectable(ventity, true)
+						if (car) {
+							Trailers.Connect(ventity, true)
+						}
+					}
+				})
+			})
+		}
+	}
 }
 RestartSystemHandler()
 concommand.Add("trailers_reload_SV_systemtimer", RestartSystemHandler)

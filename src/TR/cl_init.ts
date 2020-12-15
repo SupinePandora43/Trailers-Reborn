@@ -135,20 +135,20 @@ function buildthemenu(pnl: Panel | any) {
 		y += 25
 		const hydrahelpCheckbox = vgui.Create("DCheckBoxLabel", pnl.PropPanel) as DCheckBoxLabel
 		hydrahelpCheckbox.SetPos(25, y)
-		hydrahelpCheckbox.SetText("Hydraulic connectoin")
+		hydrahelpCheckbox.SetText("Adjust positions")
 		hydrahelpCheckbox.OnChange = () => {
 			RunConsoleCommand("trailers_reload_SV_systemtimer")
 		}
-		hydrahelpCheckbox.SetConVar("trailers_hydrahelp")
+		hydrahelpCheckbox.SetConVar("trailers_autoconnect_adjustposition")
 		hydrahelpCheckbox.SizeToContents()
-		hydrahelpCheckbox.SetTooltip("Add some hydraulics to help\n!BUGGY!")
+		hydrahelpCheckbox.SetTooltip("enabling this, will force autoconnecting vehicles set their positions to perfect positions for their connection positions")
 
 		y += 25
 		const DamageMul = vgui.Create("DNumSlider", pnl.PropPanel) as DNumSlider
 		DamageMul.SetPos(30, y)
 		DamageMul.SetSize(345, 30)
 		DamageMul.SetText("Autoconnect distance")
-		DamageMul.SetTooltip("uses DistToSqr")
+		DamageMul.SetTooltip("changes nothing")
 		DamageMul.SetMin(0)
 		DamageMul.SetMax(1000)
 		DamageMul.SetDecimals(0)

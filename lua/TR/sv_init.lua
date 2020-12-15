@@ -162,7 +162,6 @@ do
             )
             return
         end
-        ventity.hydraulic = nil
         local whole = getwhole(ventity)
         ventity = whole[#whole]
         local vtrailer = GetConnectable(ventity)
@@ -246,7 +245,7 @@ end
 print("| --- SYSTEMS ---")
 local function RestartSystemHandler()
     local autoconnect = CreateConVar("trailers_autoconnect", "1", FCVAR_ARCHIVE, "some help", 0, 1):GetBool()
-    local hydrahelp = CreateConVar("trailers_hydrahelp", "1", FCVAR_ARCHIVE, "some help", 0, 1):GetBool()
+    local adjustposition = CreateConVar("trailers_autoconnect_adjustposition", "1", FCVAR_ARCHIVE, "set's vehicles positions to perfectly connected", 0, 1):GetBool()
     local autoconnectDist = CreateConVar("trailers_autoconnect_distance", "5", FCVAR_ARCHIVE, "maximum Distance when trailer get automatically connected", 0, 1000):GetInt()
     timer.Remove("TR_system")
     timer.Create(
@@ -266,37 +265,57 @@ local function RestartSystemHandler()
         end
     )
     print("TR: created system timer")
-    timer.Create(
-        "TR_autoconnect",
-        0.1,
-        0,
-        function()
-            valid(
-                function(ventity)
-                    if not ventity.connection then
-                        local car = GetConnectable(ventity, true)
-                        if car then
-                            ventity.phys = ventity.ent:GetPhysicsObject()
-                            car.phys = car.ent:GetPhysicsObject()
-                            local outputPos = ventity.ent:LocalToWorld(ventity.outputPos)
-                            local inputPos = car.ent:LocalToWorld(car.inputPos)
-                            local targetVec = inputPos - outputPos
-                            targetVec:Div(2)
-                            local truckTargetPos = ventity.ent:GetPos()
-                            truckTargetPos:Add(targetVec)
-                            targetVec:Mul(-1)
-                            local trailerTargetPos = car.ent:GetPos()
-                            trailerTargetPos:Add(targetVec)
-                            ventity.ent:SetPos(truckTargetPos)
-                            car.ent:SetPos(trailerTargetPos)
-                            Trailers.Connect(ventity, true)
+    timer.Remove("TR_autoconnect")
+    if autoconnect then
+        if adjustposition then
+            timer.Create(
+                "TR_autoconnect",
+                0.1,
+                0,
+                function()
+                    valid(
+                        function(ventity)
+                            if not ventity.connection then
+                                local car = GetConnectable(ventity, true)
+                                if car then
+                                    local outputPos = ventity.ent:LocalToWorld(ventity.outputPos)
+                                    local inputPos = car.ent:LocalToWorld(car.inputPos)
+                                    local targetVec = inputPos - outputPos
+                                    targetVec:Div(2)
+                                    local truckTargetPos = ventity.ent:GetPos()
+                                    truckTargetPos:Add(targetVec)
+                                    targetVec:Mul(-1)
+                                    local trailerTargetPos = car.ent:GetPos()
+                                    trailerTargetPos:Add(targetVec)
+                                    ventity.ent:SetPos(truckTargetPos)
+                                    car.ent:SetPos(trailerTargetPos)
+                                    Trailers.Connect(ventity, true)
+                                end
+                            end
                         end
-                    end
+                    )
+                end
+            )
+        else
+            timer.Create(
+                "TR_autoconnect",
+                0.1,
+                0,
+                function()
+                    valid(
+                        function(ventity)
+                            if not ventity.connection then
+                                local car = GetConnectable(ventity, true)
+                                if car then
+                                    Trailers.Connect(ventity, true)
+                                end
+                            end
+                        end
+                    )
                 end
             )
         end
-    )
-    print("TR: created autoconnect timer")
+    end
 end
 RestartSystemHandler()
 concommand.Add("trailers_reload_SV_systemtimer", RestartSystemHandler)
